@@ -41,7 +41,7 @@ For each goal, name the most likely obstacle and write your response. The resear
 - **Question:** Who will you share this plan with?
 - **Options (pick any):** A partner / A friend / A colleague or mentor / A coach / A group or community / Just me for now
 - **Follow-up:** What will you ask them for?
-- **Placeholder example:** Ask Sam to check in on my Saturday mornings once a month.
+- **Placeholder example:** Ask Alex to check in on my Saturday mornings once a month.
 - **Stuck? hint:** People who share their goals with someone they respect are more likely to follow through. Pick one person and one specific ask.
 
 ## Coaching touchpoint (shown if "A coach" is selected)

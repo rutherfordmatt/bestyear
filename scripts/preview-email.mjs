@@ -61,7 +61,7 @@ const sample = {
       g1: { if: "...work runs late on a Friday and I'm too tired on Saturday,", then: "...do one hour on Sunday instead, no matter what" },
       g2: { if: "...I'm still wired at eleven,", then: "...read a paper book instead of reaching for my phone" },
     },
-    corner: { who: ["friend", "coach"], ask: "Ask Sam to check in on my Saturday mornings once a month." },
+    corner: { who: ["friend", "coach"], ask: "Ask Alex to check in on my Saturday mornings once a month." },
   },
   step7: {
     noteToFutureSelf: "Go gently, and keep going.",
