@@ -84,6 +84,10 @@
   --wide: 1120px;
   --prose: 760px;
   --measure: 58ch;
+  /* A fixed width for supporting lines (tips, hand-over lines). `ch` is
+     relative to each element's OWN font size, so smaller text ends up with a
+     narrower box and wraps earliest — the opposite of what reads well. */
+  --measure-wide: 46rem;
 
   /* --- Motion --- */
   --fast: 0.15s;

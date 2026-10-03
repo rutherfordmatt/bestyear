@@ -161,7 +161,7 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .step-transition {
   font: italic 400 1.25rem / 1.5 var(--serif);
   color: var(--ink);
-  max-width: var(--measure);
+  max-width: var(--measure-wide);
   text-wrap: pretty;
   margin-top: var(--sp-4);
 }

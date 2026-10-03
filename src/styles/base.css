@@ -184,7 +184,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
    outright, quietly, under the field it belongs to. */
 .tip {
   font-size: var(--step--1); font-style: italic; color: var(--muted);
-  max-width: 64ch;
+  max-width: var(--measure-wide);
   text-wrap: pretty;   /* no single word stranded on the last line */
 }
 
