@@ -12,7 +12,8 @@
     "values": "node scripts/build-values.mjs",
     "test": "node test/journey.mjs && node test/email.mjs",
     "start": "node --env-file-if-exists=.env server/index.js",
-    "serve": "npm run build && npm start"
+    "serve": "npm run build && npm start",
+    "preview:email": "node scripts/preview-email.mjs"
   },
   "engines": {
     "node": ">=22"
