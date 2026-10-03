@@ -4,9 +4,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Always reserve the scrollbar's width. Without this, a short page (setup)
-     has no scrollbar and a long one (step 1) does, so centred content shifts
-     sideways by ~15px as you move between them. */
+  /* Always reserve the scrollbar's width, so a short page (setup) and a long
+     one (a step) put centred content in the same place. */
   scrollbar-gutter: stable;
 }
 
@@ -18,14 +17,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-inline: var(--sp-5);
-  /* A column so the bottom bar can be sticky rather than fixed: a fixed
-     element is positioned against the viewport, which includes the scrollbar
-     gutter, so its contents sat ~7px off the content column. Sticky is laid
-     out inside body and lines up exactly. It also pins the footer to the
-     bottom of short pages. */
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 [hidden] { display: none !important; }
@@ -78,7 +70,7 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .stack-lg { display: grid; gap: var(--sp-7); }
 .row { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; }
 
-main { max-width: var(--wide); margin-inline: auto; padding-block: var(--sp-8) 0; flex: 1 0 auto; }
+main { max-width: var(--wide); margin-inline: auto; padding-block: var(--sp-8) 0; }
 
 /* --- Type helpers --- */
 .label {
