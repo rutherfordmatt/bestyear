@@ -208,8 +208,13 @@ body.has-bar .storage-controls {
   .phases { gap: var(--sp-5); }
 }
 
-/* Reveal wrappers must not disturb the prompt rhythm. */
-.reveal-wrap { display: grid; }
+/* Reveal wrappers must not disturb the prompt rhythm.
+   scroll-margin keeps a revealed block clear of the fixed bar when
+   scrollIntoView brings it up. */
+.reveal-wrap {
+  display: grid;
+  scroll-margin-block: var(--sp-6) 140px;
+}
 
 .show-all {
   padding-top: var(--sp-5); border-top: var(--border);

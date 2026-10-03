@@ -1,4 +1,5 @@
 import { useStore } from "../lib/use-store.js";
+import Reveal from "./Reveal.jsx";
 import { track, EVENTS } from "../lib/analytics.js";
 import { FEATURES } from "../lib/config.js";
 
@@ -48,8 +49,8 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
         )}
       </fieldset>
 
-      {hasPace && (
-        <div class="field reveal">
+      <Reveal when={hasPace}>
+        <div class="field">
           <label for="year-word">{prompt.question}</label>
           <input
             id="year-word"
@@ -63,13 +64,14 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
           />
           {prompt.hint && <p class="tip">{prompt.hint}</p>}
         </div>
-      )}
+      </Reveal>
 
       {/* Reads "Good. That's the title of the chapter you're closing." — it
           would be orphaned before there is a title to be good about. */}
-      {transition && hasWord && (
-        <p class="step-transition reveal" role="status">{transition}</p>
-      )}
+      {/* No scroll here: it fires mid-sentence as the word is typed. */}
+      <Reveal when={Boolean(transition && hasWord)} scroll={false}>
+        <p class="step-transition" role="status">{transition}</p>
+      </Reveal>
     </div>
   );
 }
