@@ -82,9 +82,6 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 .step-intro { display: grid; gap: var(--sp-4); max-width: var(--measure); color: var(--muted); }
 .step-intro :global(strong) { color: var(--ink); font-weight: 500; }
 
-/* Blocks that earn more room than the reading column. */
-.step-main .wide { max-width: none; width: min(var(--wide), 100%); }
-
 /* --- Prompts --- */
 .prompt { display: grid; gap: var(--sp-4); padding-block: var(--sp-6); border-top: var(--border); }
 .prompt-head { display: grid; gap: var(--sp-2); }
@@ -391,10 +388,6 @@ fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted);
   max-width: 794px;
   margin-inline: auto;
   padding: 56px 64px 64px;
-}
-.doc-caption {
-  text-align: center; font-size: var(--step--1); color: var(--muted);
-  margin-top: var(--sp-3);
 }
 .doc-actions {
   display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-4);

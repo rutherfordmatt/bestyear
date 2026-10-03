@@ -129,11 +129,9 @@ const valuesLine = returning["Values confirmation"] || "";
   .plan b { font-weight: 500; line-height: 1.5; }
   .plan span { color: var(--muted); font-size: 0.92rem; }
 
-  /* Buttons, then the quiet lines beneath them — the Values Finder's rhythm. */
-  .start-actions { display: grid; gap: var(--sp-3); }
-  .start-actions .row { margin-bottom: var(--sp-5); }
-  .start-actions .note { max-width: var(--measure); }
-  .start-actions .is-confirm { color: var(--accent); }
+  /* NOTE: .start-actions is rendered by a Preact island, so its styles CANNOT
+     live here — Astro scopes page styles with a data-astro-cid attribute that
+     island markup never carries. They live in src/styles/base.css instead. */
 
   .paper { display: grid; gap: var(--sp-2); }
   .sample-title { font-size: 1.9rem; margin-top: var(--sp-1); }

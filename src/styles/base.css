@@ -186,14 +186,15 @@ details.stuck > summary::after { content: "›"; transition: transform var(--fas
 details.stuck[open] > summary::after { transform: rotate(90deg); }
 details.stuck > p { color: var(--muted); margin-top: var(--sp-2); max-width: var(--measure); }
 
-/* --- Resume / incoming-values banner --- */
-.resume {
-  display: flex; flex-wrap: wrap; gap: var(--sp-4);
-  align-items: center; justify-content: space-between;
-  margin-bottom: var(--sp-7);
-}
-.resume p { max-width: var(--measure); }
-.resume-actions { display: flex; gap: var(--sp-2); align-items: center; }
+/* --- Landing page action row ---
+   Rendered by the StartActions island, so these rules must be global: Astro's
+   scoped page styles are keyed to a data-astro-cid attribute that markup
+   rendered by a framework component never gets. Same applies to any other
+   island's internals. */
+.start-actions { display: grid; gap: var(--sp-3); }
+.start-actions .row { margin-bottom: var(--sp-5); }
+.start-actions .note { max-width: var(--measure); }
+.start-actions .is-confirm { color: var(--accent); }
 
 /* --- Setup --- */
 .setup { margin-block: var(--sp-5); }
