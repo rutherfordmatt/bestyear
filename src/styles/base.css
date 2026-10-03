@@ -104,6 +104,11 @@ footer.site {
 footer.site a { color: var(--muted); text-decoration: underline; }
 footer.site a:hover { color: var(--accent); }
 
+/* Pages with the fixed bar already have a footing. A second one stacked
+   above it reads as a mistake, so it goes — the storage controls carry the
+   privacy link on those pages instead. */
+body.has-bar footer.site { display: none; }
+
 /* --- Buttons --- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
@@ -174,17 +179,13 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
 .callout.warn { border-left-color: var(--warn); background: var(--warn-pale); }
 .callout h2, .callout h3, .callout h4 { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; margin-bottom: var(--sp-1); }
 
-/* --- Details / "Stuck?" --- */
-details.stuck { font-size: var(--step--1); }
-details.stuck > summary {
-  cursor: pointer; color: var(--accent); list-style: none;
-  font-weight: 500; display: inline-flex; align-items: center; gap: var(--sp-1);
-  padding-block: var(--sp-1);
+/* --- Tips ---
+   The guidance that used to hide behind a "Stuck?" disclosure. Shown
+   outright, quietly, under the field it belongs to. */
+.tip {
+  font-size: var(--step--1); font-style: italic; color: var(--muted);
+  max-width: var(--measure);
 }
-details.stuck > summary::-webkit-details-marker { display: none; }
-details.stuck > summary::after { content: "›"; transition: transform var(--fast); }
-details.stuck[open] > summary::after { transform: rotate(90deg); }
-details.stuck > p { color: var(--muted); margin-top: var(--sp-2); max-width: var(--measure); }
 
 /* --- Landing page action row ---
    Rendered by the StartActions island, so these rules must be global: Astro's
@@ -197,7 +198,7 @@ details.stuck > p { color: var(--muted); margin-top: var(--sp-2); max-width: var
 .start-actions .is-confirm { color: var(--accent); }
 
 /* --- Setup --- */
-.setup { margin-block: var(--sp-5); }
+.setup { display: grid; gap: var(--sp-7); }
 fieldset.pace { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-3); }
 fieldset.pace legend { padding: 0; margin-bottom: var(--sp-1); }
 .pace-options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }

@@ -86,12 +86,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
             aria-label={notePrompt.question}
             onInput={(e) => set((s) => { s.step7.noteToFutureSelf = e.currentTarget.value; })}
           />
-          {notePrompt.hint && (
-            <details class="stuck">
-              <summary>Stuck?</summary>
-              <p>{notePrompt.hint}</p>
-            </details>
-          )}
+          {notePrompt.hint && <p class="tip">{notePrompt.hint}</p>}
         </div>
       </section>
 

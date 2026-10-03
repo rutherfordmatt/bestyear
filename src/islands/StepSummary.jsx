@@ -10,9 +10,9 @@ export default function StepSummary({ step, transition }) {
   const [state] = useStore();
   const added = addedInStep(state, step);
 
-  if (!added.length) {
-    return transition ? <p class="step-transition">{transition}</p> : null;
-  }
+  // Nothing added yet means nothing to hand over from: showing the
+  // transition line on its own leaves it floating with no context.
+  if (!added.length) return null;
 
   return (
     <div class="step-summary" role="status">

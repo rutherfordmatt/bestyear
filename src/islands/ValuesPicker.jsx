@@ -178,12 +178,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
           </button>
         </div>
 
-        {prompts.choose?.hint && (
-          <details class="stuck">
-            <summary>Stuck?</summary>
-            <p>{prompts.choose.hint}</p>
-          </details>
-        )}
+        {prompts.choose?.hint && <p class="tip">{prompts.choose.hint}</p>}
       </section>
 
       {/* The pick-list: 155 values, searchable, grouped by family */}
@@ -269,12 +264,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
             aria-label={prompts.gap?.question}
             onInput={(e) => set((s) => { s.step2.compromise = e.currentTarget.value; })}
           ></textarea>
-          {prompts.gap?.hint && (
-            <details class="stuck">
-              <summary>Stuck?</summary>
-              <p>{prompts.gap.hint}</p>
-            </details>
-          )}
+          {prompts.gap?.hint && <p class="tip">{prompts.gap.hint}</p>}
         </div>
       </section>
     </div>

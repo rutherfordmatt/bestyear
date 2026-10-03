@@ -32,7 +32,7 @@
 
   /* Chrome off: everything that isn't the document itself. */
   header.site, footer.site, .phase-rail, .bar, .storage-controls,
-  .no-print, .skip, nav, .stuck, .from-step, .step-summary,
+  .no-print, .skip, nav, .tip, .from-step, .step-summary,
   button, .btn, form, input, textarea, select {
     display: none !important;
   }

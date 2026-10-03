@@ -90,12 +90,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
           </ul>
         )}
 
-        {ifPrompt.hint && (
-          <details class="stuck">
-            <summary>Stuck?</summary>
-            <p>{ifPrompt.hint}</p>
-          </details>
-        )}
+        {ifPrompt.hint && <p class="tip">{ifPrompt.hint}</p>}
       </section>
 
       <Prompt prompt={cornerPrompt}>

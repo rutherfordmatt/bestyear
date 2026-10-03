@@ -7,7 +7,7 @@ import { FEATURES } from "../lib/config.js";
   The daily-nudge email field is deferred to v1.1 (FEATURES.dailyNudges) —
   there is no endpoint for it yet, so we don't collect addresses we can't use.
 */
-export default function Setup({ paceOptions = [], prompt = {} }) {
+export default function Setup({ paceOptions = [], prompt = {}, transition = "" }) {
   const [state, set] = useStore();
 
   const choosePace = (pace) => {
@@ -16,7 +16,7 @@ export default function Setup({ paceOptions = [], prompt = {} }) {
   };
 
   return (
-    <div class="setup stack-lg">
+    <div class="setup">
       <fieldset class="pace">
         <legend class="field-label">How do you want to do this?</legend>
         <div class="pace-options">
@@ -52,13 +52,14 @@ export default function Setup({ paceOptions = [], prompt = {} }) {
           autoComplete="off"
           onInput={(e) => set((s) => { s.yearEnding.word = e.currentTarget.value; })}
         />
-        {prompt.hint && (
-          <details class="stuck">
-            <summary>Stuck?</summary>
-            <p>{prompt.hint}</p>
-          </details>
-        )}
+        {prompt.hint && <p class="tip">{prompt.hint}</p>}
       </div>
+
+      {/* Reads "Good. That's the title of the chapter you're closing." — it
+          would be orphaned before there is a title to be good about. */}
+      {transition && state.yearEnding.word.trim() && (
+        <p class="step-transition" role="status">{transition}</p>
+      )}
     </div>
   );
 }

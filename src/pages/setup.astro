@@ -46,9 +46,7 @@ const prompt = {
         <p class="lede">{intro[0]}</p>
       </div>
 
-      <Setup client:load paceOptions={paceOptions} prompt={prompt} />
-
-      <p class="step-transition">{transition}</p>
+      <Setup client:load paceOptions={paceOptions} prompt={prompt} transition={transition} />
 
       <StorageControls client:visible />
     </article>

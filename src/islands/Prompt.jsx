@@ -19,12 +19,7 @@ export default function Prompt({ prompt = {}, from = null, onPick = null, helper
       <div class={aside ? "prompt-with-aside" : ""}>
         <div class="prompt-body">
           {children}
-          {prompt.hint && (
-            <details class="stuck">
-              <summary>Stuck?</summary>
-              <p>{prompt.hint}</p>
-            </details>
-          )}
+          {prompt.hint && <p class="tip">{prompt.hint}</p>}
         </div>
         {aside}
       </div>

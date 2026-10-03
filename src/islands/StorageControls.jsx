@@ -40,14 +40,15 @@ export default function StorageControls({ expanded = false }) {
 
   return (
     <div class="storage-controls no-print">
-      <p class="storage-note">
-        Your answers stay on this device. Nothing is sent anywhere unless you ask.
-      </p>
-
       {!open && !expanded ? (
-        <button type="button" class="btn small text storage-toggle" onClick={() => setOpen(true)}>
-          Manage my answers
-        </button>
+        <p class="storage-note">
+          Your answers stay on this device.{" "}
+          <button type="button" class="linklike" onClick={() => setOpen(true)}>
+            Manage my answers
+          </button>
+          {" · "}
+          <a href="/privacy">Privacy</a>
+        </p>
       ) : (
         <div class="storage-detail">
           <div class="storage-action">

@@ -8,7 +8,7 @@ Two *quick choices*
 
 ## Intro
 
-Before we start, two quick choices. Neither is permanent.
+Neither is permanent. You can change both as you go.
 
 ## Pace choice
 

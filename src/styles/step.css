@@ -159,9 +159,16 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .soft-note { max-width: var(--measure); }
 
 /* --- Storage controls --- */
-.storage-controls { display: grid; gap: var(--sp-3); padding-top: var(--sp-5); }
+.storage-controls { display: grid; gap: var(--sp-3); }
 .storage-note { font-size: 0.78rem; color: var(--muted); }
-.storage-toggle { justify-self: start; margin-left: calc(-1 * var(--sp-3)); }
+.storage-note a, .linklike {
+  color: var(--muted); text-decoration: underline; text-underline-offset: 2px;
+}
+.linklike {
+  border: 0; background: none; padding: 0; cursor: pointer;
+  font: inherit; color: var(--muted);
+}
+.storage-note a:hover, .linklike:hover { color: var(--accent); }
 .storage-detail {
   display: grid; gap: var(--sp-3);
   border: var(--border); border-radius: var(--radius);
