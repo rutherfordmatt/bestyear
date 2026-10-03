@@ -67,7 +67,7 @@ a.rail-step:hover { color: var(--accent); }
 }
 .from-step-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-2); }
 .from-step-edit { font-size: 0.7rem; color: var(--muted); text-decoration: underline; }
-.from-step h4 { font-family: var(--sans); font-size: 0.82rem; font-weight: 600; }
+.from-step h3 { font-family: var(--sans); font-size: 0.82rem; font-weight: 600; }
 .from-step ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
 .from-step li { display: grid; gap: 1px; color: var(--ink); }
 .from-step li em { font-style: normal; color: var(--muted); font-size: 0.74rem; }
@@ -205,7 +205,7 @@ a.rail-step:hover { color: var(--accent); }
 .list-input { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
 .list-input li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2); align-items: center; }
 .list-remove {
-  border: 0; background: none; color: var(--faint); cursor: pointer;
+  border: 0; background: none; color: var(--faint-ui); cursor: pointer;
   font-size: 1.2rem; line-height: 1; padding: var(--sp-2);
 }
 .list-remove:hover { color: var(--warn); }
@@ -240,7 +240,7 @@ a.rail-step:hover { color: var(--accent); }
 /* --- Step 2: values --- */
 .values-step { display: grid; gap: var(--sp-5); }
 .finder-card { display: grid; gap: var(--sp-3); }
-.finder-card h3 { font-size: 1.4rem; }
+.finder-card h2 { font-size: 1.4rem; }
 
 .chosen-values { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
 .chosen-value {
@@ -283,7 +283,7 @@ fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted);
   background: var(--ground-alt); padding-block: var(--sp-2);
 }
 .family { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-4) var(--sp-6); padding-block: var(--sp-4); border-top: var(--border); }
-.family-head h4 { font-size: 1.25rem; }
+.family-head h3 { font-size: 1.25rem; }
 .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-2); align-content: start; }
 .chips .chip { display: grid; gap: 2px; padding: var(--sp-2) var(--sp-3); }
 .chip-name { font-weight: 500; font-size: 0.9rem; }
@@ -314,14 +314,14 @@ fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted);
 }
 .pile-item input { transition: color var(--slow), opacity var(--slow); }
 .release {
-  border: 0; background: none; cursor: pointer; color: var(--faint);
+  border: 0; background: none; cursor: pointer; color: var(--faint-ui);
   font-size: 1rem; line-height: 1; padding: var(--sp-2);
   transition: color var(--fast), transform var(--fast);
 }
 .release:hover { color: var(--accent); }
 .release[aria-pressed="true"] { color: var(--accent); transform: scale(1.1); }
 .pile-item.released input {
-  text-decoration: line-through; color: var(--faint); opacity: 0.65;
+  text-decoration: line-through; color: var(--muted);
   border-color: transparent; background: transparent;
 }
 .add-to-pile { justify-self: start; margin-left: calc(-1 * var(--sp-3)); }
@@ -362,11 +362,11 @@ fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted);
   gap: 0 var(--sp-3); align-items: start;
 }
 .goal-card-head .label { grid-column: 1; }
-.goal-card-head h3 { grid-column: 1; font-size: 1.5rem; }
+.goal-card-head .goal-card-title { grid-column: 1; font-size: 1.5rem; }
 .star-btn {
   grid-column: 2; grid-row: 1 / span 2;
   border: 0; background: none; cursor: pointer;
-  font-size: 1.6rem; line-height: 1; color: var(--faint); padding: var(--sp-1);
+  font-size: 1.6rem; line-height: 1; color: var(--faint-ui); padding: var(--sp-1);
   transition: color var(--fast), transform var(--fast);
 }
 .star-btn:hover { color: var(--accent); }

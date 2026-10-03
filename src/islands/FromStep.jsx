@@ -57,7 +57,7 @@ export default function FromStep({ kind, onPick = null }) {
         <span class="label">From Step {source.from}</span>
         <a href={pathForStep(source.from)} class="from-step-edit">Edit</a>
       </p>
-      <h4>{source.title}</h4>
+      <h3>{source.title}</h3>
       <ul>
         {items.map((item) => (
           <li key={item.id}>

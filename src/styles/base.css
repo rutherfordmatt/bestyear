@@ -171,7 +171,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
   font-size: 0.94rem;
 }
 .callout.warn { border-left-color: var(--warn); background: var(--warn-pale); }
-.callout h4 { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; margin-bottom: var(--sp-1); }
+.callout h2, .callout h3, .callout h4 { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; margin-bottom: var(--sp-1); }
 
 /* --- Details / "Stuck?" --- */
 details.stuck { font-size: var(--step--1); }
@@ -216,8 +216,8 @@ fieldset.pace legend { padding: 0; margin-bottom: var(--sp-1); }
 @media (max-width: 640px) { .pace-options { grid-template-columns: 1fr; } }
 
 /* --- Life wheel --- */
-.wheel-figure { margin: 0; display: grid; gap: var(--sp-2); justify-items: center; }
-.wheel { max-width: 100%; height: auto; overflow: visible; }
+.wheel-figure { margin: 0; display: grid; gap: var(--sp-2); justify-items: center; max-width: 100%; }
+.wheel { max-width: 100%; height: auto; }
 .wheel-ring { fill: none; stroke: var(--line); stroke-width: 1; }
 .wheel-spoke { stroke: var(--line); stroke-width: 1; }
 .wheel-shape {
@@ -226,8 +226,8 @@ fieldset.pace legend { padding: 0; margin-bottom: var(--sp-1); }
 }
 .wheel-point { fill: var(--accent); }
 .wheel-label {
-  font: 400 0.72rem var(--sans); fill: var(--ink);
-  letter-spacing: 0.04em;
+  font: 400 11px var(--sans); fill: var(--ink);
+  letter-spacing: 0.02em;
 }
 .wheel-label.unrated { fill: var(--faint); }
 .wheel-score { font-weight: 600; fill: var(--accent); }

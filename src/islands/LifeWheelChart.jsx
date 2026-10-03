@@ -17,12 +17,21 @@ function point(cx, cy, radius, index, count) {
 }
 
 export default function LifeWheelChart({ wheel = {}, size = 320, showLabels = true, id = "wheel" }) {
-  const pad = showLabels ? 58 : 14;
+  // The ring fills `size`. Labels live OUTSIDE it, so the viewBox is widened
+  // by a margin rather than the ring being shrunk — otherwise a long label
+  // like "Relationships" is clipped at small sizes.
+  const marginX = showLabels ? 74 : 4;
+  const marginY = showLabels ? 26 : 4;
+  const labelOffset = showLabels ? 18 : 0;
+
   const cx = size / 2;
   const cy = size / 2;
-  const r = size / 2 - pad;
+  const r = size / 2 - 4;
   const areas = LIFE_AREAS;
   const n = areas.length;
+
+  const vbWidth = size + marginX * 2;
+  const vbHeight = size + marginY * 2;
 
   const rated = areas
     .map((a, i) => ({ ...a, i, score: wheel[a.key] }))
@@ -44,9 +53,9 @@ export default function LifeWheelChart({ wheel = {}, size = 320, showLabels = tr
   return (
     <figure class="wheel-figure">
       <svg
-        viewBox={`0 0 ${size} ${size}`}
-        width={size}
-        height={size}
+        viewBox={`${-marginX} ${-marginY} ${vbWidth} ${vbHeight}`}
+        width={vbWidth}
+        height={vbHeight}
         class="wheel"
         role="img"
         aria-labelledby={`${id}-title ${id}-desc`}
@@ -83,7 +92,7 @@ export default function LifeWheelChart({ wheel = {}, size = 320, showLabels = tr
         {/* labels */}
         {showLabels &&
           areas.map((a, i) => {
-            const [x, y] = point(cx, cy, r + 22, i, n);
+            const [x, y] = point(cx, cy, r + labelOffset, i, n);
             const anchor = Math.abs(x - cx) < 6 ? "middle" : x > cx ? "start" : "end";
             const score = wheel[a.key];
             return (

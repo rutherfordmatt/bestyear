@@ -128,7 +128,7 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
             {suggestions.length > 0 && (
               <aside class="from-step" aria-label="Suggestions from your earlier answers">
                 <p class="from-step-head"><span class="label">From Steps 1 and 2</span></p>
-                <h4>A head start</h4>
+                <h3>A head start</h3>
                 <ul>
                   {suggestions.map((sug, i) => (
                     <li key={i}>

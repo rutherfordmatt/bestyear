@@ -98,7 +98,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
 
       {chosen.length === 0 && (
         <div class="card finder-card">
-          <h3>{card.heading}</h3>
+          <h2>{card.heading}</h2>
           <p class="muted">{card.body}</p>
           <div class="row">
             <a
@@ -206,7 +206,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
           {families && matches.map((family) => (
             <div class="family" key={family.name}>
               <div class="family-head">
-                <h4>{family.name}</h4>
+                <h3>{family.name}</h3>
                 <p class="note">{family.blurb}</p>
               </div>
               <div class="chips">

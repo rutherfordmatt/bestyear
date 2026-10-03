@@ -17,7 +17,12 @@
   --paper: #FFFFFF;        /* cards, the vision document */
   --ink: #1A1A1A;          /* body text and headings */
   --muted: #686460;        /* secondary text, hints */
-  --faint: #A8A39E;        /* disabled, not-yet-reached steps */
+  /* Two quiet tiers, split so nothing fails WCAG AA.
+     --faint is for TEXT that should read quietly: 4.9:1 on --ground,
+     4.5:1 on --ground-alt. --faint-ui is for icon glyphs and decorative
+     strokes only (3.2:1, the 1.4.11 non-text threshold) — never for text. */
+  --faint: #726D66;
+  --faint-ui: #908B84;
   --line: #E2DEDA;         /* hairlines and borders */
 
   /* --- Accent --- */

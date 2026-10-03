@@ -1,8 +1,12 @@
-/* Self-hosted fonts. No third-party requests — see CLAUDE.md, privacy. */
-@import "@fontsource/inter/300.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/cormorant-garamond/400.css";
-@import "@fontsource/cormorant-garamond/500.css";
-@import "@fontsource/cormorant-garamond/400-italic.css";
+/*
+  Self-hosted fonts. No third-party requests — see CLAUDE.md, privacy.
+  Latin subsets only: the copy is English, and the full set ships 43 files
+  of subsets no visitor here will ever need.
+*/
+@import "@fontsource/inter/latin-300.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/cormorant-garamond/latin-400.css";
+@import "@fontsource/cormorant-garamond/latin-500.css";
+@import "@fontsource/cormorant-garamond/latin-400-italic.css";

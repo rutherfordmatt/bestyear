@@ -47,7 +47,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
 
         {goals.length === 0 ? (
           <div class="callout warn">
-            <h4>Your goals come first</h4>
+            <h3>Your goals come first</h3>
             <p>
               If-then plans attach to the goals you set in Step 5.
               <a href={pathForStep(5)}> Set them first</a>, then come back.

@@ -41,7 +41,7 @@ export default function Step5({ prompts = [] }) {
   if (!themes.length) {
     return (
       <div class="callout warn">
-        <h4>Your themes come first</h4>
+        <h2>Your themes come first</h2>
         <p>
           Goals hang off the three themes you choose in Step 4.
           <a href={pathForStep(4)}> Go back and name them</a>, then come here.
@@ -89,7 +89,7 @@ export default function Step5({ prompts = [] }) {
             <li key={theme.id} class={`goal-card${isPriority ? " priority" : ""}`}>
               <div class="goal-card-head">
                 <p class="label">Theme {i + 1}</p>
-                <h3>{theme.text}</h3>
+                <h2 class="goal-card-title">{theme.text}</h2>
                 <button
                   type="button"
                   class="star-btn"
