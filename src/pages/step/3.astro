@@ -1,0 +1,20 @@
+---
+import Base from "../../layouts/Base.astro";
+import StepShell from "../../components/StepShell.astro";
+import Step3 from "../../islands/Step3.jsx";
+import { stepCopy, doc, bulletsOf } from "../../lib/content.js";
+
+const copy = stepCopy(3);
+const d = doc("step-3");
+// The three piles are sub-bullets under the letting-go prompt.
+const bucketLabels = bulletsOf(d, "Prompts", "Prompt 2: Letting go")
+  .map((b) => b.replace(/\*\*/g, "").trim())
+  .filter((b) => /stopping|stepping back|carrying/i.test(b));
+---
+<Base title={copy.title} description={copy.promise}>
+  <main id="main">
+    <StepShell step={3}>
+      <Step3 client:load prompts={copy.prompts} bucketLabels={bucketLabels} />
+    </StepShell>
+  </main>
+</Base>

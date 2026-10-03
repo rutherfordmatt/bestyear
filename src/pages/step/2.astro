@@ -1,0 +1,33 @@
+---
+import Base from "../../layouts/Base.astro";
+import StepShell from "../../components/StepShell.astro";
+import ValuesPicker from "../../islands/ValuesPicker.jsx";
+import { stepCopy, doc, text, fieldsOf } from "../../lib/content.js";
+
+const copy = stepCopy(2);
+const d = doc("step-2");
+
+const f = fieldsOf(d, "Values Finder card");
+const card = {
+  heading: f.Heading || "Not sure what your values are?",
+  body: f.Body || "",
+  primary: f["Primary button"] || "Find my values",
+  secondary: f["Secondary link"] || "I know mine, let me pick from the list",
+};
+const returnLine = text(d, "Returning from Values Finder (confirmation line)");
+
+const byName = (name) =>
+  copy.prompts.find((p) => p.name.toLowerCase().includes(name)) || {};
+const prompts = {
+  choose: byName("choose"),
+  alignment: byName("alignment"),
+  gap: byName("gap"),
+};
+---
+<Base title={copy.title} description={copy.promise}>
+  <main id="main">
+    <StepShell step={2}>
+      <ValuesPicker client:load card={card} returnLine={returnLine} prompts={prompts} />
+    </StepShell>
+  </main>
+</Base>

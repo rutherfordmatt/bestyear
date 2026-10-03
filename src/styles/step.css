@@ -236,3 +236,100 @@ a.rail-step:hover { color: var(--accent); }
   .wheel-holder { order: -1; }
   .energy-grid { grid-template-columns: 1fr; }
 }
+
+/* --- Step 2: values --- */
+.values-step { display: grid; gap: var(--sp-5); }
+.finder-card { display: grid; gap: var(--sp-3); }
+.finder-card h3 { font-size: 1.4rem; }
+
+.chosen-values { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.chosen-value {
+  background: var(--paper); border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-4) var(--sp-5); display: grid; gap: var(--sp-3);
+}
+.chosen-head { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-3); }
+.chosen-head b { font-size: 1.05rem; font-weight: 500; }
+.empty-values { font-style: italic; }
+
+fieldset.alignment { border: 0; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted); }
+.dial { display: grid; grid-template-columns: repeat(5, 2.6rem); gap: var(--sp-1); }
+.dial-btn {
+  min-height: 2.4rem; border: var(--border); background: var(--paper);
+  border-radius: var(--radius); cursor: pointer; color: var(--muted);
+  font: 500 0.92rem var(--sans);
+  transition: border-color var(--fast), background var(--fast), color var(--fast);
+}
+.dial-btn:hover { border-color: var(--accent); color: var(--accent); }
+.dial-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.dial-ends {
+  grid-column: 1 / -1; display: flex; justify-content: space-between;
+  font-size: 0.68rem; color: var(--faint);
+}
+.gap-flag {
+  font-size: var(--step--1); color: var(--warn);
+  border-left: 2px solid var(--warn); padding-left: var(--sp-3);
+}
+
+/* Pick-list */
+.picker {
+  border: var(--border); border-radius: var(--radius); background: var(--ground-alt);
+  padding: var(--sp-5); display: grid; gap: var(--sp-5);
+}
+.picker-tools {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--sp-3); align-items: center;
+  position: sticky; top: 0; z-index: 2;
+  background: var(--ground-alt); padding-block: var(--sp-2);
+}
+.family { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-4) var(--sp-6); padding-block: var(--sp-4); border-top: var(--border); }
+.family-head h4 { font-size: 1.25rem; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-2); align-content: start; }
+.chips .chip { display: grid; gap: 2px; padding: var(--sp-2) var(--sp-3); }
+.chip-name { font-weight: 500; font-size: 0.9rem; }
+.chip-meaning { font-size: 0.72rem; opacity: 0.75; line-height: 1.35; }
+.chip:disabled { opacity: 0.45; cursor: not-allowed; }
+.add-own { display: grid; gap: var(--sp-2); border-top: var(--border); padding-top: var(--sp-4); }
+.add-own .row input { flex: 1 1 200px; }
+
+@media (max-width: 720px) {
+  .family { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+  .picker-tools { grid-template-columns: minmax(0, 1fr) auto; }
+  .picker-tools .note { grid-column: 1 / -1; order: 3; }
+  .dial { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* --- Step 3: letting go --- */
+.letting-layout { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: var(--sp-6); align-items: start; }
+.piles { display: grid; gap: var(--sp-5); }
+.pile { display: grid; gap: var(--sp-2); }
+.pile-head {
+  font: 500 0.72rem var(--sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--accent);
+}
+.pile-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.pile-item {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--sp-2); align-items: center;
+}
+.pile-item input { transition: color var(--slow), opacity var(--slow); }
+.release {
+  border: 0; background: none; cursor: pointer; color: var(--faint);
+  font-size: 1rem; line-height: 1; padding: var(--sp-2);
+  transition: color var(--fast), transform var(--fast);
+}
+.release:hover { color: var(--accent); }
+.release[aria-pressed="true"] { color: var(--accent); transform: scale(1.1); }
+.pile-item.released input {
+  text-decoration: line-through; color: var(--faint); opacity: 0.65;
+  border-color: transparent; background: transparent;
+}
+.add-to-pile { justify-self: start; margin-left: calc(-1 * var(--sp-3)); }
+.letting-aside { display: grid; gap: var(--sp-3); }
+.released-count { font-size: var(--step--1); color: var(--accent); }
+.closing-line { font: 400 1.15rem var(--serif); font-style: italic; padding: var(--sp-4); }
+
+@media (max-width: 860px) {
+  .letting-layout { grid-template-columns: minmax(0, 1fr); }
+  .letting-aside { order: -1; }
+}
