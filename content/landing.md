@@ -48,7 +48,7 @@ Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that
 Sample answers shown in the example card, mirroring the Values Finder's
 "Sam's core values". Edit freely — these are illustrative, not real.
 
-- **Title:** Sam's annual plan
+- **Title:** Alex's annual plan
 - **Label:** Annual plan
 - **1:** A year of rebuilding. Fun and health were the thin spots.
 - **2:** Integrity, Family, Creativity, Freedom, Growth, Courage.
