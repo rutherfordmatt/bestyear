@@ -113,7 +113,7 @@ export function repair(input) {
         source: ["finder", "list", "custom"].includes(v.source) ? v.source : "list",
         alignment: bounded(v.alignment, 1, 5),
       };
-    }, { max: 5 }),
+    }, { max: 8 }),
     compromise: str(i2.compromise, 1500),
   };
 

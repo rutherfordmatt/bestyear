@@ -55,7 +55,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
           </div>
         ) : (
           <ul class="ifthen-cards">
-            {goals.map((goal) => {
+            {goals.map((goal, i) => {
               const pair = state.step6.ifThen[goal.id] || { if: "", then: "" };
               const theme = themeOf(state, goal);
               const isPriority = goal.id === state.step5.priorityGoalId;
@@ -71,7 +71,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
                       <label for={`if-${goal.id}`}>If…</label>
                       <input
                         id={`if-${goal.id}`} type="text" value={pair.if}
-                        placeholder={cleanEllipsis(ifPrompt.example)} maxLength={500}
+                        placeholder={i === 0 ? cleanEllipsis(ifPrompt.example) : ""} maxLength={500}
                         onInput={(e) => setPair(goal.id, "if", e.currentTarget.value)}
                       />
                     </div>
@@ -79,7 +79,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
                       <label for={`then-${goal.id}`}>…then I will</label>
                       <input
                         id={`then-${goal.id}`} type="text" value={pair.then}
-                        placeholder={cleanEllipsis(thenPrompt.example)} maxLength={500}
+                        placeholder={i === 0 ? cleanEllipsis(thenPrompt.example) : ""} maxLength={500}
                         onInput={(e) => setPair(goal.id, "then", e.currentTarget.value)}
                       />
                     </div>

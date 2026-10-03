@@ -19,6 +19,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
 
   const notePrompt = byName("note to your future self");
   const alivePrompt = byName("keep it alive");
+  const aliveQ = (i, fallback) => alivePrompt.questions?.[i] || fallback;
 
   // Suggest four quarterly check-ins from today. Editable, and never
   // overwritten once the visitor has their own.
@@ -54,7 +55,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{byName("review").question || "Does this sound like you?"}</h2>
-          <p class="note">Click any underlined line to edit it.</p>
+          <p class="note">Click any line to edit it. This is exactly what prints.</p>
         </div>
         <div class="doc-holder">
           <VisionDocument state={state} editable onEdit={onEdit} />
@@ -62,7 +63,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
         <div class="doc-actions no-print">
           <button
             type="button"
-            class="btn"
+            class="btn primary"
             onClick={() => { track(EVENTS.printed); window.print(); }}
           >
             Save as PDF or print
@@ -96,11 +97,13 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
 
       <section class="prompt">
         <div class="prompt-head">
-          <h2 class="prompt-question">Keep it alive</h2>
+          {/* This prompt asks two questions, so its name is the heading and
+              each question labels its own field. */}
+          <h2 class="prompt-question">{alivePrompt.name || "Keep it alive"}</h2>
         </div>
 
         <div class="field">
-          <span class="field-label">Where will this page live?</span>
+          <span class="field-label">{aliveQ(0, "Where will this page live?")}</span>
           <div class="corner-options">
             {livesOptions.map((opt) => (
               <button
@@ -119,7 +122,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
         </div>
 
         <div class="field check-ins">
-          <span class="field-label">When will you check in on it?</span>
+          <span class="field-label">{aliveQ(1, "When will you check in on it?")}</span>
           <p class="hint">Suggested every three months from today. Change any date you like.</p>
           <ul class="checkin-list">
             {state.step7.checkIns.map((date, i) => (

@@ -9,7 +9,15 @@
 
 import { VALUES_FINDER_URL, SITE_URL } from "./config.js";
 
-export const MAX_VALUES = 5;
+/*
+  The Values Finder works in 5 to 8. This exercise guides toward six to eight,
+  but accepts five so a hand-off from there is never blocked at the door.
+  When the Values Finder's own minimum moves to six (see
+  docs/values-finder-changes.md), MIN_VALUES can follow.
+*/
+export const MIN_VALUES = 5;
+export const IDEAL_MIN_VALUES = 6;
+export const MAX_VALUES = 8;
 
 /** Build the outbound link: "Find your values first", with a return URL. */
 export function finderLink(returnPath = "/step/2") {

@@ -44,6 +44,14 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
       if (item) item.releasedAt = item.releasedAt ? null : new Date().toISOString();
     }, { immediate: true });
 
+  // "Checking my phone in bed. / Chairing the committee. / I should be…"
+  // maps to the three piles, in order.
+  const pileExamples = String(lettingPrompt.example || "")
+    .split(" / ")
+    .map((x) => x.trim().replace(/\.$/, ""));
+  const exampleFor = (key) =>
+    pileExamples[LETTING_GO_BUCKETS.findIndex((b) => b.key === key)] || "";
+
   const label = (key) =>
     bucketLabels.find((b) => b.toLowerCase().includes(key)) ||
     LETTING_GO_BUCKETS.find((b) => b.key === key)?.label;
@@ -84,7 +92,7 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
                 <div class="pile" key={bucket.key}>
                   <h3 class="pile-head">{label(bucket.key)}</h3>
                   <ul class="pile-items">
-                    {inBucket.map((item) => (
+                    {inBucket.map((item, idx) => (
                       <li key={item.id} class={`pile-item${item.releasedAt ? " released" : ""}`}>
                         <button
                           type="button"
@@ -102,6 +110,7 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
                           type="text"
                           value={item.text}
                           maxLength={300}
+                          placeholder={idx === 0 ? exampleFor(bucket.key) : ""}
                           aria-label={`${bucket.name}: ${item.text || "new item"}`}
                           onInput={(e) => setText(item.id, e.currentTarget.value)}
                         />

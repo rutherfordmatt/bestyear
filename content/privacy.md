@@ -17,6 +17,6 @@ Year Well Built is designed so that I never see what you write. Here's how.
 - **Your email is only used for what you asked.** It's added to my newsletter only if you tick that box. Daily reminder addresses are deleted after the last reminder.
 - **No cookies, no tracking.** I use Umami, a privacy-friendly analytics tool, to count visits and which steps people reach. It never sees your answers and doesn't use cookies.
 - **You're in control.** "Clear all my answers" deletes everything instantly. Clearing your browser data does the same.
-- **Moving devices?** Use "Download my answers" to save a file, then "Import" it on your other device.
+- **Moving devices?** Use "Save a backup file" to save a copy, then "Restore" it on your other device. The backup is a data file for moving between devices, not something to read — for a readable copy, use "Save as PDF" on the last step.
 
 Questions? Email [CONTACT EMAIL].

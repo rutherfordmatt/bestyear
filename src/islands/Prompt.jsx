@@ -4,7 +4,9 @@
 */
 import FromStep from "./FromStep.jsx";
 
-export default function Prompt({ prompt = {}, from = null, onPick = null, children }) {
+/* `helper` is an optional one-line note under the question. The follow-up
+   question is NOT shown here — it belongs in the field it asks about. */
+export default function Prompt({ prompt = {}, from = null, onPick = null, helper = null, children }) {
   if (!prompt.question) return <div class="prompt">{children}</div>;
   const aside = from ? <FromStep kind={from} onPick={onPick} /> : null;
 
@@ -12,7 +14,7 @@ export default function Prompt({ prompt = {}, from = null, onPick = null, childr
     <section class="prompt">
       <div class="prompt-head">
         <h2 class="prompt-question">{prompt.question}</h2>
-        {prompt.followUp && <p class="note">{prompt.followUp}</p>}
+        {helper && <p class="note">{helper}</p>}
       </div>
       <div class={aside ? "prompt-with-aside" : ""}>
         <div class="prompt-body">

@@ -2,57 +2,80 @@ import { useStore } from "../lib/use-store.js";
 import { PHASES, STEPS, pathForStep, timeLeftLabel } from "../lib/steps.js";
 
 /*
-  Progress rail, grouped by phase, with rough time remaining.
-  Completed steps are links; steps not yet reached are inert.
+  The single progress element: a pipeline across the top, grouped by phase.
+
+  Completed steps carry a tick and are links back. The current step is marked.
+  Steps not yet reached are inert. There is deliberately no replay of the
+  document here — the plan is revealed once, on Step 7.
 */
 export default function PhaseRail({ current }) {
   const [state] = useStore();
   const completed = new Set(state.progress.completed);
   const furthest = state.progress.furthestStep;
   const timeLeft = timeLeftLabel(state.progress.completed);
+  const now = Number(current);
 
   return (
     <nav class="phase-rail no-print" aria-label="Your progress">
       <ol class="phases">
-        {PHASES.map((phase) => (
-          <li key={phase.id} class="phase">
-            <span class="phase-name">{phase.name}</span>
-            <ol class="phase-steps">
-              {phase.steps.map((n) => {
-                const step = STEPS.find((s) => s.n === n);
-                const isCurrent = n === Number(current);
-                const isDone = completed.has(n);
-                const reachable = isDone || n <= furthest + 1 || isCurrent;
-                const label = `Step ${n}, ${step.title}${isDone ? ", done" : ""}`;
-                return (
-                  <li key={n}>
-                    {reachable && !isCurrent ? (
-                      <a
-                        href={pathForStep(n)}
-                        class={`rail-step${isDone ? " done" : ""}`}
-                        aria-label={label}
-                      >
-                        <span class="n">{n}</span>
-                        <span class="t">{step.short}</span>
-                      </a>
-                    ) : (
-                      <span
-                        class={`rail-step${isCurrent ? " now" : ""}${isDone ? " done" : ""}${reachable ? "" : " locked"}`}
-                        aria-current={isCurrent ? "step" : undefined}
-                        aria-label={label}
-                      >
-                        <span class="n">{n}</span>
-                        <span class="t">{step.short}</span>
+        {PHASES.map((phase) => {
+          const allDone = phase.steps.every((n) => completed.has(n));
+          const isHere = phase.steps.includes(now);
+          return (
+            <li
+              key={phase.id}
+              class={`phase${allDone ? " done" : ""}${isHere ? " here" : ""}`}
+            >
+              <span class="phase-name">{phase.name}</span>
+              <ol class="phase-steps">
+                {phase.steps.map((n) => {
+                  const step = STEPS.find((s) => s.n === n);
+                  const isCurrent = n === now;
+                  const isDone = completed.has(n);
+                  const reachable = isDone || n <= furthest + 1 || isCurrent;
+                  const state =
+                    isCurrent ? "current" : isDone ? "done" : reachable ? "open" : "locked";
+                  const label =
+                    `Step ${n}, ${step.title}` +
+                    (isCurrent ? ", you are here" : isDone ? ", done" : "");
+
+                  const inner = (
+                    <>
+                      <span class="rail-mark" aria-hidden="true">
+                        {isDone && !isCurrent ? "✓" : n}
                       </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </li>
-        ))}
+                      <span class="rail-name">{step.short}</span>
+                    </>
+                  );
+
+                  return (
+                    <li key={n} class={`rail-item is-${state}`}>
+                      {reachable && !isCurrent ? (
+                        <a href={pathForStep(n)} class="rail-step" aria-label={label}>
+                          {inner}
+                        </a>
+                      ) : (
+                        <span
+                          class="rail-step"
+                          aria-current={isCurrent ? "step" : undefined}
+                          aria-label={label}
+                        >
+                          {inner}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </li>
+          );
+        })}
       </ol>
-      {timeLeft && <p class="time-left" aria-live="polite">{timeLeft}</p>}
+      {timeLeft && (
+        <p class="time-left" aria-live="polite">
+          {timeLeft}
+        </p>
+      )}
     </nav>
   );
 }

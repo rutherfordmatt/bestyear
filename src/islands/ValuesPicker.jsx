@@ -11,7 +11,7 @@
 */
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { useStore } from "../lib/use-store.js";
-import { finderLink, consumeIncomingValues, MAX_VALUES } from "../lib/values-link.js";
+import { finderLink, consumeIncomingValues, MIN_VALUES, IDEAL_MIN_VALUES, MAX_VALUES } from "../lib/values-link.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
 export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} }) {
@@ -42,11 +42,14 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
     });
   }, []);
 
+  const [valueCount, setValueCount] = useState(null);
+
   const loadList = async () => {
     setOpen(true);
     if (families) return;
     const mod = await import("../lib/values.js");
     setFamilies(mod.FAMILIES);
+    setValueCount(mod.VALUE_COUNT);
   };
 
   const matches = useMemo(() => {
@@ -119,10 +122,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{prompts.choose?.question}</h2>
-          <p class="note">
-            {chosen.length} of {MAX_VALUES} chosen
-            {full && " — remove one to swap it out"}
-          </p>
+          <p class="note" aria-live="polite">{countLabel(chosen.length)}</p>
         </div>
 
         {chosen.length > 0 ? (
@@ -193,12 +193,12 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
             <input
               type="search"
               value={query}
-              placeholder="Search 155 values…"
+              placeholder={valueCount ? `Search ${valueCount} values…` : "Search values…"}
               aria-label="Search values"
               onInput={(e) => setQuery(e.currentTarget.value)}
             />
             <p class="note" aria-live="polite">
-              {families ? `${matchCount} shown · ${chosen.length} of ${MAX_VALUES} chosen` : "Loading…"}
+              {families ? `${matchCount} shown · ${countLabel(chosen.length)}` : "Loading…"}
             </p>
             <button type="button" class="btn small text" onClick={() => setOpen(false)}>Done</button>
           </div>
@@ -279,4 +279,17 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
       </section>
     </div>
   );
+}
+
+/**
+ * The counter guides toward six to eight without nagging. Five is accepted,
+ * because the Values Finder can hand off exactly five — see
+ * docs/values-finder-changes.md.
+ */
+function countLabel(n) {
+  if (n === 0) return `Choose ${IDEAL_MIN_VALUES} to ${MAX_VALUES}`;
+  if (n < MIN_VALUES) return `${n} chosen — ${MIN_VALUES - n} more to go`;
+  if (n < IDEAL_MIN_VALUES) return `${n} chosen — ${IDEAL_MIN_VALUES} to ${MAX_VALUES} works best`;
+  if (n < MAX_VALUES) return `${n} chosen — add up to ${MAX_VALUES - n} more, or carry on`;
+  return `${n} chosen, the most this works with — remove one to swap it out`;
 }

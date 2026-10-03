@@ -7,7 +7,6 @@
   passed in as the default slot.
 */
 import PhaseRail from "../islands/PhaseRail.jsx";
-import PlanPanel from "../islands/PlanPanel.jsx";
 import StepSummary from "../islands/StepSummary.jsx";
 import StepNav from "../islands/StepNav.jsx";
 import StorageControls from "../islands/StorageControls.jsx";
@@ -47,8 +46,6 @@ const copy = stepCopy(n);
     <StepNav client:load step={n} />
     <StorageControls client:visible />
   </article>
-
-  <PlanPanel client:load current={n} />
 </div>
 
 <script is:inline define:vars={{ eventName: `step-${n}-reached` }}>

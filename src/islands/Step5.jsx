@@ -128,7 +128,7 @@ export default function Step5({ prompts = [] }) {
                   </select>
                   <input
                     type="text" value={goal.why}
-                    placeholder={i === 0 ? stripValue(q.why.example) : "Why does this matter to you?"}
+                    placeholder={i === 0 ? stripValue(q.why.example) : ""}
                     maxLength={500}
                     aria-label={`Why ${theme.text} matters`}
                     onInput={(e) => setGoal(goal.id, "why", e.currentTarget.value)}

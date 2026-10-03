@@ -30,9 +30,9 @@
   }
 
   /* Chrome off: everything that isn't the document itself. */
-  header.site, footer.site, .phase-rail, .step-nav, .plan-tab, .plan-sheet,
-  .plan-panel, .storage-controls, .no-print, .skip, nav, .stuck, .from-step,
-  .step-summary, button, .btn, form, input, textarea, select {
+  header.site, footer.site, .phase-rail, .step-nav, .storage-controls,
+  .no-print, .skip, nav, .stuck, .from-step, .step-summary,
+  button, .btn, form, input, textarea, select {
     display: none !important;
   }
 

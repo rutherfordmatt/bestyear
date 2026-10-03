@@ -48,7 +48,7 @@ fragment from the address bar with `history.replaceState`.
 
 Rules:
 - Comma-separated slugs, in the visitor's own order of importance.
-- Maximum five. YWB ignores anything past the fifth.
+- Maximum eight. YWB ignores anything past the eighth.
 - Unknown slugs are not dropped — YWB turns them into a custom value, so a
   renamed or bespoke value still arrives.
 - No other data. No name, no email, no alignment scores.
@@ -116,7 +116,7 @@ Both build the same link:
 function yearWellBuiltLink(chosenValues, returnUrl) {
   const base = returnUrl || "https://yearwellbuilt.com/step/2";
   const slugs = chosenValues
-    .slice(0, 5)
+    .slice(0, 8)
     .map((v) => v.name.toLowerCase().replaceAll(" ", "-"));
   return `${base}#values=${slugs.join(",")}`;
 }
@@ -124,12 +124,30 @@ function yearWellBuiltLink(chosenValues, returnUrl) {
 
 Notes:
 - Use the visitor's **ranked order** — YWB keeps it.
-- Five maximum.
+- Eight maximum.
 - Build the fragment at click time, not on page load, so late reordering is
   picked up.
 - Don't URL-encode the commas; plain `a,b,c` is what YWB parses.
 
-## Change 3 — privacy note
+## Change 3 — raise the minimum from five to six
+
+The Values Finder currently sets `MIN_CHOSEN = 5` in `public/report-model.js`.
+Matt's call (3 October) is that **five is too few for this work** and the
+minimum should be **six**, with the maximum staying at eight:
+
+```js
+export const MIN_CHOSEN = 6;   // was 5
+export const MAX_CHOSEN = 8;   // unchanged
+```
+
+Copy to follow it: "Choose the 6 to 8 you couldn't give up", and the two hint
+strings in `public/app.js` that interpolate `MIN_CHOSEN` already adapt.
+
+Until that lands, Year Well Built accepts a hand-off of five so nobody is
+blocked at the door — it guides toward six to eight but enforces a minimum of
+five. Once the Values Finder is on six, YWB's minimum can be raised to match.
+
+## Change 4 — privacy note
 
 The Values Finder's privacy page should mention the hand-off, since it's a
 transfer of data (even though it never touches a server):

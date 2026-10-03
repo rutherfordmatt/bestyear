@@ -10,7 +10,7 @@ Know what you're building on
 
 ## One-line promise
 
-Your five core values, and an honest read on how well you lived them.
+Your core values, and an honest read on how well you lived them.
 
 ## Intro
 
@@ -35,8 +35,8 @@ Welcome back. Your values from the Values Finder are below. Keep them, swap any 
 
 ### Prompt 1: Choose your values
 
-- **Question:** Choose up to five values that matter most to you.
-- **Placeholder example:** Integrity, Family, Creativity, Freedom, Growth
+- **Question:** Choose the six to eight values that matter most to you.
+- **Placeholder example:** Integrity, Family, Creativity, Freedom, Growth, Courage
 - **Stuck? hint:** If everything feels important, ask which ones you'd refuse to trade away.
 
 ### Prompt 2: Alignment

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { load, hasProgress, clearAll, get, update } from "../lib/storage.js";
 import { pathForStep, STEPS } from "../lib/steps.js";
-import { consumeIncomingValues } from "../lib/values-link.js";
+import { consumeIncomingValues, MAX_VALUES } from "../lib/values-link.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
 /*
@@ -25,7 +25,7 @@ export default function ResumeBanner() {
       update((s) => {
         const existing = new Set(s.step2.values.map((v) => v.slug));
         for (const v of incoming) {
-          if (existing.has(v.slug) || s.step2.values.length >= 5) continue;
+          if (existing.has(v.slug) || s.step2.values.length >= MAX_VALUES) continue;
           s.step2.values.push({ slug: v.slug, name: v.name, source: v.source, alignment: null });
         }
       }, { immediate: true });

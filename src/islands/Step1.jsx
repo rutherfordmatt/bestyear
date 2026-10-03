@@ -19,8 +19,11 @@ export default function Step1({ prompts = [] }) {
   const wheelPrompt = byName("life wheel");
   const energyPrompt = byName("energy");
 
+  // Every placeholder comes from content/step-1.md. "A / B" examples split
+  // into their two halves; nothing here is hard-coded.
   const [winExample, winEnablerExample] = splitExample(winsPrompt.example);
   const [chExample, chLessonExample] = splitExample(challengesPrompt.example);
+  const [gaveExample, drainedExample] = splitExample(energyPrompt.example);
 
   return (
     <div class="step-prompts">
@@ -42,7 +45,7 @@ export default function Step1({ prompts = [] }) {
                   type="text"
                   class="pair-sub"
                   value={win.enabler}
-                  placeholder={i === 0 ? winEnablerExample : "What made it possible?"}
+                  placeholder={i === 0 ? winEnablerExample : winsPrompt.followUp}
                   maxLength={500}
                   aria-label={`What made win ${i + 1} possible?`}
                   onInput={(e) => set((st) => { st.step1.wins[i].enabler = e.currentTarget.value; })}
@@ -71,7 +74,7 @@ export default function Step1({ prompts = [] }) {
                   type="text"
                   class="pair-sub"
                   value={ch.lesson}
-                  placeholder={i === 0 ? chLessonExample : "What did it teach you?"}
+                  placeholder={i === 0 ? chLessonExample : challengesPrompt.followUp}
                   maxLength={500}
                   aria-label={`What challenge ${i + 1} taught you`}
                   onInput={(e) => set((st) => { st.step1.challenges[i].lesson = e.currentTarget.value; })}
@@ -136,7 +139,7 @@ export default function Step1({ prompts = [] }) {
             <ListInput
               items={s.energy.gave}
               label="Things that gave you energy"
-              placeholder="Long walks with no phone"
+              placeholder={gaveExample}
               onChange={(next) => set((st) => { st.step1.energy.gave = next; })}
             />
           </div>
@@ -145,7 +148,7 @@ export default function Step1({ prompts = [] }) {
             <ListInput
               items={s.energy.drained}
               label="Things that drained your energy"
-              placeholder="Back-to-back video calls"
+              placeholder={drainedExample}
               onChange={(next) => set((st) => { st.step1.energy.drained = next; })}
             />
             <p class="hint">These come back in Step 3, as a head start on what to leave behind.</p>

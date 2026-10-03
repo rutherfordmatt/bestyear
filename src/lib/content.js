@@ -101,13 +101,23 @@ function matchField(line) {
   return key ? { key, value } : null;
 }
 
-/** Pull "- **Label:** value" bullets out of a body. */
+/**
+ * Pull "- **Label:** value" bullets out of a body.
+ *
+ * A label can legitimately appear more than once — "Keep it alive" asks two
+ * Questions — so the first wins for the scalar form and every occurrence is
+ * kept under `all`, rather than later ones silently overwriting earlier ones.
+ */
 function fields(lines) {
   const out = {};
+  const all = {};
   for (const line of lines) {
     const f = matchField(line);
-    if (f) out[f.key] = f.value;
+    if (!f) continue;
+    (all[f.key] ||= []).push(f.value);
+    if (!(f.key in out)) out[f.key] = f.value;
   }
+  Object.defineProperty(out, "all", { value: all, enumerable: false });
   return out;
 }
 
@@ -209,10 +219,12 @@ export function promptsOf(stepDoc) {
       name: m ? m[2].trim() : heading,
       heading,
       question: f.Question || "",
+      questions: f.all?.Question || (f.Question ? [f.Question] : []),
       followUp: f["Follow-up for each"] || f["Follow-up"] || "",
       example: f["Placeholder example"] || f["Placeholder examples"] || "",
       hint: f["Stuck? hint"] || f["Stuck"] || "",
       options: f.Options || f["Options (pick any)"] || "",
+      optionsAll: f.all?.Options || (f.Options ? [f.Options] : []),
       defaultValue: f.Default || "",
       actions: f.Actions || "",
       note: paragraphs(node.body)[0] || "",
