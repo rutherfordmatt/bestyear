@@ -24,7 +24,7 @@ const prompts = {
   gap: byName("gap"),
 };
 ---
-<Base title={copy.title} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
   <main id="main">
     <StepShell step={2}>
       <ValuesPicker client:load card={card} returnLine={returnLine} prompts={prompts} />

@@ -6,7 +6,7 @@ import { stepCopy } from "../../lib/content.js";
 
 const copy = stepCopy(5);
 ---
-<Base title={copy.title} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
   <main id="main">
     <StepShell step={5}>
       <Step5 client:load prompts={copy.prompts} />

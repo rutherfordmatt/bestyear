@@ -59,10 +59,6 @@ export default function Setup({ paceOptions = [], prompt = {} }) {
           </details>
         )}
       </div>
-
-      <div class="row">
-        <a class="btn primary" href="/step/1">Start Step 1</a>
-      </div>
     </div>
   );
 }

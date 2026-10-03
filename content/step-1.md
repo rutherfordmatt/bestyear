@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Look back before you look forward
+Look back *before you look forward*
 
 ## One-line promise
 

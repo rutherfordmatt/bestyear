@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Close the chapter
+Close *the chapter*
 
 ## One-line promise
 

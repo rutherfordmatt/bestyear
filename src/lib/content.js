@@ -233,12 +233,25 @@ export function promptsOf(stepDoc) {
   });
 }
 
+/** Strip inline markdown — for <title>, meta descriptions and aria labels. */
+export function plain(md = "") {
+  return String(md)
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*([^*]+?)\*/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]/g, "$1")
+    .trim();
+}
+
 /** The standard header block every step page needs. */
 export function stepCopy(n) {
   const d = doc(`step-${n}`);
+  const title = text(d, "Title");
   return {
     doc: d,
-    title: text(d, "Title"),
+    title,
+    /** The same title with emphasis stripped, for <title> and meta tags. */
+    titlePlain: plain(title),
     promise: text(d, "One-line promise"),
     intro: paras(d, "Intro"),
     prompts: promptsOf(d),

@@ -29,7 +29,7 @@ const actions = {
   success: actionFields["Success"] || "",
 };
 ---
-<Base title={copy.title} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
   <main id="main">
     <StepShell step={7}>
       <Step7 client:load prompts={copy.prompts} livesOptions={livesOptions} actions={actions} />

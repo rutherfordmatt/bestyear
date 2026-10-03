@@ -1,18 +1,18 @@
 import { useStore } from "../lib/use-store.js";
-import { PHASES, STEPS, pathForStep, timeLeftLabel } from "../lib/steps.js";
+import { PHASES, STEPS, pathForStep } from "../lib/steps.js";
 
 /*
   The single progress element: a pipeline across the top, grouped by phase.
 
   Completed steps carry a tick and are links back. The current step is marked.
   Steps not yet reached are inert. There is deliberately no replay of the
-  document here — the plan is revealed once, on Step 7.
+  document here — the plan is revealed once, on Step 7. Time remaining lives
+  in the bottom bar, so this stays a clean pipeline.
 */
 export default function PhaseRail({ current }) {
   const [state] = useStore();
   const completed = new Set(state.progress.completed);
   const furthest = state.progress.furthestStep;
-  const timeLeft = timeLeftLabel(state.progress.completed);
   const now = Number(current);
 
   return (
@@ -71,11 +71,6 @@ export default function PhaseRail({ current }) {
           );
         })}
       </ol>
-      {timeLeft && (
-        <p class="time-left" aria-live="polite">
-          {timeLeft}
-        </p>
-      )}
     </nav>
   );
 }

@@ -63,11 +63,6 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 .rail-item.is-locked .rail-step { color: var(--faint); cursor: default; }
 .rail-item.is-locked .rail-mark { color: var(--faint); background: transparent; }
 
-.time-left {
-  font-size: var(--step--1); color: var(--muted);
-  padding-bottom: var(--sp-3); white-space: nowrap;
-}
-
 /* --- Step layout: one column, a readable measure --- */
 .step-layout {
   max-width: var(--wide); margin-inline: auto;
@@ -77,10 +72,37 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
   min-width: 0; display: grid; gap: var(--sp-7);
   max-width: 50rem;   /* a readable column; wide blocks opt out below */
 }
-.step-head { display: grid; gap: var(--sp-3); }
-.step-head h1 { font-size: clamp(2.2rem, 4.6vw, 3.2rem); }
+/* The intro block: label, title, lede — the same shape the Values Finder
+   uses at the top of each of its screens. */
+.intro { display: grid; gap: var(--sp-4); max-width: var(--prose); }
+.intro h1 { font-size: var(--step-3); }
+.intro .lede { font-size: var(--step-1); color: var(--muted); }
+
 .step-intro { display: grid; gap: var(--sp-4); max-width: var(--measure); color: var(--muted); }
 .step-intro :global(strong) { color: var(--ink); font-weight: 500; }
+
+/* --- Fixed bottom bar --- */
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: color-mix(in srgb, var(--ground) 96%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: var(--border);
+  padding: var(--sp-3) var(--sp-5) calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
+}
+.bar .in {
+  max-width: var(--wide); margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-4); flex-wrap: wrap;
+}
+.bar .status { display: grid; gap: 2px; }
+.bar .status b {
+  font: 500 1.35rem / 1.1 var(--serif); font-variant-numeric: tabular-nums;
+}
+.bar .status span { font-size: 0.82rem; color: var(--muted); }
+.bar .row { gap: var(--sp-2); }
+
+/* Keep the bar clear of the content it sits over. */
+body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 
 /* --- Prompts --- */
 .prompt { display: grid; gap: var(--sp-4); padding-block: var(--sp-6); border-top: var(--border); }
@@ -135,12 +157,6 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 }
 
 .soft-note { max-width: var(--measure); }
-
-/* --- Step nav --- */
-.step-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: var(--sp-4); padding-top: var(--sp-5); border-top: var(--border);
-}
 
 /* --- Storage controls --- */
 .storage-controls { display: grid; gap: var(--sp-3); padding-top: var(--sp-5); }

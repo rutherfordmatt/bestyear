@@ -15,7 +15,7 @@ const share = labelsOf(d, "Share (optional)");
   <main id="main" class="close">
     <section class="close-hero prose">
       <p class="label">Done</p>
-      <h1>{congrats.Heading || "You've built your year."}</h1>
+      <h1 set:html={inline(congrats.Heading || "You've built your year.")}></h1>
       <p class="lede" set:html={inline(congrats.Body || "")}></p>
     </section>
 

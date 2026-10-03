@@ -1,34 +1,33 @@
 ---
 /*
-  The frame every step shares: phase rail, the step's own copy, the live plan
-  panel, the end-of-step summary and back/next.
+  The frame every step shares, following the same shape as a Values Finder
+  inner screen: progress rail at the top, an .intro block (label, title with
+  its italic accent, lede), the step's own content, then a fixed bottom bar
+  carrying where-you-are and what's next.
 
   Copy comes from content/step-N.md. The interactive part of each step is
   passed in as the default slot.
 */
 import PhaseRail from "../islands/PhaseRail.jsx";
 import StepSummary from "../islands/StepSummary.jsx";
-import StepNav from "../islands/StepNav.jsx";
+import StepBar from "../islands/StepBar.jsx";
 import StorageControls from "../islands/StorageControls.jsx";
-import { stepCopy } from "../lib/content.js";
-import { stepByNumber, phaseOf } from "../lib/steps.js";
-import { inline } from "../lib/content.js";
+import { stepCopy, inline } from "../lib/content.js";
+import { STEPS } from "../lib/steps.js";
 
 const { step } = Astro.props;
 const n = Number(step);
-const meta = stepByNumber(n);
-const phase = phaseOf(n);
 const copy = stepCopy(n);
 ---
 <PhaseRail client:load current={n} />
 
 <div class="step-layout">
   <article class="step-main">
-    <header class="step-head">
-      <p class="label">{phase?.name} · Step {n} of 7</p>
-      <h1>{copy.title}</h1>
+    <div class="intro">
+      <p class="label">Step {n} of {STEPS.length}</p>
+      <h1 set:html={inline(copy.title)}></h1>
       <p class="lede">{copy.promise}</p>
-    </header>
+    </div>
 
     <div class="step-intro">
       {copy.intro.map((p) => <p set:html={inline(p)}></p>)}
@@ -43,10 +42,11 @@ const copy = stepCopy(n);
     )}
 
     <StepSummary client:load step={n} transition={copy.transition} />
-    <StepNav client:load step={n} />
     <StorageControls client:visible />
   </article>
 </div>
+
+<StepBar client:load step={n} />
 
 <script is:inline define:vars={{ eventName: `step-${n}-reached` }}>
   // One Umami event per step reached. window.umami only exists when

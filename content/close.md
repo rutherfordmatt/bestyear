@@ -4,7 +4,7 @@ Status: DRAFT
 
 ## Congratulations
 
-**Heading:** You've built your year.
+**Heading:** You've *built your year.*
 
 **Body:** Most people never get this far. They make a vague promise, forget it within a month, and wonder where the year went. You've done the harder, better thing. You looked back honestly, decided what matters, and made a plan for when it gets difficult.
 

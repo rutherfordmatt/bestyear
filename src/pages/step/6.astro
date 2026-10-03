@@ -14,7 +14,7 @@ const cornerOptions = (cornerPrompt?.options || "")
   .map((s) => s.trim())
   .filter(Boolean);
 ---
-<Base title={copy.title} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
   <main id="main">
     <StepShell step={6}>
       <Step6 client:load prompts={copy.prompts} coachNote={coachNote} cornerOptions={cornerOptions} />

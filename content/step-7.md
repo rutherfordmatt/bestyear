@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Your year, on one page
+Your year, *on one page*
 
 ## One-line promise
 

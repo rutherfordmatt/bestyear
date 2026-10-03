@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Picture it first
+*Picture it* first
 
 ## One-line promise
 

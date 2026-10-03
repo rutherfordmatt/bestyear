@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Plan for the bad days
+Plan for the *bad days*
 
 ## One-line promise
 

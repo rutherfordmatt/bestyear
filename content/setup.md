@@ -2,6 +2,10 @@
 
 Status: DRAFT
 
+## Title
+
+Two *quick choices*
+
 ## Intro
 
 Before we start, two quick choices. Neither is permanent.

@@ -6,7 +6,7 @@ Status: DRAFT
 
 ## Title
 
-Know what you're building on
+Know what you're *building on*
 
 ## One-line promise
 
