@@ -34,10 +34,9 @@ const valuesLine = returning["Values confirmation"] || "";
   <main id="main">
     <section class="hero">
       <div class="copy">
-        <p class="label">{eyebrow}</p>
-        <h1 set:html={inline(headline)}></h1>
-
-        <div class="ledes">
+        <div class="intro">
+          <p class="label">{eyebrow}</p>
+          <h1 set:html={inline(headline)}></h1>
           <p class="lede">{subhead}</p>
         </div>
 
@@ -118,7 +117,6 @@ const valuesLine = returning["Values confirmation"] || "";
   .sample > .label { margin-bottom: calc(-1 * var(--sp-3)); }
 
   h1 { margin: 0; }
-  .ledes { display: grid; gap: var(--sp-4); }
 
   /* Hairline rows, as on thevaluesfinder.com's welcome list. */
   .plan { list-style: none; margin: 0; padding: 0; border-top: var(--border); }

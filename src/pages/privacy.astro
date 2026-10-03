@@ -17,15 +17,17 @@ const points = lines
   .filter((l) => /^\s*-\s+/.test(l))
   .map((l) => l.replace(/^\s*-\s+/, "").trim())
   .map((l) => l.replace("[CONTACT EMAIL]", CONTACT_EMAIL));
+const ledes = intro.filter((p) => !p.startsWith("Questions?"));
 const shortVersion = text(d, "Short version (landing page and footer)");
 ---
 <Base title="Privacy" description={shortVersion}>
   <main id="main" class="privacy prose">
-    <p class="label">Privacy</p>
-    <h1>{heading}</h1>
-    {intro.filter((p) => !p.startsWith("Questions?")).map((p) => (
-      <p class="lede" set:html={inline(p)}></p>
-    ))}
+    <div class="intro">
+      <p class="label">Privacy</p>
+      <h1>{heading}</h1>
+      {ledes[0] && <p class="lede" set:html={inline(ledes[0])}></p>}
+    </div>
+    {ledes.slice(1).map((p) => <p class="lede" set:html={inline(p)}></p>)}
 
     <ul class="privacy-points">
       {points.map((p) => <li set:html={inline(p)}></li>)}

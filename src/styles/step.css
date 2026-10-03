@@ -81,13 +81,15 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 }
 /* The intro block: label, title, lede — the same shape the Values Finder
    uses at the top of each of its screens. */
-.intro { display: grid; gap: var(--sp-3); max-width: var(--prose); }
+/* A title and its subtitle are one unit: 8px, on every page. Used by the
+   landing, close, privacy and 404 pages too, not just the journey. */
+.intro { display: grid; gap: var(--sp-2); max-width: var(--prose); }
 .intro h1 { font-size: var(--step-3); }
-.intro .lede {
+/* On the journey the lede must not read like the muted prose beneath it. */
+.step-layout .intro .lede {
   font-size: 1.25rem; line-height: 1.5;
-  color: var(--ink);          /* body prose below is --muted at 1rem */
+  color: var(--ink);
   max-width: var(--measure);
-  margin-top: var(--sp-1);
 }
 
 .step-intro { display: grid; gap: var(--sp-6); max-width: var(--measure); color: var(--muted); }
