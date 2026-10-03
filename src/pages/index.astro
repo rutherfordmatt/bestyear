@@ -23,6 +23,8 @@ const startLabel = text(d, "Start button label");
 const timeLine = text(d, "Time line (under the button)");
 
 // "Buttons: Continue where you left off / Start again"
+const example = labelsOf(d, "Example plan (right-hand card)");
+
 const returning = labelsOf(d, "Returning visitor");
 const [continueLabel, restartLabel] = (returning.Buttons || "")
   .split("/").map((x) => x.trim());
@@ -62,29 +64,43 @@ const valuesLine = returning["Values confirmation"] || "";
         />
       </div>
 
-      <aside class="sample" aria-label="What you'll end up with">
-        <p class="label">Your year, on one page</p>
+      <aside class="sample" aria-label="An example plan">
+        <p class="label">Example plan</p>
         <div class="paper">
-          <p class="sample-headline">
-            Left the job that was draining me, and found my weekends again.
+          <p class="label">
+            {example.Label || "Annual plan"}
+            {/* Rendered client-side so the example never shows a stale date —
+                a static build would freeze whatever day it was built. */}
+            <span class="sample-date" data-today></span>
           </p>
-          <p class="sample-word">My word: <em>Steady</em></p>
+          <h2 class="sample-title">{example.Title || "Sam's annual plan"}</h2>
           <div class="mini">
             <ol>
               {STEPS.map((s) => (
                 <li>
                   <span class="n">{s.n}</span>
                   <b>{s.title}</b>
-                  <span>{s.blurb}</span>
+                  <span>{example[String(s.n)] || s.blurb}</span>
                 </li>
               ))}
             </ol>
           </div>
         </div>
       </aside>
+
     </section>
   </main>
 </Base>
+
+<script is:inline>
+  // Same format as the Values Finder's report date. Kept out of the build so
+  // the example never shows the day the site was last deployed.
+  document.querySelectorAll("[data-today]").forEach((el) => {
+    el.textContent = new Date().toLocaleDateString("en-GB", {
+      day: "numeric", month: "long", year: "numeric",
+    });
+  });
+</script>
 
 <style>
   .hero {
@@ -115,16 +131,15 @@ const valuesLine = returning["Values confirmation"] || "";
 
   /* Buttons, then the quiet lines beneath them — the Values Finder's rhythm. */
   .start-actions { display: grid; gap: var(--sp-3); }
-  .start-actions .row { margin-bottom: var(--sp-1); }
+  .start-actions .row { margin-bottom: var(--sp-5); }
   .start-actions .note { max-width: var(--measure); }
   .start-actions .is-confirm { color: var(--accent); }
 
-  .paper { display: grid; gap: var(--sp-4); }
-  .sample-headline { font: 400 1.6rem / 1.2 var(--serif); color: var(--ink); text-wrap: balance; }
-  .sample-word { font-size: 0.92rem; color: var(--muted); }
-  .sample-word em { color: var(--accent); font-family: var(--serif); font-size: 1.15rem; }
+  .paper { display: grid; gap: var(--sp-2); }
+  .sample-title { font-size: 1.9rem; margin-top: var(--sp-1); }
+  .sample-date:not(:empty)::before { content: " · "; }
 
-  .mini { display: grid; gap: var(--sp-4); margin-top: var(--sp-2); border-top: var(--border); padding-top: var(--sp-5); }
+  .mini { display: grid; gap: var(--sp-4); margin-top: var(--sp-4); }
   .mini ol { margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
   .mini li { list-style: none; display: grid; grid-template-columns: 1.6rem 1fr; gap: 2px var(--sp-3); }
   .mini .n { grid-row: span 2; color: var(--accent); font-size: 0.92rem; line-height: 1.5; }

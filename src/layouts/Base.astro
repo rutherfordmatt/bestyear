@@ -6,7 +6,7 @@ import "../styles/step.css";
 import "../styles/document.css";
 import "../styles/print.css";
 import Umami from "../components/Umami.astro";
-import { SITE_NAME, TAGLINE } from "../lib/config.js";
+import { SITE_NAME, TAGLINE, COACHING_URL, NEWSLETTER_URL } from "../lib/config.js";
 
 const {
   title,
@@ -39,6 +39,16 @@ const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — ${TAGL
       <a class="wordmark" href="/">
         Year Well Built<span>{TAGLINE}</span>
       </a>
+      <nav class="links" aria-label="Site">
+        <a href={COACHING_URL} data-umami-event="coaching-click" data-umami-event-from="header">
+          Coaching
+        </a>
+        {NEWSLETTER_URL && (
+          <a href={NEWSLETTER_URL} data-umami-event="newsletter-click" data-umami-event-from="header">
+            Newsletter
+          </a>
+        )}
+      </nav>
     </header>
 
     <slot />

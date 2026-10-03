@@ -6,6 +6,18 @@ const env = import.meta.env ?? {};
 export const BOOKING_URL =
   env.PUBLIC_BOOKING_URL || "https://mattrutherfordcoaching.com/?source=ywb";
 
+/*
+  The header's "Coaching" link is deliberately separate from BOOKING_URL.
+  BOOKING_URL becomes a Cal.com booking page once that is live; the header
+  link should still point at the coaching site itself.
+*/
+export const COACHING_URL =
+  env.PUBLIC_COACHING_URL || "https://mattrutherfordcoaching.com/?source=ywb";
+
+// The header's "Newsletter" link is hidden when this is unset, as on
+// thevaluesfinder.com.
+export const NEWSLETTER_URL = env.PUBLIC_NEWSLETTER_URL || "";
+
 export const VALUES_FINDER_URL =
   env.PUBLIC_VALUES_FINDER_URL || "https://thevaluesfinder.com";
 

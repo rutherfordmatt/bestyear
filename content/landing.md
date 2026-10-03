@@ -43,6 +43,21 @@ In one sitting, or fifteen minutes a day for a week.
 
 Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that MattRs.
 
+## Example plan (right-hand card)
+
+Sample answers shown in the example card, mirroring the Values Finder's
+"Sam's core values". Edit freely — these are illustrative, not real.
+
+- **Title:** Sam's annual plan
+- **Label:** Annual plan
+- **1:** A year of rebuilding. Fun and health were the thin spots.
+- **2:** Integrity, Family, Creativity, Freedom, Growth, Courage.
+- **3:** Putting down the committee, and the phone in bed.
+- **4:** Left the job that was draining me, and found my weekends again.
+- **5:** Ten paying customers by June. Sleep seven hours a night.
+- **6:** If work runs late on Friday, I'll do an hour on Sunday.
+- **7:** On the fridge, checked every three months.
+
 ## Returning visitor
 
 Shown in place of the start button when there are saved answers on this device.
