@@ -155,10 +155,18 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .step-summary .tick { color: var(--accent); font-weight: 600; }
 .step-summary b { font-weight: 500; }
 .step-summary em { font-style: normal; color: var(--muted); font-size: var(--step--1); }
+/* The hand-over line between steps. It is the exercise speaking back to the
+   visitor, so it takes the same serif voice as the questions rather than the
+   small muted sans it had, which read as a footnote. */
 .step-transition {
-  font-style: italic; color: var(--muted); margin-top: var(--sp-2);
+  font: italic 400 1.25rem / 1.5 var(--serif);
+  color: var(--ink);
   max-width: var(--measure);
+  text-wrap: pretty;
+  margin-top: var(--sp-4);
 }
+/* Inside the "Added to your plan" panel it already has a frame. */
+.step-summary .step-transition { margin-top: var(--sp-3); }
 
 .soft-note { max-width: var(--measure); }
 
