@@ -69,16 +69,16 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
   padding-block: var(--sp-8) var(--sp-10);
 }
 .step-main {
-  min-width: 0; display: grid; gap: var(--sp-7);
+  min-width: 0; display: grid; gap: var(--sp-8);
   max-width: 50rem;   /* a readable column; wide blocks opt out below */
 }
 /* The intro block: label, title, lede — the same shape the Values Finder
    uses at the top of each of its screens. */
-.intro { display: grid; gap: var(--sp-4); max-width: var(--prose); }
+.intro { display: grid; gap: var(--sp-5); max-width: var(--prose); }
 .intro h1 { font-size: var(--step-3); }
 .intro .lede { font-size: var(--step-1); color: var(--muted); }
 
-.step-intro { display: grid; gap: var(--sp-4); max-width: var(--measure); color: var(--muted); }
+.step-intro { display: grid; gap: var(--sp-6); max-width: var(--measure); color: var(--muted); }
 .step-intro :global(strong) { color: var(--ink); font-weight: 500; }
 
 /* --- Fixed bottom bar --- */
