@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Year Well Built — a privacy-first, interactive year review and plan",
+  "description": "Year Well Built \u2014 a privacy-first, interactive year review and plan",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -14,14 +14,18 @@
     "start": "node --env-file-if-exists=.env server/index.js",
     "serve": "npm run build && npm start"
   },
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
+    "@hono/node-server": "^1.19.0",
+    "hono": "^4.9.0"
+  },
+  "devDependencies": {
     "@astrojs/preact": "^4.1.0",
     "@fontsource/cormorant-garamond": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "astro": "^5.14.1",
-    "hono": "^4.9.0",
-    "@hono/node-server": "^1.19.0",
     "preact": "^10.27.0"
   }
 }
