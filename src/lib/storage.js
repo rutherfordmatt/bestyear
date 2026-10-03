@@ -56,12 +56,15 @@ export function hasProgress() {
   return Boolean(s.updatedAt) && (s.progress.furthestStep > 0 || Boolean(s.pace));
 }
 
+function notify() {
+  for (const fn of listeners) fn(state);
+}
+
 function flush() {
   if (!state) return;
   state.updatedAt = new Date().toISOString();
   state.schema = SCHEMA_VERSION;
   safeWrite(JSON.stringify(state));
-  for (const fn of listeners) fn(state);
 }
 
 /**
@@ -72,8 +75,11 @@ function flush() {
 export function update(mutator, { immediate = false } = {}) {
   const s = get();
   mutator(s);
+  // Listeners fire straight away so the plan panel tracks typing live; only
+  // the localStorage write is debounced.
+  notify();
   if (saveTimer) clearTimeout(saveTimer);
-  if (immediate) { flush(); return s; }
+  if (immediate) { clearTimeout(saveTimer); saveTimer = null; flush(); return s; }
   saveTimer = setTimeout(flush, SAVE_DELAY);
   return s;
 }
@@ -124,7 +130,7 @@ export function clearAll() {
     } catch { /* nothing more we can do */ }
   }
   state = emptyState();
-  for (const fn of listeners) fn(state);
+  notify();
   return state;
 }
 
@@ -156,6 +162,7 @@ export function importData(parsed) {
   const { state: next } = migrate(payload);
   state = next;
   flush();
+  notify();
   return { ok: true };
 }
 

@@ -13,10 +13,8 @@ Before we start, two quick choices. Neither is permanent.
 - **In one sitting.** Clear an hour, make a coffee, and do the lot. Best if you like momentum.
 - **One step a day.** Fifteen minutes a day for a week. Best if you like time to mull things over.
 
-Nudge opt-in (shown if they pick one step a day):
-Want a gentle nudge each day? Leave your email and we'll send seven short reminders, then delete your address.
-Field label: Email (optional)
-Button: Remind me
+<!-- Daily nudge emails are v1.1. The opt-in copy and email field are deliberately
+     omitted for MVP: there is no endpoint, so no address is collected. -->
 
 ## Prompt: the year that's ending
 

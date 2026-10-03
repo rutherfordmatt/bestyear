@@ -1,0 +1,61 @@
+---
+/*
+  The frame every step shares: phase rail, the step's own copy, the live plan
+  panel, the end-of-step summary and back/next.
+
+  Copy comes from content/step-N.md. The interactive part of each step is
+  passed in as the default slot.
+*/
+import PhaseRail from "../islands/PhaseRail.jsx";
+import PlanPanel from "../islands/PlanPanel.jsx";
+import StepSummary from "../islands/StepSummary.jsx";
+import StepNav from "../islands/StepNav.jsx";
+import StorageControls from "../islands/StorageControls.jsx";
+import { stepCopy } from "../lib/content.js";
+import { stepByNumber, phaseOf } from "../lib/steps.js";
+import { inline } from "../lib/content.js";
+
+const { step } = Astro.props;
+const n = Number(step);
+const meta = stepByNumber(n);
+const phase = phaseOf(n);
+const copy = stepCopy(n);
+---
+<PhaseRail client:load current={n} />
+
+<div class="step-layout">
+  <article class="step-main">
+    <header class="step-head">
+      <p class="label">{phase?.name} · Step {n} of 7</p>
+      <h1>{copy.title}</h1>
+      <p class="lede">{copy.promise}</p>
+    </header>
+
+    <div class="step-intro">
+      {copy.intro.map((p) => <p set:html={inline(p)}></p>)}
+    </div>
+
+    <slot />
+
+    {copy.softNote && (
+      <aside class="callout soft-note">
+        {copy.softNote.map((p) => <p set:html={inline(p)}></p>)}
+      </aside>
+    )}
+
+    <StepSummary client:load step={n} transition={copy.transition} />
+    <StepNav client:load step={n} />
+    <StorageControls client:visible />
+  </article>
+
+  <PlanPanel client:load current={n} />
+</div>
+
+<script is:inline define:vars={{ eventName: `step-${n}-reached` }}>
+  // One Umami event per step reached. window.umami only exists when
+  // PUBLIC_UMAMI_SITE_ID is set, so this is a silent no-op until then.
+  (function track() {
+    if (window.umami?.track) { window.umami.track(eventName); return; }
+    window.addEventListener("load", () => window.umami?.track?.(eventName), { once: true });
+  })();
+</script>

@@ -1,0 +1,238 @@
+/* The step shell: progress rail, step column, live plan panel, summary, nav. */
+
+/* --- Phase rail --- */
+.phase-rail {
+  max-width: var(--wide); margin-inline: auto;
+  border-bottom: var(--border);
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-5); flex-wrap: wrap;
+}
+.phases {
+  display: flex; gap: var(--sp-6); list-style: none; margin: 0; padding: 0;
+  overflow-x: auto; scrollbar-width: none;
+}
+.phases::-webkit-scrollbar { display: none; }
+.phase { display: grid; gap: var(--sp-1); padding-block: var(--sp-3); }
+.phase-name {
+  font: 500 0.64rem var(--sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--faint);
+}
+.phase-steps { display: flex; gap: var(--sp-3); list-style: none; margin: 0; padding: 0; }
+.rail-step {
+  display: inline-flex; align-items: baseline; gap: var(--sp-2);
+  font: 400 0.78rem var(--sans); color: var(--faint);
+  text-decoration: none; white-space: nowrap;
+  padding-bottom: var(--sp-2); border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.rail-step .n { font-variant-numeric: tabular-nums; font-size: 0.72rem; }
+a.rail-step:hover { color: var(--accent); }
+.rail-step.done { color: var(--muted); }
+.rail-step.now { color: var(--ink); font-weight: 500; border-bottom-color: var(--accent); }
+.rail-step.locked { cursor: default; }
+.time-left {
+  font-size: var(--step--1); color: var(--muted); padding-block: var(--sp-3);
+  white-space: nowrap;
+}
+
+/* --- Step layout --- */
+.step-layout {
+  max-width: var(--wide); margin-inline: auto;
+  display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--sp-9);
+  padding-block: var(--sp-8) var(--sp-10);
+  align-items: start;
+}
+.step-main { min-width: 0; display: grid; gap: var(--sp-7); }
+.step-head { display: grid; gap: var(--sp-3); }
+.step-head h1 { font-size: clamp(2.2rem, 4.6vw, 3.2rem); }
+.step-intro { display: grid; gap: var(--sp-4); max-width: var(--measure); color: var(--muted); }
+.step-intro :global(strong) { color: var(--ink); font-weight: 500; }
+
+/* --- Prompts --- */
+.prompt { display: grid; gap: var(--sp-4); padding-block: var(--sp-6); border-top: var(--border); }
+.prompt-head { display: grid; gap: var(--sp-2); }
+.prompt-question { font: 400 1.35rem / 1.3 var(--serif); color: var(--ink); text-wrap: balance; }
+.prompt-body { display: grid; gap: var(--sp-4); }
+.prompt-with-aside {
+  display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: var(--sp-6);
+  align-items: start;
+}
+
+/* --- From Step N cards --- */
+.from-step {
+  background: var(--ground-alt); border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-4); display: grid; gap: var(--sp-2);
+  font-size: var(--step--1);
+}
+.from-step-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-2); }
+.from-step-edit { font-size: 0.7rem; color: var(--muted); text-decoration: underline; }
+.from-step h4 { font-family: var(--sans); font-size: 0.82rem; font-weight: 600; }
+.from-step ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.from-step li { display: grid; gap: 1px; color: var(--ink); }
+.from-step li em { font-style: normal; color: var(--muted); font-size: 0.74rem; }
+.from-step-note { color: var(--muted); font-size: 0.74rem; font-style: italic; }
+.from-step-pick {
+  width: 100%; text-align: left; background: var(--paper);
+  border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3); cursor: pointer;
+  display: grid; grid-template-columns: 1fr auto; gap: 0 var(--sp-2);
+  transition: border-color var(--fast), background var(--fast);
+}
+.from-step-pick:hover { border-color: var(--accent); background: var(--accent-pale); }
+.from-step-pick .plus { grid-row: span 2; align-self: center; color: var(--accent); font-size: 1rem; }
+.from-step-pick em { grid-column: 1; }
+
+/* --- Added to your plan --- */
+.step-summary {
+  background: var(--accent-pale); border-radius: var(--radius);
+  padding: var(--sp-5); display: grid; gap: var(--sp-3);
+}
+.step-summary ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.step-summary li {
+  display: grid; grid-template-columns: auto auto 1fr; gap: var(--sp-2);
+  align-items: baseline; font-size: 0.92rem;
+}
+.step-summary .tick { color: var(--accent); font-weight: 600; }
+.step-summary b { font-weight: 500; }
+.step-summary em { font-style: normal; color: var(--muted); font-size: var(--step--1); }
+.step-transition {
+  font-style: italic; color: var(--muted); margin-top: var(--sp-2);
+  max-width: var(--measure);
+}
+
+.soft-note { max-width: var(--measure); }
+
+/* --- Step nav --- */
+.step-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: var(--sp-4); padding-top: var(--sp-5); border-top: var(--border);
+}
+
+/* --- Storage controls --- */
+.storage-controls { display: grid; gap: var(--sp-2); padding-top: var(--sp-4); }
+.storage-note { font-size: 0.74rem; color: var(--faint); }
+.storage-actions { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-left: calc(-1 * var(--sp-3)); }
+.storage-actions .danger { color: var(--warn); }
+.storage-actions .danger:hover { color: var(--warn); text-decoration: underline; }
+.storage-message { font-size: var(--step--1); color: var(--accent); }
+
+/* --- Plan panel (desktop) --- */
+.plan-panel {
+  position: sticky; top: var(--sp-5);
+  background: var(--paper); border: var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  display: grid; gap: 0;
+  max-height: calc(100vh - var(--sp-9));
+}
+.plan-panel-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: var(--sp-3); padding: var(--sp-4) var(--sp-5);
+  border-bottom: var(--border);
+}
+.plan-panel-head h2 { font-size: 1.15rem; }
+.plan-count {
+  font: 500 0.68rem var(--sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--accent); white-space: nowrap;
+}
+.plan-panel-body { overflow-y: auto; padding: var(--sp-5); }
+
+/* --- Plan tab + sheet (mobile) --- */
+.plan-tab { display: none; }
+.plan-sheet-backdrop { display: none; }
+
+@media (max-width: 1099px) {
+  .step-layout { grid-template-columns: minmax(0, 1fr); gap: var(--sp-7); }
+  .plan-panel { display: none; }
+  .prompt-with-aside { grid-template-columns: minmax(0, 1fr); }
+
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+
+  .plan-tab {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    width: 100%; border: 0; border-top: var(--border);
+    background: var(--paper); color: var(--ink); cursor: pointer;
+    padding: var(--sp-4) var(--sp-5) calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
+    font: 500 0.82rem var(--sans);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.06);
+  }
+  .plan-tab-chev { color: var(--accent); font-size: 0.7rem; }
+
+  .plan-sheet-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 30;
+    background: rgba(26, 26, 26, 0.4);
+  }
+  .plan-sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 31;
+    background: var(--paper); border-top-left-radius: 12px; border-top-right-radius: 12px;
+    max-height: 86vh; display: grid; grid-template-rows: auto 1fr;
+    animation: sheet-up var(--slow) var(--ease);
+  }
+  @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .plan-sheet-head {
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
+    gap: var(--sp-2); padding: var(--sp-5) var(--sp-5) var(--sp-3);
+    border-bottom: var(--border); position: relative;
+  }
+  .plan-sheet-head h2 { font-size: 1.2rem; }
+  .plan-sheet-grip {
+    position: absolute; top: var(--sp-2); left: 50%; transform: translateX(-50%);
+    width: 36px; height: 4px; border-radius: var(--radius-pill); background: var(--line);
+  }
+  .plan-sheet-body {
+    overflow-y: auto; padding: var(--sp-5)
+      calc(var(--sp-5) + env(safe-area-inset-right, 0px))
+      calc(var(--sp-7) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 640px) {
+  .step-layout { padding-block: var(--sp-6) var(--sp-8); }
+  .phases { gap: var(--sp-5); }
+}
+
+/* --- Paired inputs (wins, challenges) --- */
+.step-prompts { display: grid; }
+.pair-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+.pair { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: var(--sp-3); align-items: start; }
+.pair-n { color: var(--accent); font-size: 0.92rem; line-height: 2.6; }
+.pair-fields { display: grid; gap: var(--sp-2); }
+.pair-sub { font-size: 0.92rem; }
+.pair-sub::placeholder { font-style: italic; }
+
+/* --- Repeating list input --- */
+.list-input { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.list-input li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2); align-items: center; }
+.list-remove {
+  border: 0; background: none; color: var(--faint); cursor: pointer;
+  font-size: 1.2rem; line-height: 1; padding: var(--sp-2);
+}
+.list-remove:hover { color: var(--warn); }
+
+/* --- Life wheel step --- */
+.wheel-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-7); align-items: start; }
+.sliders { display: grid; gap: var(--sp-4); }
+.slider-row { display: grid; gap: var(--sp-2); }
+.slider-row label { display: grid; gap: 1px; }
+.slider-row label b { font-weight: 500; font-size: 0.94rem; }
+.slider-row label span { font-size: 0.76rem; color: var(--muted); }
+.slider-control { display: grid; grid-template-columns: minmax(0, 1fr) 2.2rem; gap: var(--sp-3); align-items: center; }
+.slider-control input[type="range"] { width: 100%; accent-color: var(--accent); padding: 0; }
+.slider-control input[type="range"].unset { accent-color: var(--line); }
+.slider-control output {
+  font: 500 0.94rem var(--sans); font-variant-numeric: tabular-nums;
+  text-align: right; color: var(--accent);
+}
+.slider-control output.unset { color: var(--faint); }
+.wheel-holder { display: grid; gap: var(--sp-3); justify-items: center; }
+.wheel-caption { max-width: 22rem; text-align: center; }
+
+/* --- Energy audit --- */
+.energy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items: start; }
+
+@media (max-width: 860px) {
+  .wheel-layout { grid-template-columns: minmax(0, 1fr); }
+  .wheel-holder { order: -1; }
+  .energy-grid { grid-template-columns: 1fr; }
+}

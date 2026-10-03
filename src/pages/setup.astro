@@ -1,0 +1,51 @@
+---
+import Base from "../layouts/Base.astro";
+import Setup from "../islands/Setup.jsx";
+import { doc, text, paras, promptsOf, inline } from "../lib/content.js";
+
+const d = doc("setup");
+const intro = paras(d, "Intro");
+const transition = text(d, "Transition");
+
+// "- **In one sitting.** Clear an hour..." — bold lead-in, then the body.
+const paceSection = d.sections["Pace choice"];
+const paceOptions = (paceSection ? paceSection.body : [])
+  .filter((l) => /^\s*-\s+\*\*/.test(l))
+  .map((l) => {
+    const m = /^\s*-\s+\*\*(.+?)\*\*\s*(.*)$/.exec(l);
+    return m ? { title: m[1].replace(/\.$/, ""), body: m[2].trim() } : null;
+  })
+  .filter(Boolean)
+  .map((o, i) => ({ ...o, key: i === 0 ? "sitting" : "daily" }));
+
+const yearPrompt = promptsOf(d)[0] || {};
+const promptHeading = d.sections["Prompt: the year that's ending"];
+const fallbackPrompt = promptHeading
+  ? {
+      question: (promptHeading.body.find((l) => /^\*\*/.test(l)) || "")
+        .replace(/\*\*/g, "").trim(),
+      example: (promptHeading.body.find((l) => /Placeholder example/.test(l)) || "")
+        .split(":").slice(1).join(":").trim(),
+      hint: (promptHeading.body.find((l) => /Stuck\?/.test(l)) || "")
+        .split("hint:").slice(1).join(":").trim(),
+    }
+  : {};
+const prompt = yearPrompt.question ? yearPrompt : fallbackPrompt;
+---
+<Base title="Setup" description="Two quick choices before you start.">
+  <main id="main" class="prose">
+    <p class="label">Before we start</p>
+    <h1>Two quick choices</h1>
+    {intro.map((p) => <p class="lede" set:html={inline(p)}></p>)}
+
+    <Setup client:load paceOptions={paceOptions} prompt={prompt} />
+
+    <p class="transition muted" set:html={inline(transition)}></p>
+  </main>
+</Base>
+
+<style>
+  main { display: grid; gap: var(--sp-5); padding-bottom: var(--sp-10); }
+  h1 { margin-bottom: var(--sp-2); }
+  .transition { font-style: italic; border-top: var(--border); padding-top: var(--sp-5); }
+</style>

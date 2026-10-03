@@ -193,3 +193,41 @@ details.stuck > p { color: var(--muted); margin-top: var(--sp-2); max-width: var
 }
 .resume p { max-width: var(--measure); }
 .resume-actions { display: flex; gap: var(--sp-2); align-items: center; }
+
+/* --- Setup --- */
+.setup { margin-block: var(--sp-5); }
+fieldset.pace { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-3); }
+fieldset.pace legend { padding: 0; margin-bottom: var(--sp-1); }
+.pace-options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+.pace-option {
+  display: grid; gap: var(--sp-1); text-align: left; cursor: pointer;
+  background: var(--paper); border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-5);
+  transition: border-color var(--fast), background var(--fast);
+}
+.pace-option:hover { border-color: var(--accent); }
+.pace-option b { font-weight: 500; }
+.pace-option span { font-size: var(--step--1); color: var(--muted); }
+.pace-option[aria-pressed="true"] {
+  border-color: var(--accent); background: var(--accent-pale);
+}
+.pace-option[aria-pressed="true"] b { color: var(--accent); }
+.pace-note { margin-top: var(--sp-1); }
+@media (max-width: 640px) { .pace-options { grid-template-columns: 1fr; } }
+
+/* --- Life wheel --- */
+.wheel-figure { margin: 0; display: grid; gap: var(--sp-2); justify-items: center; }
+.wheel { max-width: 100%; height: auto; overflow: visible; }
+.wheel-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.wheel-spoke { stroke: var(--line); stroke-width: 1; }
+.wheel-shape {
+  fill: var(--accent); fill-opacity: 0.14;
+  stroke: var(--accent); stroke-width: 1.75; stroke-linejoin: round;
+}
+.wheel-point { fill: var(--accent); }
+.wheel-label {
+  font: 400 0.72rem var(--sans); fill: var(--ink);
+  letter-spacing: 0.04em;
+}
+.wheel-label.unrated { fill: var(--faint); }
+.wheel-score { font-weight: 600; fill: var(--accent); }
