@@ -23,6 +23,11 @@
      strokes only (3.2:1, the 1.4.11 non-text threshold) — never for text. */
   --faint: #726D66;
   --faint-ui: #908B84;
+
+  /* Placeholders are illustrative examples, never instructions — every field
+     carries a real <label> — so they sit lighter than --faint on purpose, to
+     read as "this is a sample", not as an answer already typed. */
+  --placeholder: #A5A09A;
   --line: #E2DEDA;         /* hairlines and borders */
 
   /* --- Accent --- */

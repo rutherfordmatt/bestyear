@@ -145,7 +145,7 @@ input[type="text"], input[type="email"], input[type="date"], input[type="search"
 input:focus, textarea:focus, select:focus {
   outline: none; border-color: var(--accent); box-shadow: var(--shadow-focus);
 }
-input::placeholder, textarea::placeholder { color: var(--faint); }
+input::placeholder, textarea::placeholder { color: var(--placeholder); opacity: 1; }
 textarea { resize: vertical; min-height: 5.5rem; line-height: var(--leading-body); }
 input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width: 16px; height: 16px; }
 
@@ -184,7 +184,8 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
    outright, quietly, under the field it belongs to. */
 .tip {
   font-size: var(--step--1); font-style: italic; color: var(--muted);
-  max-width: var(--measure);
+  max-width: 64ch;
+  text-wrap: pretty;   /* no single word stranded on the last line */
 }
 
 /* --- Landing page action row ---
@@ -196,6 +197,15 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
 .start-actions .row { margin-bottom: var(--sp-5); }
 .start-actions .note { max-width: var(--measure); }
 .start-actions .is-confirm { color: var(--accent); }
+
+/* --- Gentle arrival ---
+   For content that appears once an earlier answer is given. The reduced-motion
+   block in tokens.css neutralises this automatically. */
+.reveal { animation: reveal var(--slow) var(--ease) both; }
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
 
 /* --- Setup --- */
 .setup { display: grid; gap: var(--sp-7); }
@@ -216,6 +226,8 @@ fieldset.pace legend { padding: 0; margin-bottom: var(--sp-1); }
 }
 .pace-option[aria-pressed="true"] b { color: var(--accent); }
 .pace-note { margin-top: var(--sp-1); }
+/* A short phrase doesn't need the full column width. */
+.word-field { max-width: 26rem; }
 @media (max-width: 640px) { .pace-options { grid-template-columns: 1fr; } }
 
 /* --- Life wheel --- */

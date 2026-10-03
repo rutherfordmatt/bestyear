@@ -4,6 +4,10 @@ import { FEATURES } from "../lib/config.js";
 
 /*
   Setup: pace, then a word for the year that's ending.
+
+  The second question stays out of sight until the first is answered, so the
+  screen asks one thing at a time and arrives rather than confronts.
+
   The daily-nudge email field is deferred to v1.1 (FEATURES.dailyNudges) —
   there is no endpoint for it yet, so we don't collect addresses we can't use.
 */
@@ -14,6 +18,9 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
     set((s) => { s.pace = pace; }, { immediate: true });
     track(EVENTS.setupStarted);
   };
+
+  const hasPace = Boolean(state.pace);
+  const hasWord = Boolean(state.yearEnding.word.trim());
 
   return (
     <div class="setup">
@@ -34,31 +41,34 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
           ))}
         </div>
         {state.pace === "daily" && !FEATURES.dailyNudges && (
-          <p class="note pace-note">
-            Saved. Your answers wait on this device — come back to yearwellbuilt.com
-            in the same browser and pick up where you left off.
+          <p class="tip pace-note">
+            Your answers wait on this device — come back to yearwellbuilt.com in
+            the same browser and pick up where you left off.
           </p>
         )}
       </fieldset>
 
-      <div class="field">
-        <label for="year-word">{prompt.question}</label>
-        <input
-          id="year-word"
-          type="text"
-          value={state.yearEnding.word}
-          placeholder={prompt.example}
-          maxLength={120}
-          autoComplete="off"
-          onInput={(e) => set((s) => { s.yearEnding.word = e.currentTarget.value; })}
-        />
-        {prompt.hint && <p class="tip">{prompt.hint}</p>}
-      </div>
+      {hasPace && (
+        <div class="field reveal">
+          <label for="year-word">{prompt.question}</label>
+          <input
+            id="year-word"
+            type="text"
+            class="word-field"
+            value={state.yearEnding.word}
+            placeholder={prompt.example}
+            maxLength={120}
+            autoComplete="off"
+            onInput={(e) => set((s) => { s.yearEnding.word = e.currentTarget.value; })}
+          />
+          {prompt.hint && <p class="tip">{prompt.hint}</p>}
+        </div>
+      )}
 
       {/* Reads "Good. That's the title of the chapter you're closing." — it
           would be orphaned before there is a title to be good about. */}
-      {transition && state.yearEnding.word.trim() && (
-        <p class="step-transition" role="status">{transition}</p>
+      {transition && hasWord && (
+        <p class="step-transition reveal" role="status">{transition}</p>
       )}
     </div>
   );

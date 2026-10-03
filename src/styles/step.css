@@ -160,6 +160,13 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 
 /* --- Storage controls --- */
 .storage-controls { display: grid; gap: var(--sp-3); }
+/* On pages with the fixed bar this is the page's footing, so it reads like
+   one: a hairline above it, sitting directly beneath the content. */
+body.has-bar .storage-controls {
+  border-top: var(--border);
+  padding-top: var(--sp-5);
+  margin-top: var(--sp-2);
+}
 .storage-note { font-size: 0.78rem; color: var(--muted); }
 .storage-note a, .linklike {
   color: var(--muted); text-decoration: underline; text-underline-offset: 2px;
