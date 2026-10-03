@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
-import ResumeBanner from "../islands/ResumeBanner.jsx";
-import { doc, text, paras, bulletsOf, inline } from "../lib/content.js";
+import StartActions from "../islands/StartActions.jsx";
+import { doc, text, bulletsOf, labelsOf, inline } from "../lib/content.js";
 import { STEPS } from "../lib/steps.js";
 
 /*
@@ -21,12 +21,15 @@ const benefits = bulletsOf(d, "Three benefit lines");
 const privacyLine = text(d, "Privacy line");
 const startLabel = text(d, "Start button label");
 const timeLine = text(d, "Time line (under the button)");
-const about = paras(d, "Who's behind this");
+
+// "Buttons: Continue where you left off / Start again"
+const returning = labelsOf(d, "Returning visitor");
+const [continueLabel, restartLabel] = (returning.Buttons || "")
+  .split("/").map((x) => x.trim());
+const valuesLine = returning["Values confirmation"] || "";
 ---
 <Base title={null} description={subhead}>
   <main id="main">
-    <ResumeBanner client:load />
-
     <section class="hero">
       <div class="copy">
         <p class="label">{eyebrow}</p>
@@ -48,19 +51,15 @@ const about = paras(d, "Who's behind this");
           })}
         </ul>
 
-        <div class="row">
-          <a class="btn primary" href="/setup" data-umami-event="setup-started">{startLabel}</a>
-        </div>
-
-        <p class="note">{timeLine}</p>
-
-        <p class="privacy-line">
-          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-            <path d="M8 1 2 3.5v4C2 11 4.5 13.8 8 15c3.5-1.2 6-4 6-7.5v-4L8 1Z"
-                  fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-          </svg>
-          <span>{privacyLine}</span>
-        </p>
+        <StartActions
+          client:load
+          startLabel={startLabel}
+          continueLabel={continueLabel}
+          restartLabel={restartLabel}
+          valuesLine={valuesLine}
+          timeLine={timeLine}
+          privacyLine={privacyLine}
+        />
       </div>
 
       <aside class="sample" aria-label="What you'll end up with">
@@ -84,8 +83,6 @@ const about = paras(d, "Who's behind this");
         </div>
       </aside>
     </section>
-
-    <p class="colophon" set:html={inline(about[0] || "")}></p>
   </main>
 </Base>
 
@@ -95,7 +92,7 @@ const about = paras(d, "Who's behind this");
     grid-template-columns: 1.05fr 0.95fr;
     gap: var(--sp-9);
     align-items: start;
-    padding-block: var(--sp-7) var(--sp-9);
+    padding-block: var(--sp-7) var(--sp-8);
   }
 
   /* Both columns open with a .label, so their first baselines line up. */
@@ -116,11 +113,11 @@ const about = paras(d, "Who's behind this");
   .plan b { font-weight: 500; line-height: 1.5; }
   .plan span { color: var(--muted); font-size: 0.92rem; }
 
-  .privacy-line {
-    display: flex; gap: var(--sp-2); align-items: center;
-    font-size: var(--step--1); color: var(--muted);
-  }
-  .privacy-line svg { color: var(--accent); flex: none; }
+  /* Buttons, then the quiet lines beneath them — the Values Finder's rhythm. */
+  .start-actions { display: grid; gap: var(--sp-3); }
+  .start-actions .row { margin-bottom: var(--sp-1); }
+  .start-actions .note { max-width: var(--measure); }
+  .start-actions .is-confirm { color: var(--accent); }
 
   .paper { display: grid; gap: var(--sp-4); }
   .sample-headline { font: 400 1.6rem / 1.2 var(--serif); color: var(--ink); text-wrap: balance; }
@@ -133,13 +130,6 @@ const about = paras(d, "Who's behind this");
   .mini .n { grid-row: span 2; color: var(--accent); font-size: 0.92rem; line-height: 1.5; }
   .mini b { font-weight: 500; font-size: 0.95rem; line-height: 1.5; }
   .mini span:not(.n) { font-size: var(--step--1); color: var(--muted); }
-
-  /* Quiet credit line, not a section. */
-  .colophon {
-    max-width: var(--wide); margin-inline: auto;
-    font-size: 0.78rem; color: var(--muted);
-    padding-block: var(--sp-6) 0;
-  }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: var(--sp-8); padding-block: var(--sp-5) var(--sp-8); }

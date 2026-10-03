@@ -26,7 +26,7 @@ Build your best year. A free, guided review and plan in seven steps. You'll fini
 
 ## Privacy line
 
-Private by design. No sign-up, no account. Your answers stay on your device.
+No sign-up needed. Your answers stay in your browser unless you choose to email yourself the plan.
 
 ## Start button label
 
@@ -38,9 +38,14 @@ In one sitting, or fifteen minutes a day for a week.
 
 ## Who's behind this
 
+<!-- Not rendered on the landing page: the footer carries the credit instead.
+     Kept here for a future About page. -->
+
 Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that MattRs.
 
-## Returning visitor banner
+## Returning visitor
 
-Welcome back. Your answers are saved on this device. Pick up where you left off?
-Buttons: Carry on / Start fresh
+Shown in place of the start button when there are saved answers on this device.
+
+- **Buttons:** Continue where you left off / Start again
+- **Values confirmation:** Your values are saved. Pick up at Step 2.
