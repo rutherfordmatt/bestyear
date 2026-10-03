@@ -4,12 +4,25 @@
   get the typographic weight here too.
 */
 import { useStore } from "../lib/use-store.js";
+import { useDisclosure } from "../lib/use-disclosure.js";
+import Reveal from "./Reveal.jsx";
+import ShowAll from "./ShowAll.jsx";
 import Prompt from "./Prompt.jsx";
 
 export default function Step4({ prompts = [] }) {
   const [state, set] = useStore();
   const s = state.step4;
   const byName = (name) => prompts.find((p) => p.name.toLowerCase().includes(name)) || {};
+
+  // Headline, then the detail, then the word, then the themes.
+  const filled = (v) => Boolean(v && String(v).trim());
+  const { visible, allShown, showAll } = useDisclosure([
+    filled(s.headline),
+    filled(s.detail),
+    filled(s.word),
+    s.themes.some((t) => filled(t.text)),
+  ]);
+  const [, showDetail, showWord, showThemes] = visible;
 
   return (
     <div class="step-prompts">
@@ -28,6 +41,7 @@ export default function Step4({ prompts = [] }) {
         </div>
       </Prompt>
 
+      <Reveal when={showDetail}>
       <Prompt prompt={byName("detail")} from="lowestAreas">
         <textarea
           value={s.detail}
@@ -38,7 +52,9 @@ export default function Step4({ prompts = [] }) {
           onInput={(e) => set((st) => { st.step4.detail = e.currentTarget.value; })}
         ></textarea>
       </Prompt>
+      </Reveal>
 
+      <Reveal when={showWord}>
       <Prompt prompt={byName("your word")}>
         <div class="word-card">
           <input
@@ -53,7 +69,9 @@ export default function Step4({ prompts = [] }) {
           />
         </div>
       </Prompt>
+      </Reveal>
 
+      <Reveal when={showThemes}>
       <Prompt prompt={byName("themes")} from="valueGaps">
         <ol class="theme-list">
           {s.themes.map((theme, i) => (
@@ -75,6 +93,9 @@ export default function Step4({ prompts = [] }) {
         </ol>
         <p class="hint">Each theme becomes a goal card in Step 5.</p>
       </Prompt>
+      </Reveal>
+
+      <ShowAll allShown={allShown} onShow={showAll} />
     </div>
   );
 }

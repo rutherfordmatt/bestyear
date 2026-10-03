@@ -32,7 +32,7 @@ const isTextField = (el) =>
   ((el.tagName === "INPUT" && !["checkbox", "radio", "range", "button"].includes(el.type)) ||
     el.tagName === "TEXTAREA");
 
-export default function Reveal({ when, scroll = true, children }) {
+export default function Reveal({ when, scroll = true, as: Tag = "div", class: extra = "", children }) {
   const ref = useRef(null);
   const hasShown = useRef(when);
   const [armed, setArmed] = useState(false);
@@ -84,9 +84,10 @@ export default function Reveal({ when, scroll = true, children }) {
 
   if (!when) return null;
 
+  // `as` matters for list items: a <div> between <ol> and <li> is invalid.
   return (
-    <div ref={ref} class={`reveal-wrap${animating ? " reveal" : ""}`}>
+    <Tag ref={ref} class={`reveal-wrap${animating ? " reveal" : ""}${extra ? ` ${extra}` : ""}`}>
       {children}
-    </div>
+    </Tag>
   );
 }

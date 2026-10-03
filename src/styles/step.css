@@ -215,6 +215,8 @@ body.has-bar .storage-controls {
   display: grid;
   scroll-margin-block: var(--sp-6) 140px;
 }
+/* When the wrapper is the element itself (a goal card), its own rules win. */
+li.reveal-wrap.goal-card { display: grid; }
 
 .show-all {
   padding-top: var(--sp-5); border-top: var(--border);

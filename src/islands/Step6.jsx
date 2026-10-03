@@ -4,6 +4,9 @@
   Choosing "A coach" surfaces the Clarity Session touchpoint from the copy.
 */
 import { useStore } from "../lib/use-store.js";
+import { useDisclosure } from "../lib/use-disclosure.js";
+import Reveal from "./Reveal.jsx";
+import ShowAll from "./ShowAll.jsx";
 import Prompt from "./Prompt.jsx";
 import { goals as goalsOf, themeOf } from "../lib/carry-forward.js";
 import { CORNER_OPTIONS, pathForStep } from "../lib/steps.js";
@@ -36,6 +39,18 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
     }, { immediate: true });
 
   const wantsCoach = state.step6.corner.who.includes("coach");
+
+  // Who's in your corner arrives once there's a plan for them to support.
+  const filled = (v) => Boolean(v && String(v).trim());
+  const anyIfThen = goals.some((g) => {
+    const pair = state.step6.ifThen[g.id] || {};
+    return filled(pair.if) || filled(pair.then);
+  });
+  const { visible, allShown, showAll } = useDisclosure([
+    anyIfThen || goals.length === 0,
+    state.step6.corner.who.length > 0,
+  ]);
+  const [, showCorner] = visible;
 
   return (
     <div class="step-prompts">
@@ -93,6 +108,7 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
         {ifPrompt.hint && <p class="tip">{ifPrompt.hint}</p>}
       </section>
 
+      <Reveal when={showCorner}>
       <Prompt prompt={cornerPrompt}>
         <div class="corner-options">
           {options.map((opt) => (
@@ -133,6 +149,9 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
           ></textarea>
         </div>
       </Prompt>
+      </Reveal>
+
+      <ShowAll allShown={allShown} onShow={showAll} />
     </div>
   );
 }

@@ -6,6 +6,9 @@
   Step 1 and value gaps from Step 2 are offered as a head start.
 */
 import { useStore } from "../lib/use-store.js";
+import { useDisclosure } from "../lib/use-disclosure.js";
+import Reveal from "./Reveal.jsx";
+import ShowAll from "./ShowAll.jsx";
 import Prompt from "./Prompt.jsx";
 import FromStep from "./FromStep.jsx";
 import { LETTING_GO_BUCKETS } from "../lib/steps.js";
@@ -21,6 +24,15 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
 
   const suggestions = suggestedLettingGo(state);
   const items = state.step3.lettingGo;
+
+  // Lessons, then what you're leaving behind, then the closing line.
+  const filled = (v) => Boolean(v && String(v).trim());
+  const { visible, allShown, showAll } = useDisclosure([
+    state.step3.lessons.some(filled),
+    items.some((l) => filled(l.text)),
+    filled(state.step3.closingLine),
+  ]);
+  const [, showLetting, showClosing] = visible;
 
   const addItem = (bucket, text = "") =>
     set((s) => {
@@ -83,6 +95,7 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
         </ol>
       </Prompt>
 
+      <Reveal when={showLetting}>
       <Prompt prompt={lettingPrompt}>
         <div class="letting-layout">
           <div class="piles">
@@ -161,7 +174,9 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
           </div>
         </div>
       </Prompt>
+      </Reveal>
 
+      <Reveal when={showClosing}>
       <Prompt prompt={closingPrompt}>
         <input
           type="text"
@@ -174,6 +189,9 @@ export default function Step3({ prompts = [], bucketLabels = [] }) {
         />
         <p class="hint">This becomes the closing quote on your vision document.</p>
       </Prompt>
+      </Reveal>
+
+      <ShowAll allShown={allShown} onShow={showAll} />
     </div>
   );
 }

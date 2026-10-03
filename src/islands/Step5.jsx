@@ -5,6 +5,9 @@
 */
 import { useEffect, useState } from "preact/hooks";
 import { useStore } from "../lib/use-store.js";
+import { useDisclosure } from "../lib/use-disclosure.js";
+import Reveal from "./Reveal.jsx";
+import ShowAll from "./ShowAll.jsx";
 import Prompt from "./Prompt.jsx";
 import { themes as themesOf, chosenValues } from "../lib/carry-forward.js";
 import { emptyGoal } from "../lib/schema.js";
@@ -64,6 +67,18 @@ export default function Step5({ prompts = [] }) {
     ? picked
     : (allValues || []);
 
+  /*
+    Here the unit is a card, not a prompt: the next goal card arrives once the
+    one above it says what done looks like. Three empty goal forms at once is
+    the most daunting screen in the whole journey.
+  */
+  const filled = (v) => Boolean(v && String(v).trim());
+  const goalFor = (theme) => state.step5.goals.find((g) => g.themeId === theme.id);
+  const { visible, allShown, showAll } = useDisclosure([
+    ...themes.map((t) => filled(goalFor(t)?.done)),
+  ]);
+  const anyGoal = themes.some((t) => filled(goalFor(t)?.done));
+
   const q = {
     done: byName("what done"),
     why: byName("why it matters"),
@@ -86,7 +101,12 @@ export default function Step5({ prompts = [] }) {
           if (!goal) return null;
           const isPriority = state.step5.priorityGoalId === goal.id;
           return (
-            <li key={theme.id} class={`goal-card${isPriority ? " priority" : ""}`}>
+            <Reveal
+              key={theme.id}
+              when={visible[i]}
+              as="li"
+              class={`goal-card${isPriority ? " priority" : ""}`}
+            >
               <div class="goal-card-head">
                 <p class="label">Theme {i + 1}</p>
                 <h2 class="goal-card-title">{theme.text}</h2>
@@ -161,11 +181,12 @@ export default function Step5({ prompts = [] }) {
                   />
                 </div>
               </div>
-            </li>
+            </Reveal>
           );
         })}
       </ol>
 
+      <Reveal when={anyGoal}>
       <Prompt prompt={q.priority}>
         <p class="muted">
           {state.step5.priorityGoalId
@@ -173,6 +194,9 @@ export default function Step5({ prompts = [] }) {
             : "Star one of the cards above."}
         </p>
       </Prompt>
+      </Reveal>
+
+      <ShowAll allShown={allShown} onShow={showAll} label="Show all goals" />
     </div>
   );
 }

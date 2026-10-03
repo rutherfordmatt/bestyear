@@ -11,6 +11,9 @@
 */
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { useStore } from "../lib/use-store.js";
+import { useDisclosure } from "../lib/use-disclosure.js";
+import Reveal from "./Reveal.jsx";
+import ShowAll from "./ShowAll.jsx";
 import { finderLink, consumeIncomingValues, MIN_VALUES, IDEAL_MIN_VALUES, MAX_VALUES } from "../lib/values-link.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
@@ -25,6 +28,14 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
   const chosen = state.step2.values;
   const chosenSlugs = new Set(chosen.map((v) => v.slug));
   const full = chosen.length >= MAX_VALUES;
+
+  // The gap question only makes sense once there are values, rated — it asks
+  // where you compromised one.
+  const { visible, allShown, showAll } = useDisclosure([
+    chosen.length > 0 && chosen.some((v) => typeof v.alignment === "number"),
+    Boolean(state.step2.compromise.trim()),
+  ]);
+  const [, showGap] = visible;
 
   // Catch values coming back from the Values Finder.
   useEffect(() => {
@@ -252,6 +263,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
       )}
 
       {/* The gap */}
+      <Reveal when={showGap}>
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{prompts.gap?.question}</h2>
@@ -267,6 +279,9 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
           {prompts.gap?.hint && <p class="tip">{prompts.gap.hint}</p>}
         </div>
       </section>
+      </Reveal>
+
+      <ShowAll allShown={allShown} onShow={showAll} />
     </div>
   );
 }
