@@ -12,9 +12,7 @@ const bucketLabels = bulletsOf(d, "Prompts", "Prompt 2: Letting go")
   .filter((b) => /stopping|stepping back|carrying/i.test(b));
 ---
 <Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
-  <main id="main">
-    <StepShell step={3}>
-      <Step3 client:load prompts={copy.prompts} bucketLabels={bucketLabels} />
-    </StepShell>
-  </main>
+  <StepShell step={3}>
+    <Step3 client:load prompts={copy.prompts} bucketLabels={bucketLabels} />
+  </StepShell>
 </Base>

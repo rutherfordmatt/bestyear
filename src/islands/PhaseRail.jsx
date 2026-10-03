@@ -16,7 +16,8 @@ export default function PhaseRail({ current }) {
   const now = Number(current);
 
   return (
-    <nav class="phase-rail no-print" aria-label="Your progress">
+    <div class="phase-rail-band no-print">
+    <nav class="phase-rail" aria-label="Your progress">
       <ol class="phases">
         {PHASES.map((phase) => {
           const allDone = phase.steps.every((n) => completed.has(n));
@@ -72,5 +73,6 @@ export default function PhaseRail({ current }) {
         })}
       </ol>
     </nav>
+    </div>
   );
 }

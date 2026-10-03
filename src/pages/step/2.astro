@@ -25,9 +25,7 @@ const prompts = {
 };
 ---
 <Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
-  <main id="main">
-    <StepShell step={2}>
-      <ValuesPicker client:load card={card} returnLine={returnLine} prompts={prompts} />
-    </StepShell>
-  </main>
+  <StepShell step={2}>
+    <ValuesPicker client:load card={card} returnLine={returnLine} prompts={prompts} />
+  </StepShell>
 </Base>

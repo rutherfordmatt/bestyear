@@ -1,12 +1,19 @@
 /* The step shell: one progress rail at the top, one column of content. */
 
-/* --- Phase rail: the single progress element --- */
+/* --- Phase rail: the single progress element ---
+   A full-bleed band, so it reads as chrome rather than as the first thing on
+   the page. The negative inline margin cancels body's padding. */
+.phase-rail-band {
+  background: var(--ground-alt);
+  border-bottom: var(--border);
+  margin-inline: calc(-1 * var(--sp-5));
+  padding-inline: var(--sp-5);
+}
 .phase-rail {
   max-width: var(--wide); margin-inline: auto;
-  border-bottom: var(--border);
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: var(--sp-5) var(--sp-7); flex-wrap: wrap;
-  padding-block: var(--sp-2) 0;
+  padding-block: var(--sp-3) 0;
 }
 .phases {
   display: flex; gap: var(--sp-6); list-style: none; margin: 0; padding: 0;
@@ -74,9 +81,14 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 }
 /* The intro block: label, title, lede — the same shape the Values Finder
    uses at the top of each of its screens. */
-.intro { display: grid; gap: var(--sp-5); max-width: var(--prose); }
+.intro { display: grid; gap: var(--sp-3); max-width: var(--prose); }
 .intro h1 { font-size: var(--step-3); }
-.intro .lede { font-size: var(--step-1); color: var(--muted); }
+.intro .lede {
+  font-size: 1.25rem; line-height: 1.5;
+  color: var(--ink);          /* body prose below is --muted at 1rem */
+  max-width: var(--measure);
+  margin-top: var(--sp-1);
+}
 
 .step-intro { display: grid; gap: var(--sp-6); max-width: var(--measure); color: var(--muted); }
 .step-intro :global(strong) { color: var(--ink); font-weight: 500; }

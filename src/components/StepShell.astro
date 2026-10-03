@@ -22,7 +22,7 @@ const copy = stepCopy(n);
 ---
 <PhaseRail client:load current={n} />
 
-<div class="step-layout">
+<main id="main" class="step-layout">
   <article class="step-main">
     <div class="intro">
       <p class="label">Step {n} of {STEPS.length}</p>
@@ -43,7 +43,7 @@ const copy = stepCopy(n);
     <StepSummary client:load step={n} transition={copy.transition} />
     <StorageControls client:visible />
   </article>
-</div>
+</main>
 
 <StepBar client:load step={n} />
 

@@ -43,7 +43,7 @@ const prompt = {
 <Base title={plain(title)} description="Two quick choices before you start." bodyClass="has-bar">
   <PhaseRail client:load current={0} />
 
-  <div class="step-layout">
+  <main id="main" class="step-layout">
     <article class="step-main">
       <div class="intro">
         <p class="label">Before we start</p>
@@ -55,7 +55,7 @@ const prompt = {
 
       <StorageControls client:visible />
     </article>
-  </div>
+  </main>
 
   <StepBar client:load step={0} />
 </Base>
