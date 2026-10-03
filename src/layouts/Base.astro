@@ -6,7 +6,7 @@ import "../styles/step.css";
 import "../styles/document.css";
 import "../styles/print.css";
 import Umami from "../components/Umami.astro";
-import { SITE_NAME, TAGLINE, CONTACT_EMAIL } from "../lib/config.js";
+import { SITE_NAME, TAGLINE } from "../lib/config.js";
 
 const {
   title,
@@ -39,22 +39,13 @@ const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — ${TAGL
       <a class="wordmark" href="/">
         Year Well Built<span>{TAGLINE}</span>
       </a>
-      <nav class="links" aria-label="Site">
-        <a href="/privacy">Privacy</a>
-      </nav>
     </header>
 
     <slot />
 
     <footer class="site no-print">
-      <p>
-        Built by <a href="https://mattrutherfordcoaching.com/?source=ywb">Matt Rutherford</a>.
-        Your answers stay on your device.
-      </p>
-      <p>
-        <a href="/privacy">Privacy</a> ·
-        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-      </p>
+      <span>© Matt Rutherford Coaching</span>
+      <a href="/privacy">Privacy</a>
     </footer>
   </body>
 </html>

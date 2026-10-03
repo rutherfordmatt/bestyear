@@ -2,9 +2,13 @@
 
 Status: DRAFT
 
+## Eyebrow
+
+A free exercise · About an hour
+
 ## Headline
 
-**Recommended:** Don't make resolutions. Build your year.
+**Recommended:** Don't make resolutions. *Build your year.*
 
 Alternatives:
 - Review the year you had. Build the one you want.
@@ -30,11 +34,11 @@ Start building
 
 ## Time line (under the button)
 
-About an hour in one sitting, or fifteen minutes a day for a week.
+In one sitting, or fifteen minutes a day for a week.
 
 ## Who's behind this
 
-Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that MattRs. Rebuilt from the Build Your Best Year email course.
+Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that MattRs.
 
 ## Returning visitor banner
 

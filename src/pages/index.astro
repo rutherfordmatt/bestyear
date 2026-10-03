@@ -2,9 +2,19 @@
 import Base from "../layouts/Base.astro";
 import ResumeBanner from "../islands/ResumeBanner.jsx";
 import { doc, text, paras, bulletsOf, inline } from "../lib/content.js";
-import { TOTAL_STEPS } from "../lib/steps.js";
+import { STEPS } from "../lib/steps.js";
+
+/*
+  Laid out to mirror thevaluesfinder.com's welcome screen, so the two read as
+  one family: eyebrow + headline + ledes + hairline list + action on the left,
+  and an example of what you end up with on the right.
+
+  Both columns start with a .label on the same baseline — which is why the
+  right-hand label sits OUTSIDE the card, not inside it.
+*/
 
 const d = doc("landing");
+const eyebrow = text(d, "Eyebrow");
 const headline = text(d, "Headline").replace(/^\*\*Recommended:\*\*\s*/, "");
 const subhead = text(d, "Subhead");
 const benefits = bulletsOf(d, "Three benefit lines");
@@ -18,19 +28,31 @@ const about = paras(d, "Who's behind this");
     <ResumeBanner client:load />
 
     <section class="hero">
-      <div class="hero-copy stack-lg">
-        <p class="label">Build your best year</p>
+      <div class="copy">
+        <p class="label">{eyebrow}</p>
         <h1 set:html={inline(headline)}></h1>
-        <p class="lede">{subhead}</p>
 
-        <ul class="benefits">
-          {benefits.map((b) => <li set:html={inline(b)}></li>)}
+        <div class="ledes">
+          <p class="lede">{subhead}</p>
+        </div>
+
+        <ul class="plan">
+          {benefits.map((b) => {
+            const m = /^\*\*(.+?)\*\*\s*(.*)$/.exec(b);
+            return (
+              <li>
+                <b>{m ? m[1].replace(/\.$/, "") : b}</b>
+                {m && <span>{m[2]}</span>}
+              </li>
+            );
+          })}
         </ul>
 
-        <div class="start">
+        <div class="row">
           <a class="btn primary" href="/setup" data-umami-event="setup-started">{startLabel}</a>
-          <p class="note">{timeLine}</p>
         </div>
+
+        <p class="note">{timeLine}</p>
 
         <p class="privacy-line">
           <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -41,29 +63,29 @@ const about = paras(d, "Who's behind this");
         </p>
       </div>
 
-      <aside class="hero-sample" aria-label="What you'll end up with">
-        <div class="paper sample-doc">
-          <p class="label">Your year, on one page</p>
-          <p class="sample-headline">Left the job that was draining me, and found my weekends again.</p>
+      <aside class="sample" aria-label="What you'll end up with">
+        <p class="label">Your year, on one page</p>
+        <div class="paper">
+          <p class="sample-headline">
+            Left the job that was draining me, and found my weekends again.
+          </p>
           <p class="sample-word">My word: <em>Steady</em></p>
-          <ol class="sample-steps">
-            <li><span class="n">1</span><b>The year you had</b><span>Wins, challenges, life wheel</span></li>
-            <li><span class="n">2</span><b>What matters</b><span>Your values, and the gaps</span></li>
-            <li><span class="n">3</span><b>Lessons and letting go</b><span>Close the chapter</span></li>
-            <li><span class="n">4</span><b>Imagine the year ahead</b><span>Headline, word, themes</span></li>
-            <li><span class="n">5</span><b>Goals</b><span>Three, with one priority</span></li>
-            <li><span class="n">6</span><b>Obstacles and support</b><span>Plan for the bad days</span></li>
-            <li><span class="n">7</span><b>Your year, on one page</b><span>Print it, pin it up</span></li>
-          </ol>
-          <p class="fineprint">{TOTAL_STEPS} steps. Nothing leaves your device.</p>
+          <div class="mini">
+            <ol>
+              {STEPS.map((s) => (
+                <li>
+                  <span class="n">{s.n}</span>
+                  <b>{s.title}</b>
+                  <span>{s.blurb}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </aside>
     </section>
 
-    <section class="about prose">
-      <p class="label">Who's behind this</p>
-      {about.map((p) => <p class="muted" set:html={inline(p)}></p>)}
-    </section>
+    <p class="colophon" set:html={inline(about[0] || "")}></p>
   </main>
 </Base>
 
@@ -73,23 +95,26 @@ const about = paras(d, "Who's behind this");
     grid-template-columns: 1.05fr 0.95fr;
     gap: var(--sp-9);
     align-items: start;
-    padding-block: var(--sp-7) var(--sp-10);
+    padding-block: var(--sp-7) var(--sp-9);
   }
-  .hero-copy { max-width: 36rem; }
-  h1 { margin-block: calc(-1 * var(--sp-3)) 0; }
 
-  .benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
-  .benefits li {
-    padding-left: var(--sp-6); position: relative; color: var(--muted);
-    max-width: var(--measure);
-  }
-  .benefits li::before {
-    content: ""; position: absolute; left: 0; top: 0.72em;
-    width: 12px; height: 1px; background: var(--accent);
-  }
-  .benefits :global(strong) { color: var(--ink); font-weight: 500; }
+  /* Both columns open with a .label, so their first baselines line up. */
+  .copy { display: grid; gap: var(--sp-6); max-width: 36rem; align-content: start; }
+  .copy > .label { margin-bottom: calc(-1 * var(--sp-3)); }
+  .sample { display: grid; gap: var(--sp-6); align-content: start; }
+  .sample > .label { margin-bottom: calc(-1 * var(--sp-3)); }
 
-  .start { display: grid; gap: var(--sp-3); justify-items: start; }
+  h1 { margin: 0; }
+  .ledes { display: grid; gap: var(--sp-4); }
+
+  /* Hairline rows, as on thevaluesfinder.com's welcome list. */
+  .plan { list-style: none; margin: 0; padding: 0; border-top: var(--border); }
+  .plan li {
+    display: grid; gap: var(--sp-1);
+    padding: var(--sp-4) 0; border-bottom: var(--border);
+  }
+  .plan b { font-weight: 500; line-height: 1.5; }
+  .plan span { color: var(--muted); font-size: 0.92rem; }
 
   .privacy-line {
     display: flex; gap: var(--sp-2); align-items: center;
@@ -97,28 +122,28 @@ const about = paras(d, "Who's behind this");
   }
   .privacy-line svg { color: var(--accent); flex: none; }
 
-  .sample-doc { display: grid; gap: var(--sp-4); }
-  .sample-headline {
-    font: 400 1.75rem / 1.2 var(--serif); color: var(--ink); text-wrap: balance;
-  }
+  .paper { display: grid; gap: var(--sp-4); }
+  .sample-headline { font: 400 1.6rem / 1.2 var(--serif); color: var(--ink); text-wrap: balance; }
   .sample-word { font-size: 0.92rem; color: var(--muted); }
   .sample-word em { color: var(--accent); font-family: var(--serif); font-size: 1.15rem; }
-  .sample-steps {
-    list-style: none; margin: var(--sp-2) 0 0; padding: 0;
-    display: grid; gap: var(--sp-3); border-top: var(--border); padding-top: var(--sp-5);
-  }
-  .sample-steps li {
-    display: grid; grid-template-columns: 1.6rem 1fr; gap: 0 var(--sp-3);
-  }
-  .sample-steps .n { grid-row: span 2; color: var(--accent); font-size: 0.92rem; line-height: 1.5; }
-  .sample-steps b { font-weight: 500; font-size: 0.94rem; line-height: 1.5; }
-  .sample-steps span:not(.n) { font-size: var(--step--1); color: var(--muted); }
 
-  .about { padding-block: var(--sp-8); border-top: var(--border); display: grid; gap: var(--sp-3); }
+  .mini { display: grid; gap: var(--sp-4); margin-top: var(--sp-2); border-top: var(--border); padding-top: var(--sp-5); }
+  .mini ol { margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+  .mini li { list-style: none; display: grid; grid-template-columns: 1.6rem 1fr; gap: 2px var(--sp-3); }
+  .mini .n { grid-row: span 2; color: var(--accent); font-size: 0.92rem; line-height: 1.5; }
+  .mini b { font-weight: 500; font-size: 0.95rem; line-height: 1.5; }
+  .mini span:not(.n) { font-size: var(--step--1); color: var(--muted); }
+
+  /* Quiet credit line, not a section. */
+  .colophon {
+    max-width: var(--wide); margin-inline: auto;
+    font-size: 0.78rem; color: var(--muted);
+    padding-block: var(--sp-6) 0;
+  }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; gap: var(--sp-8); padding-block: var(--sp-5) var(--sp-8); }
-    .hero-sample { order: -1; }
-    .sample-steps { display: none; }
+    .sample { order: -1; }
+    .mini { display: none; }
   }
 </style>

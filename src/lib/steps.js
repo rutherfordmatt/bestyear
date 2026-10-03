@@ -9,13 +9,13 @@ export const PHASES = [
 ];
 
 export const STEPS = [
-  { n: 1, slug: "the-year-you-had", title: "The year you had", short: "The year you had", phase: "lookback", minutes: 12 },
-  { n: 2, slug: "what-matters", title: "What matters", short: "What matters", phase: "lookback", minutes: 10 },
-  { n: 3, slug: "lessons-and-letting-go", title: "Lessons and letting go", short: "Lessons", phase: "lookback", minutes: 8 },
-  { n: 4, slug: "imagine-the-year-ahead", title: "Imagine the year ahead", short: "Imagine", phase: "turn", minutes: 10 },
-  { n: 5, slug: "goals", title: "Goals", short: "Goals", phase: "plan", minutes: 12 },
-  { n: 6, slug: "obstacles-and-support", title: "Obstacles and support", short: "Obstacles", phase: "plan", minutes: 8 },
-  { n: 7, slug: "your-year-on-one-page", title: "Your year, on one page", short: "One page", phase: "commit", minutes: 8 },
+  { n: 1, slug: "the-year-you-had", title: "The year you had", short: "The year you had", phase: "lookback", minutes: 12 , blurb: "Wins, challenges, life wheel"},
+  { n: 2, slug: "what-matters", title: "What matters", short: "What matters", phase: "lookback", minutes: 10 , blurb: "Your values, and the gaps"},
+  { n: 3, slug: "lessons-and-letting-go", title: "Lessons and letting go", short: "Lessons", phase: "lookback", minutes: 8 , blurb: "Close the chapter"},
+  { n: 4, slug: "imagine-the-year-ahead", title: "Imagine the year ahead", short: "Imagine", phase: "turn", minutes: 10 , blurb: "Headline, word, themes"},
+  { n: 5, slug: "goals", title: "Goals", short: "Goals", phase: "plan", minutes: 12 , blurb: "Three, with one priority"},
+  { n: 6, slug: "obstacles-and-support", title: "Obstacles and support", short: "Obstacles", phase: "plan", minutes: 8 , blurb: "Plan for the bad days"},
+  { n: 7, slug: "your-year-on-one-page", title: "Your year, on one page", short: "One page", phase: "commit", minutes: 8 , blurb: "Print it, pin it up"},
 ];
 
 export const TOTAL_STEPS = STEPS.length;

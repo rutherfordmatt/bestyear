@@ -98,10 +98,11 @@ header.site { padding-block: calc(22px + env(safe-area-inset-top, 0px)) 22px; }
 }
 .links a:hover { color: var(--accent); }
 footer.site {
-  padding-block: var(--sp-8) var(--sp-7); border-top: var(--border);
-  margin-top: var(--sp-10); font-size: var(--step--1); color: var(--muted);
+  padding-block: var(--sp-6) var(--sp-7); border-top: var(--border);
+  margin-top: var(--sp-9); font-size: var(--step--1); color: var(--muted);
 }
-footer.site a { color: var(--muted); }
+footer.site a { color: var(--muted); text-decoration: underline; }
+footer.site a:hover { color: var(--accent); }
 
 /* --- Buttons --- */
 .btn {
