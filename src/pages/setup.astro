@@ -22,6 +22,11 @@ const paceOptions = (paceSection ? paceSection.body : [])
   .filter(Boolean)
   .map((o, i) => ({ ...o, key: i === 0 ? "sitting" : "daily" }));
 
+// "**How do you want to do this?**" — the bold line in the Pace choice section.
+const paceQuestion = ((paceSection ? paceSection.body : [])
+  .find((l) => /^\*\*.+\*\*$/.test(l.trim())) || "")
+  .replace(/\*\*/g, "").trim();
+
 // The year-ending prompt sits under a plain heading, not a "### Prompt N".
 const promptHeading = d.sections["Prompt: the year that's ending"];
 const promptBody = promptHeading ? promptHeading.body : [];
@@ -46,7 +51,7 @@ const prompt = {
         <p class="lede">{intro[0]}</p>
       </div>
 
-      <Setup client:load paceOptions={paceOptions} prompt={prompt} transition={transition} />
+      <Setup client:load paceOptions={paceOptions} paceQuestion={paceQuestion} prompt={prompt} transition={transition} />
 
       <StorageControls client:visible />
     </article>

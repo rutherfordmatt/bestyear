@@ -12,7 +12,7 @@ import { FEATURES } from "../lib/config.js";
   The daily-nudge email field is deferred to v1.1 (FEATURES.dailyNudges) —
   there is no endpoint for it yet, so we don't collect addresses we can't use.
 */
-export default function Setup({ paceOptions = [], prompt = {}, transition = "" }) {
+export default function Setup({ paceOptions = [], paceQuestion = "", prompt = {}, transition = "" }) {
   const [state, set] = useStore();
 
   const choosePace = (pace) => {
@@ -25,33 +25,35 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
 
   return (
     <div class="setup">
-      <fieldset class="pace">
-        <legend class="field-label">How do you want to do this?</legend>
-        <div class="pace-options">
-          {paceOptions.map((opt) => (
-            <button
-              key={opt.key}
-              type="button"
-              class="pace-option"
-              aria-pressed={state.pace === opt.key}
-              onClick={() => choosePace(opt.key)}
-            >
-              <b>{opt.title}</b>
-              <span>{opt.body}</span>
-            </button>
-          ))}
-        </div>
-        {state.pace === "daily" && !FEATURES.dailyNudges && (
-          <p class="tip pace-note">
-            Your answers wait on this device — come back to yearwellbuilt.com in
-            the same browser and pick up where you left off.
-          </p>
-        )}
-      </fieldset>
+      <section class="prompt">
+        <fieldset class="pace">
+          <legend class="prompt-question">{paceQuestion}</legend>
+          <div class="pace-options">
+            {paceOptions.map((opt) => (
+              <button
+                key={opt.key}
+                type="button"
+                class="pace-option"
+                aria-pressed={state.pace === opt.key}
+                onClick={() => choosePace(opt.key)}
+              >
+                <b>{opt.title}</b>
+                <span>{opt.body}</span>
+              </button>
+            ))}
+          </div>
+          {state.pace === "daily" && !FEATURES.dailyNudges && (
+            <p class="tip pace-note">
+              Your answers wait on this device — come back to yearwellbuilt.com in
+              the same browser and pick up where you left off.
+            </p>
+          )}
+        </fieldset>
+      </section>
 
       <Reveal when={hasPace}>
-        <div class="field">
-          <label for="year-word">{prompt.question}</label>
+        <section class="prompt">
+          <label class="prompt-question" for="year-word">{prompt.question}</label>
           <input
             id="year-word"
             type="text"
@@ -63,7 +65,7 @@ export default function Setup({ paceOptions = [], prompt = {}, transition = "" }
             onInput={(e) => set((s) => { s.yearEnding.word = e.currentTarget.value; })}
           />
           {prompt.hint && <p class="tip">{prompt.hint}</p>}
-        </div>
+        </section>
       </Reveal>
 
       {/* Reads "Good. That's the title of the chapter you're closing." — it

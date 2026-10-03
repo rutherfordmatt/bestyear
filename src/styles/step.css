@@ -107,7 +107,12 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 /* --- Prompts --- */
 .prompt { display: grid; gap: var(--sp-4); padding-block: var(--sp-6); border-top: var(--border); }
 .prompt-head { display: grid; gap: var(--sp-2); }
-.prompt-question { font: 400 1.35rem / 1.3 var(--serif); color: var(--ink); text-wrap: balance; }
+.prompt-question {
+  font: 400 1.5rem / 1.25 var(--serif);
+  color: var(--ink); text-wrap: balance;
+  display: block;            /* legends and labels use this class too */
+  padding: 0; float: none;   /* reset the <legend> defaults */
+}
 .prompt-body { display: grid; gap: var(--sp-4); }
 .prompt-with-aside {
   display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: var(--sp-6);
