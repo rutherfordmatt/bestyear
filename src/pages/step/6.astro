@@ -1,0 +1,23 @@
+---
+import Base from "../../layouts/Base.astro";
+import StepShell from "../../components/StepShell.astro";
+import Step6 from "../../islands/Step6.jsx";
+import { stepCopy, doc, text, promptsOf } from "../../lib/content.js";
+
+const copy = stepCopy(6);
+const d = doc("step-6");
+const coachNote = text(d, 'Coaching touchpoint (shown if "A coach" is selected)')
+  .replace(/\s*\[Find out more\]\s*$/, "");
+const cornerPrompt = promptsOf(d).find((p) => p.name.toLowerCase().includes("corner"));
+const cornerOptions = (cornerPrompt?.options || "")
+  .split("/")
+  .map((s) => s.trim())
+  .filter(Boolean);
+---
+<Base title={copy.title} description={copy.promise}>
+  <main id="main">
+    <StepShell step={6}>
+      <Step6 client:load prompts={copy.prompts} coachNote={coachNote} cornerOptions={cornerOptions} />
+    </StepShell>
+  </main>
+</Base>

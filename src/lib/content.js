@@ -169,6 +169,24 @@ export function fieldsOf(root, ...path) {
   return node ? fields(node.body) : {};
 }
 
+/**
+ * Labelled lines in either form: a bullet "- **Label:** value" or a bare
+ * paragraph "**Label:** value". Some content files use one, some the other.
+ */
+export function labelsOf(root, ...path) {
+  const node = section(root, ...path);
+  if (!node) return {};
+  const out = { ...fields(node.body) };
+  for (const line of node.body) {
+    const m = /^\s*\*\*([^*]+?)\s*:\s*\*\*\s*(.*)$|^\s*\*\*([^*]+?)\*\*\s*:\s*(.*)$/.exec(line);
+    if (!m) continue;
+    const key = (m[1] ?? m[3] ?? "").trim();
+    const value = (m[2] ?? m[4] ?? "").trim();
+    if (key && value && !(key in out)) out[key] = value;
+  }
+  return out;
+}
+
 /** Bare bullets of a section. */
 export function bulletsOf(root, ...path) {
   const node = section(root, ...path);

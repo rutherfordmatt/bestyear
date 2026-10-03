@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import NewsletterForm from "../islands/NewsletterForm.jsx";
+import StorageControls from "../islands/StorageControls.jsx";
+import { doc, text, labelsOf, inline } from "../lib/content.js";
+import { BOOKING_URL } from "../lib/config.js";
+
+const d = doc("close");
+const congrats = labelsOf(d, "Congratulations");
+const cta = labelsOf(d, "Clarity Session CTA (primary)");
+const news = labelsOf(d, "Newsletter (secondary)");
+const share = labelsOf(d, "Share (optional)");
+---
+<Base title="You've built your year" description="Your year is built. One focused hour can pressure-test it.">
+  <main id="main" class="close">
+    <section class="close-hero prose">
+      <p class="label">Done</p>
+      <h1>{congrats.Heading || "You've built your year."}</h1>
+      <p class="lede" set:html={inline(congrats.Body || "")}></p>
+    </section>
+
+    <section class="card pad-lg clarity">
+      <h2>{cta.Headline}</h2>
+      <p class="muted" set:html={inline(cta.Body || "")}></p>
+      <a class="btn primary" href={BOOKING_URL} data-umami-event="booking-clicked">
+        {cta.Button || "Book a Clarity Session"}
+      </a>
+      <p class="note">
+        Bring the one-page plan you just built — it's the pre-work.
+        <a href="/step/7">Back to your document</a>
+      </p>
+    </section>
+
+    <section class="newsletter prose">
+      <h2>Stuff that MattRs</h2>
+      <p class="muted" set:html={inline(news.Line || "")}></p>
+      <NewsletterForm
+        client:visible
+        fieldLabel={news["Field label"] || "Your email"}
+        button={news.Button || "Subscribe"}
+      />
+    </section>
+
+    <section class="share prose">
+      <p class="muted" set:html={inline(share.Line || "")}></p>
+    </section>
+
+    <section class="prose">
+      <StorageControls client:visible />
+    </section>
+  </main>
+</Base>
+
+<style>
+  .close { display: grid; gap: var(--sp-8); padding-block: var(--sp-8) var(--sp-10); max-width: var(--prose); }
+  .close-hero { display: grid; gap: var(--sp-4); }
+  .clarity { display: grid; gap: var(--sp-4); justify-items: start; }
+  .clarity h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+  .newsletter, .share { display: grid; gap: var(--sp-4); }
+  .newsletter h2 { font-size: 1.6rem; }
+  .share { border-top: var(--border); padding-top: var(--sp-6); }
+</style>

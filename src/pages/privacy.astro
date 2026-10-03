@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import StorageControls from "../islands/StorageControls.jsx";
+import { doc, text, section, labelsOf, inline } from "../lib/content.js";
+import { CONTACT_EMAIL } from "../lib/config.js";
+
+const d = doc("privacy");
+const full = section(d, "Full page");
+const heading = labelsOf(d, "Full page").Heading || "Your answers are yours";
+
+// Intro paragraphs, then the bullet list of promises.
+const lines = full?.body || [];
+const intro = lines
+  .filter((l) => l.trim() && !l.startsWith("-") && !l.includes("**Heading:**"))
+  .map((l) => l.trim());
+const points = lines
+  .filter((l) => /^\s*-\s+/.test(l))
+  .map((l) => l.replace(/^\s*-\s+/, "").trim())
+  .map((l) => l.replace("[CONTACT EMAIL]", CONTACT_EMAIL));
+const shortVersion = text(d, "Short version (landing page and footer)");
+---
+<Base title="Privacy" description={shortVersion}>
+  <main id="main" class="privacy prose">
+    <p class="label">Privacy</p>
+    <h1>{heading}</h1>
+    {intro.filter((p) => !p.startsWith("Questions?")).map((p) => (
+      <p class="lede" set:html={inline(p)}></p>
+    ))}
+
+    <ul class="privacy-points">
+      {points.map((p) => <li set:html={inline(p)}></li>)}
+    </ul>
+
+    <p class="muted">
+      Questions? Email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    </p>
+
+    <section class="privacy-controls">
+      <h2>Your answers, right now</h2>
+      <StorageControls client:visible />
+    </section>
+  </main>
+</Base>
+
+<style>
+  .privacy { display: grid; gap: var(--sp-5); padding-block: var(--sp-7) var(--sp-10); }
+  .privacy-points { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+  .privacy-points li {
+    padding-left: var(--sp-6); position: relative; color: var(--muted); max-width: var(--measure);
+  }
+  .privacy-points li::before {
+    content: ""; position: absolute; left: 0; top: 0.72em;
+    width: 12px; height: 1px; background: var(--accent);
+  }
+  .privacy-points :global(strong) { color: var(--ink); font-weight: 500; }
+  .privacy-controls { border-top: var(--border); padding-top: var(--sp-6); display: grid; gap: var(--sp-3); }
+  .privacy-controls h2 { font-size: 1.5rem; }
+</style>

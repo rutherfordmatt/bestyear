@@ -1,0 +1,15 @@
+---
+import Base from "../../layouts/Base.astro";
+import StepShell from "../../components/StepShell.astro";
+import Step4 from "../../islands/Step4.jsx";
+import { stepCopy } from "../../lib/content.js";
+
+const copy = stepCopy(4);
+---
+<Base title={copy.title} description={copy.promise}>
+  <main id="main">
+    <StepShell step={4}>
+      <Step4 client:load prompts={copy.prompts} />
+    </StepShell>
+  </main>
+</Base>

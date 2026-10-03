@@ -1,0 +1,38 @@
+---
+import Base from "../../layouts/Base.astro";
+import StepShell from "../../components/StepShell.astro";
+import Step7 from "../../islands/Step7.jsx";
+import { stepCopy, doc, promptsOf, section, fieldsOf } from "../../lib/content.js";
+
+const copy = stepCopy(7);
+const d = doc("step-7");
+
+// "Where will this page live?" options sit in the third prompt's Options field.
+const alive = promptsOf(d).find((p) => p.name.toLowerCase().includes("keep it alive"));
+const livesOptions = (alive?.options || "")
+  .split("/")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+// The email action block: plain "- Label: value" sub-items under Actions.
+const actionsSection = section(d, "Actions");
+const actionFields = {};
+for (const line of actionsSection?.body || []) {
+  const m = /^\s*-\s+(?:\*\*)?([A-Za-z][A-Za-z ()]*?)(?:\*\*)?\s*:\s*(.+)$/.exec(line);
+  if (m) actionFields[m[1].trim()] = m[2].replace(/\*\*/g, "").trim();
+}
+const actions = {
+  line: actionFields["Line"] || "",
+  fieldLabel: actionFields["Field label"] || "Your email",
+  checkbox: actionFields["Checkbox (unticked)"] || "",
+  button: actionFields["Button"] || "Send my plan",
+  success: actionFields["Success"] || "",
+};
+---
+<Base title={copy.title} description={copy.promise}>
+  <main id="main">
+    <StepShell step={7}>
+      <Step7 client:load prompts={copy.prompts} livesOptions={livesOptions} actions={actions} />
+    </StepShell>
+  </main>
+</Base>

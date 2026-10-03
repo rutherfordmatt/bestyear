@@ -333,3 +333,86 @@ fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted);
   .letting-layout { grid-template-columns: minmax(0, 1fr); }
   .letting-aside { order: -1; }
 }
+
+/* --- Step 4: the turn --- */
+.headline-card { display: grid; gap: var(--sp-2); }
+.headline-input {
+  font: 400 clamp(1.4rem, 3vw, 2rem) / 1.25 var(--serif);
+  padding: var(--sp-5); min-height: 4.5rem; text-wrap: balance;
+}
+.word-card { max-width: 18rem; }
+.word-input {
+  font: 400 2rem / 1.2 var(--serif); font-style: italic; color: var(--accent);
+  text-align: center; padding: var(--sp-5);
+}
+.theme-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.theme-row { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); gap: var(--sp-3); align-items: center; }
+.theme-n { color: var(--accent); font-size: 0.92rem; }
+
+/* --- Step 5: goal cards --- */
+.goal-intro { max-width: var(--measure); margin-bottom: var(--sp-5); }
+.goal-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-5); }
+.goal-card {
+  background: var(--paper); border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-6); display: grid; gap: var(--sp-5);
+}
+.goal-card.priority { border-color: var(--accent); box-shadow: var(--shadow-card); }
+.goal-card-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 var(--sp-3); align-items: start;
+}
+.goal-card-head .label { grid-column: 1; }
+.goal-card-head h3 { grid-column: 1; font-size: 1.5rem; }
+.star-btn {
+  grid-column: 2; grid-row: 1 / span 2;
+  border: 0; background: none; cursor: pointer;
+  font-size: 1.6rem; line-height: 1; color: var(--faint); padding: var(--sp-1);
+  transition: color var(--fast), transform var(--fast);
+}
+.star-btn:hover { color: var(--accent); }
+.star-btn[aria-pressed="true"] { color: var(--accent); transform: scale(1.1); }
+.goal-fields { display: grid; gap: var(--sp-4); }
+.goal-fields .field label { font-size: 0.86rem; }
+.goal-fields select + input { margin-top: var(--sp-2); }
+
+/* --- Step 6: if-then --- */
+.ifthen-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-5); }
+.ifthen-card {
+  background: var(--paper); border: var(--border); border-radius: var(--radius);
+  padding: var(--sp-5); display: grid; gap: var(--sp-4);
+}
+.ifthen-card.priority { border-color: var(--accent); }
+.ifthen-goal { display: grid; gap: var(--sp-1); }
+.ifthen-goal .star { color: var(--accent); }
+.ifthen-goal b { font-weight: 500; }
+.ifthen-fields { display: grid; gap: var(--sp-3); }
+.corner-options { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.coach-note { display: grid; gap: var(--sp-3); justify-items: start; max-width: var(--measure); }
+
+/* --- Step 7 --- */
+.step7 { display: grid; }
+.doc-holder {
+  background: var(--paper); border: var(--border);
+  box-shadow: var(--shadow-paper); padding: var(--sp-8) var(--sp-7);
+}
+.doc-actions { display: grid; gap: var(--sp-2); justify-items: start; margin-top: var(--sp-5); }
+.checkin-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.checkin-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--sp-3); align-items: center; }
+.checkin-list input[type="date"] { width: auto; }
+.checkin-day { font-size: var(--step--1); color: var(--muted); }
+.check-ins { gap: var(--sp-3); }
+
+/* --- Send form --- */
+.send-form { border-top: var(--border); }
+.send-fields { display: grid; gap: var(--sp-4); max-width: 26rem; }
+.checkbox { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: start; font-size: 0.92rem; }
+.checkbox input { margin-top: 3px; }
+.send-error { color: var(--warn); font-size: var(--step--1); }
+/* Honeypot: off-screen, not display:none, so bots still fill it. */
+.hp { position: absolute; left: -9999px; top: 0; width: 1px; height: 1px; overflow: hidden; }
+
+@media (max-width: 640px) {
+  .doc-holder { padding: var(--sp-6) var(--sp-5); }
+  .checkin-list li { grid-template-columns: minmax(0, 1fr) auto; }
+  .checkin-day { grid-column: 1; grid-row: 2; }
+}
