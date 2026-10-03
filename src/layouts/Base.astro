@@ -1,0 +1,58 @@
+---
+import "../styles/fonts.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/print.css";
+import Umami from "../components/Umami.astro";
+import { SITE_NAME, TAGLINE, CONTACT_EMAIL } from "../lib/config.js";
+
+const {
+  title,
+  description = "A free, guided review and plan in seven steps. Finish with a one-page vision for the year ahead. Private by design.",
+  bodyClass = "",
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — ${TAGLINE}`;
+---
+<!DOCTYPE html>
+<html lang="en-IE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="en_IE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <Umami />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site no-print">
+      <a class="wordmark" href="/">
+        Year Well Built<span>{TAGLINE}</span>
+      </a>
+      <nav class="links" aria-label="Site">
+        <a href="/privacy">Privacy</a>
+      </nav>
+    </header>
+
+    <slot />
+
+    <footer class="site no-print">
+      <p>
+        Built by <a href="https://mattrutherfordcoaching.com/?source=ywb">Matt Rutherford</a>.
+        Your answers stay on your device.
+      </p>
+      <p>
+        <a href="/privacy">Privacy</a> ·
+        <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
+    </footer>
+  </body>
+</html>

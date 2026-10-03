@@ -1,0 +1,61 @@
+/*
+  Print stylesheet — the vision document is the hero.
+  Always light, regardless of any future theme setting.
+*/
+
+@media print {
+  @page { size: A4 portrait; margin: 14mm 14mm 12mm; }
+
+  :root {
+    --ground: #FFFFFF;
+    --ground-alt: #FFFFFF;
+    --paper: #FFFFFF;
+    --ink: #000000;
+    --muted: #444444;
+    --faint: #777777;
+    --line: #CCCCCC;
+    --accent: #2F5858;
+    --accent-dark: #2F5858;
+    --accent-pale: #FFFFFF;
+    --shadow-card: none;
+    --shadow-paper: none;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Chrome off: everything that isn't the document itself. */
+  header.site, footer.site, .phase-rail, .step-nav, .plan-tab, .plan-sheet,
+  .plan-panel, .storage-controls, .no-print, .skip, nav, .stuck, .from-step,
+  .step-summary, button, .btn, form, input, textarea, select {
+    display: none !important;
+  }
+
+  main { padding: 0 !important; max-width: none !important; }
+
+  .vision-doc {
+    box-shadow: none !important;
+    border: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* The document's own editable fields print as plain text. */
+  .vision-doc [contenteditable] { border: 0 !important; background: none !important; }
+
+  /* Keep sections whole where we can. */
+  .vision-doc section, .vision-doc .goal, .vision-doc .if-then { break-inside: avoid; }
+  .vision-doc h2, .vision-doc h3 { break-after: avoid; }
+  .vision-doc .hero { break-after: avoid; }
+
+  a { text-decoration: none; color: #000000 !important; }
+  /* Don't litter the page with URLs, except the footer's one credit. */
+  a[href]::after { content: ""; }
+
+  .page-break { break-before: page; }
+}

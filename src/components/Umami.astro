@@ -1,0 +1,8 @@
+---
+// Umami analytics. Renders nothing at all when PUBLIC_UMAMI_SITE_ID is unset,
+// so there is no third-party request until Matt adds the ID at deploy time.
+import { UMAMI_SITE_ID, UMAMI_SCRIPT_URL } from "../lib/config.js";
+---
+{UMAMI_SITE_ID && (
+  <script is:inline defer src={UMAMI_SCRIPT_URL} data-website-id={UMAMI_SITE_ID}></script>
+)}

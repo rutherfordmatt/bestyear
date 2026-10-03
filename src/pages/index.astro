@@ -1,0 +1,124 @@
+---
+import Base from "../layouts/Base.astro";
+import ResumeBanner from "../islands/ResumeBanner.jsx";
+import { doc, text, paras, bulletsOf, inline } from "../lib/content.js";
+import { TOTAL_STEPS } from "../lib/steps.js";
+
+const d = doc("landing");
+const headline = text(d, "Headline").replace(/^\*\*Recommended:\*\*\s*/, "");
+const subhead = text(d, "Subhead");
+const benefits = bulletsOf(d, "Three benefit lines");
+const privacyLine = text(d, "Privacy line");
+const startLabel = text(d, "Start button label");
+const timeLine = text(d, "Time line (under the button)");
+const about = paras(d, "Who's behind this");
+---
+<Base title={null} description={subhead}>
+  <main id="main">
+    <ResumeBanner client:load />
+
+    <section class="hero">
+      <div class="hero-copy stack-lg">
+        <p class="label">Build your best year</p>
+        <h1 set:html={inline(headline)}></h1>
+        <p class="lede">{subhead}</p>
+
+        <ul class="benefits">
+          {benefits.map((b) => <li set:html={inline(b)}></li>)}
+        </ul>
+
+        <div class="start">
+          <a class="btn primary" href="/setup" data-umami-event="setup-started">{startLabel}</a>
+          <p class="note">{timeLine}</p>
+        </div>
+
+        <p class="privacy-line">
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 1 2 3.5v4C2 11 4.5 13.8 8 15c3.5-1.2 6-4 6-7.5v-4L8 1Z"
+                  fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+          <span>{privacyLine}</span>
+        </p>
+      </div>
+
+      <aside class="hero-sample" aria-label="What you'll end up with">
+        <div class="paper sample-doc">
+          <p class="label">Your year, on one page</p>
+          <p class="sample-headline">Left the job that was draining me, and found my weekends again.</p>
+          <p class="sample-word">My word: <em>Steady</em></p>
+          <ol class="sample-steps">
+            <li><span class="n">1</span><b>The year you had</b><span>Wins, challenges, life wheel</span></li>
+            <li><span class="n">2</span><b>What matters</b><span>Your values, and the gaps</span></li>
+            <li><span class="n">3</span><b>Lessons and letting go</b><span>Close the chapter</span></li>
+            <li><span class="n">4</span><b>Imagine the year ahead</b><span>Headline, word, themes</span></li>
+            <li><span class="n">5</span><b>Goals</b><span>Three, with one priority</span></li>
+            <li><span class="n">6</span><b>Obstacles and support</b><span>Plan for the bad days</span></li>
+            <li><span class="n">7</span><b>Your year, on one page</b><span>Print it, pin it up</span></li>
+          </ol>
+          <p class="fineprint">{TOTAL_STEPS} steps. Nothing leaves your device.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="about prose">
+      <p class="label">Who's behind this</p>
+      {about.map((p) => <p class="muted" set:html={inline(p)}></p>)}
+    </section>
+  </main>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--sp-9);
+    align-items: start;
+    padding-block: var(--sp-7) var(--sp-10);
+  }
+  .hero-copy { max-width: 36rem; }
+  h1 { margin-block: calc(-1 * var(--sp-3)) 0; }
+
+  .benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+  .benefits li {
+    padding-left: var(--sp-6); position: relative; color: var(--muted);
+    max-width: var(--measure);
+  }
+  .benefits li::before {
+    content: ""; position: absolute; left: 0; top: 0.72em;
+    width: 12px; height: 1px; background: var(--accent);
+  }
+  .benefits :global(strong) { color: var(--ink); font-weight: 500; }
+
+  .start { display: grid; gap: var(--sp-3); justify-items: start; }
+
+  .privacy-line {
+    display: flex; gap: var(--sp-2); align-items: center;
+    font-size: var(--step--1); color: var(--muted);
+  }
+  .privacy-line svg { color: var(--accent); flex: none; }
+
+  .sample-doc { display: grid; gap: var(--sp-4); }
+  .sample-headline {
+    font: 400 1.75rem / 1.2 var(--serif); color: var(--ink); text-wrap: balance;
+  }
+  .sample-word { font-size: 0.92rem; color: var(--muted); }
+  .sample-word em { color: var(--accent); font-family: var(--serif); font-size: 1.15rem; }
+  .sample-steps {
+    list-style: none; margin: var(--sp-2) 0 0; padding: 0;
+    display: grid; gap: var(--sp-3); border-top: var(--border); padding-top: var(--sp-5);
+  }
+  .sample-steps li {
+    display: grid; grid-template-columns: 1.6rem 1fr; gap: 0 var(--sp-3);
+  }
+  .sample-steps .n { grid-row: span 2; color: var(--accent); font-size: 0.92rem; line-height: 1.5; }
+  .sample-steps b { font-weight: 500; font-size: 0.94rem; line-height: 1.5; }
+  .sample-steps span:not(.n) { font-size: var(--step--1); color: var(--muted); }
+
+  .about { padding-block: var(--sp-8); border-top: var(--border); display: grid; gap: var(--sp-3); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: var(--sp-8); padding-block: var(--sp-5) var(--sp-8); }
+    .hero-sample { order: -1; }
+    .sample-steps { display: none; }
+  }
+</style>

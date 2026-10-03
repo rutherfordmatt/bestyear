@@ -1,0 +1,91 @@
+/*
+  Year Well Built — design tokens
+  Extracted from thevaluesfinder.com and mattrutherfordcoaching.com so the
+  three sites read as one family.
+
+  MVP ships LIGHT ONLY. The structure below is dark-ready: every colour is a
+  role token on :root, so a dark theme is added by redefining this block under
+  :root[data-theme="dark"] and a guarded prefers-color-scheme media query.
+  Nothing else in the codebase references a raw hex. Do not add either block
+  until the dark palette is signed off.
+*/
+
+:root {
+  /* --- Surfaces and ink --- */
+  --ground: #FAFAF8;       /* page background */
+  --ground-alt: #F3F0EB;   /* banded sections */
+  --paper: #FFFFFF;        /* cards, the vision document */
+  --ink: #1A1A1A;          /* body text and headings */
+  --muted: #686460;        /* secondary text, hints */
+  --faint: #A8A39E;        /* disabled, not-yet-reached steps */
+  --line: #E2DEDA;         /* hairlines and borders */
+
+  /* --- Accent --- */
+  --accent: #3A6B6B;
+  --accent-dark: #2F5858;  /* hover on filled buttons */
+  --accent-pale: #E6EFEF;  /* hover wash, highlight backgrounds */
+
+  /* --- Semantic --- */
+  --warn: #9A5B2E;         /* value gaps, "needs attention" */
+  --warn-pale: #F6EDE4;
+  --ok: #3A6B6B;
+
+  /* --- Type --- */
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step--1: 0.82rem;
+  --step-0: 1rem;
+  --step-1: 1.08rem;
+  --step-2: 1.6rem;
+  --step-3: clamp(2rem, 4.2vw, 3rem);
+  --step-4: clamp(2.6rem, 6vw, 4.2rem);
+
+  --leading-tight: 1.12;
+  --leading-body: 1.7;
+  --leading-loose: 1.85;
+
+  /* Uppercase eyebrow / button lettering */
+  --tracking-label: 0.18em;
+  --tracking-button: 0.16em;
+
+  /* --- Space (4px base) --- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 26px;
+  --sp-7: 32px;
+  --sp-8: 48px;
+  --sp-9: 64px;
+  --sp-10: 80px;
+
+  /* --- Shape --- */
+  --radius: 2px;           /* both sibling sites are square. Keep it that way. */
+  --radius-pill: 999px;    /* chips only */
+  --border: 1px solid var(--line);
+
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.07);
+  --shadow-paper: 0 30px 60px -40px rgba(26, 26, 26, 0.35);
+  --shadow-focus: 0 0 0 3px rgba(58, 107, 107, 0.12);
+
+  /* --- Layout --- */
+  --wide: 1120px;
+  --prose: 760px;
+  --measure: 58ch;
+
+  /* --- Motion --- */
+  --fast: 0.15s;
+  --slow: 0.3s;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

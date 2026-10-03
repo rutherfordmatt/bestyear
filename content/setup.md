@@ -1,0 +1,30 @@
+# Setup
+
+Status: DRAFT
+
+## Intro
+
+Before we start, two quick choices. Neither is permanent.
+
+## Pace choice
+
+**How do you want to do this?**
+
+- **In one sitting.** Clear an hour, make a coffee, and do the lot. Best if you like momentum.
+- **One step a day.** Fifteen minutes a day for a week. Best if you like time to mull things over.
+
+Nudge opt-in (shown if they pick one step a day):
+Want a gentle nudge each day? Leave your email and we'll send seven short reminders, then delete your address.
+Field label: Email (optional)
+Button: Remind me
+
+## Prompt: the year that's ending
+
+**Sum up the year you've just had in a word or short phrase.**
+
+- Placeholder example: Rebuilding
+- Stuck? hint: Don't overthink it. The first word that comes to mind is usually the honest one. You can change it later.
+
+## Transition
+
+Good. That's the title of the chapter you're closing. Let's see what was in it.
