@@ -21,7 +21,6 @@
     --shadow-paper: none;
   }
 
-  /* The bar is hidden in print, so its spacer must go too. */
   body, body.has-bar {
     background: #FFFFFF !important;
     color: #000000 !important;

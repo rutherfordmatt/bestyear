@@ -73,7 +73,7 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 /* --- Step layout: one column, a readable measure --- */
 .step-layout {
   max-width: var(--wide); margin-inline: auto;
-  padding-block: var(--sp-8) var(--sp-10);
+  padding-block: var(--sp-8) var(--sp-9);
 }
 .step-main {
   min-width: 0; display: grid; gap: var(--sp-8);
@@ -97,10 +97,13 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 
 /* --- Fixed bottom bar --- */
 .bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  /* Sticky, not fixed — see the note on body in base.css. Laid out inside
+     body, so it shares the content column's left edge exactly. */
+  position: sticky; bottom: 0; z-index: 20;
   background: color-mix(in srgb, var(--ground) 96%, transparent);
   backdrop-filter: blur(8px);
   border-top: var(--border);
+  margin-inline: calc(-1 * var(--sp-5));
   padding: var(--sp-3) var(--sp-5) calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
 }
 .bar .in {
@@ -114,9 +117,6 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 }
 .bar .status span { font-size: 0.82rem; color: var(--muted); }
 .bar .row { gap: var(--sp-2); }
-
-/* Keep the bar clear of the content it sits over. */
-body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 
 /* --- Prompts --- */
 .prompt { display: grid; gap: var(--sp-4); padding-block: var(--sp-6); border-top: var(--border); }
