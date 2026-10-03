@@ -208,6 +208,14 @@ body.has-bar .storage-controls {
   .phases { gap: var(--sp-5); }
 }
 
+/* Reveal wrappers must not disturb the prompt rhythm. */
+.reveal-wrap { display: grid; }
+
+.show-all {
+  padding-top: var(--sp-5); border-top: var(--border);
+  font-size: var(--step--1);
+}
+
 /* --- Paired inputs (wins, challenges) --- */
 .step-prompts { display: grid; }
 .pair-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }

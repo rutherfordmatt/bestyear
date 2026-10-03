@@ -3,7 +3,9 @@
   Wins (+ what made it possible), challenges (+ what it taught you),
   the six-area life wheel, and the energy audit.
 */
+import { useState } from "preact/hooks";
 import { useStore } from "../lib/use-store.js";
+import Reveal from "./Reveal.jsx";
 import LifeWheelChart from "./LifeWheelChart.jsx";
 import ListInput from "./ListInput.jsx";
 import { LIFE_AREAS } from "../lib/steps.js";
@@ -11,7 +13,26 @@ import Prompt from "./Prompt.jsx";
 
 export default function Step1({ prompts = [] }) {
   const [state, set] = useStore();
+  const [showAll, setShowAll] = useState(false);
   const s = state.step1;
+
+  /*
+    One question at a time: the next prompt arrives once the current one has
+    something in it. "Something" is deliberately loose — one win is enough to
+    move on, so nobody is held up trying to think of a third.
+
+    "Show all questions" is the escape hatch for anyone who would rather see
+    the whole step, or who has nothing to say to a prompt.
+  */
+  const filled = (v) => Boolean(v && String(v).trim());
+  const hasWins = s.wins.some((w) => filled(w.text));
+  const hasChallenges = s.challenges.some((c) => filled(c.text));
+  const hasWheel = Object.values(s.wheel).some((v) => typeof v === "number");
+
+  const showChallenges = showAll || hasWins;
+  const showWheel = showAll || (hasWins && hasChallenges);
+  const showEnergy = showAll || (hasWins && hasChallenges && hasWheel);
+  const allShown = showChallenges && showWheel && showEnergy;
   const byName = (name) => prompts.find((p) => p.name.toLowerCase().includes(name)) || {};
 
   const winsPrompt = byName("wins");
@@ -56,6 +77,7 @@ export default function Step1({ prompts = [] }) {
         </ol>
       </Prompt>
 
+      <Reveal when={showChallenges}>
       <Prompt prompt={challengesPrompt}>
         <ol class="pair-list">
           {s.challenges.map((ch, i) => (
@@ -84,7 +106,9 @@ export default function Step1({ prompts = [] }) {
           ))}
         </ol>
       </Prompt>
+      </Reveal>
 
+      <Reveal when={showWheel}>
       <Prompt prompt={wheelPrompt}>
         <div class="wheel-layout">
           <div class="sliders">
@@ -131,7 +155,9 @@ export default function Step1({ prompts = [] }) {
           </div>
         </div>
       </Prompt>
+      </Reveal>
 
+      <Reveal when={showEnergy}>
       <Prompt prompt={energyPrompt}>
         <div class="energy-grid">
           <div class="field">
@@ -155,6 +181,15 @@ export default function Step1({ prompts = [] }) {
           </div>
         </div>
       </Prompt>
+      </Reveal>
+
+      {!allShown && (
+        <p class="show-all">
+          <button type="button" class="linklike" onClick={() => setShowAll(true)}>
+            Show all questions
+          </button>
+        </p>
+      )}
     </div>
   );
 }
