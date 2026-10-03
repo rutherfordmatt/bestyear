@@ -110,8 +110,7 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 .prompt-question {
   font: 400 1.5rem / 1.25 var(--serif);
   color: var(--ink); text-wrap: balance;
-  display: block;            /* legends and labels use this class too */
-  padding: 0; float: none;   /* reset the <legend> defaults */
+  display: block;            /* <label> uses this class too */
 }
 .prompt-body { display: grid; gap: var(--sp-4); }
 .prompt-with-aside {
@@ -287,8 +286,8 @@ li.reveal-wrap.goal-card { display: grid; }
 .chosen-head b { font-size: 1.05rem; font-weight: 500; }
 .empty-values { font-style: italic; }
 
-fieldset.alignment { border: 0; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
-fieldset.alignment legend { padding: 0; font-size: 0.78rem; color: var(--muted); }
+.alignment { display: grid; gap: var(--sp-2); }
+.alignment-label { font-size: 0.78rem; color: var(--muted); }
 .dial { display: grid; grid-template-columns: repeat(5, 2.6rem); gap: var(--sp-1); }
 .dial-btn {
   min-height: 2.4rem; border: var(--border); background: var(--paper);

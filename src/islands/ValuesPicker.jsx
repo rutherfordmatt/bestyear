@@ -151,9 +151,13 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
                     ×
                   </button>
                 </div>
-                <fieldset class="alignment">
-                  <legend>{prompts.alignment?.question || "How well did it show up?"}</legend>
-                  <div class="dial" role="group">
+                {/* A <legend> sits outside its fieldset's grid flow, so the
+                    gap never applies to it. A labelled group spaces correctly. */}
+                <div class="alignment">
+                  <span class="alignment-label" id={`align-${v.slug}`}>
+                    {prompts.alignment?.question || "How well did it show up?"}
+                  </span>
+                  <div class="dial" role="group" aria-labelledby={`align-${v.slug}`}>
                     {[1, 2, 3, 4, 5].map((n) => (
                       <button
                         key={n}
@@ -170,7 +174,7 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
                       <span>barely</span><span>fully</span>
                     </span>
                   </div>
-                </fieldset>
+                </div>
                 {typeof v.alignment === "number" && v.alignment <= 2 && (
                   <p class="gap-flag">
                     A gap worth watching. This one comes back in Step 4.

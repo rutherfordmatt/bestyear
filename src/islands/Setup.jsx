@@ -25,30 +25,31 @@ export default function Setup({ paceOptions = [], paceQuestion = "", prompt = {}
 
   return (
     <div class="setup">
+      {/* Not a <fieldset>/<legend>: a legend is taken out of the grid flow,
+          so the gap between it and the options never applied and the spacing
+          disagreed with the question below. A labelled group behaves. */}
       <section class="prompt">
-        <fieldset class="pace">
-          <legend class="prompt-question">{paceQuestion}</legend>
-          <div class="pace-options">
-            {paceOptions.map((opt) => (
-              <button
-                key={opt.key}
-                type="button"
-                class="pace-option"
-                aria-pressed={state.pace === opt.key}
-                onClick={() => choosePace(opt.key)}
-              >
-                <b>{opt.title}</b>
-                <span>{opt.body}</span>
-              </button>
-            ))}
-          </div>
-          {state.pace === "daily" && !FEATURES.dailyNudges && (
-            <p class="tip pace-note">
-              Your answers wait on this device — come back to yearwellbuilt.com in
-              the same browser and pick up where you left off.
-            </p>
-          )}
-        </fieldset>
+        <h2 class="prompt-question" id="pace-question">{paceQuestion}</h2>
+        <div class="pace-options" role="group" aria-labelledby="pace-question">
+          {paceOptions.map((opt) => (
+            <button
+              key={opt.key}
+              type="button"
+              class="pace-option"
+              aria-pressed={state.pace === opt.key}
+              onClick={() => choosePace(opt.key)}
+            >
+              <b>{opt.title}</b>
+              <span>{opt.body}</span>
+            </button>
+          ))}
+        </div>
+        {state.pace === "daily" && !FEATURES.dailyNudges && (
+          <p class="tip pace-note">
+            Your answers wait on this device — come back to yearwellbuilt.com in
+            the same browser and pick up where you left off.
+          </p>
+        )}
       </section>
 
       <Reveal when={hasPace}>

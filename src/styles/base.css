@@ -209,7 +209,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
 
 /* --- Setup --- */
 .setup { display: grid; }
-fieldset.pace { border: 0; padding: 0; margin: 0; display: grid; gap: var(--sp-4); }
 .pace-options { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
 .pace-option {
   display: grid; gap: var(--sp-1); text-align: left; cursor: pointer;
