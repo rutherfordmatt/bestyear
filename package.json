@@ -13,7 +13,8 @@
     "test": "node test/journey.mjs && node test/email.mjs",
     "start": "node --env-file-if-exists=.env server/index.js",
     "serve": "npm run build && npm start",
-    "preview:email": "node scripts/preview-email.mjs"
+    "preview:email": "node scripts/preview-email.mjs",
+    "test:browser": "bash scripts/browser-tests.sh"
   },
   "engines": {
     "node": ">=22"
