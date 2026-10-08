@@ -1,13 +1,13 @@
 ---
 import Base from "../../layouts/Base.astro";
 import StepShell from "../../components/StepShell.astro";
-import ValuesPicker from "../../islands/ValuesPicker.jsx";
-import { stepCopy, doc, text, fieldsOf } from "../../lib/content.js";
+import Step2 from "../../islands/Step2.jsx";
+import { stepCopy, doc, text, labelsOf, bulletsOf } from "../../lib/content.js";
 
 const copy = stepCopy(2);
 const d = doc("step-2");
 
-const f = fieldsOf(d, "Values Finder card");
+const f = labelsOf(d, "Values Finder card");
 const card = {
   heading: f.Heading || "Not sure what your values are?",
   body: f.Body || "",
@@ -22,10 +22,23 @@ const prompts = {
   choose: byName("choose"),
   alignment: byName("alignment"),
   gap: byName("gap"),
+  letting: byName("letting go"),
+  closing: byName("one line"),
 };
+
+// The three piles are sub-bullets under the letting-go prompt.
+const bucketLabels = bulletsOf(d, "Prompts", "Prompt 4: Letting go")
+  .map((b) => b.replace(/\*\*/g, "").trim())
+  .filter((b) => /stopping|stepping back|carrying/i.test(b));
 ---
 <Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
   <StepShell step={2}>
-    <ValuesPicker client:load card={card} returnLine={returnLine} prompts={prompts} />
+    <Step2
+      client:load
+      card={card}
+      returnLine={returnLine}
+      prompts={prompts}
+      bucketLabels={bucketLabels}
+    />
   </StepShell>
 </Base>

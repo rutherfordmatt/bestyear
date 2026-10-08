@@ -123,9 +123,9 @@ outcomes. It deserves more than it currently gets.
   print. Typography, hierarchy, and the headline and word as the hero.
 - Check it on paper at A4, not just in the print preview.
 - Make the radar chart print well: it is the one piece of visual interest.
-- Decide whether the printed footer carries anything beyond "Built at
-  yearwellbuilt.com". It is your artefact; a discreet line is reasonable, a
-  marketing block is not.
+- The footer reads "Built at yearwellbuilt.com, part of
+  mattrutherfordcoaching.com", so the artefact carries the practice without
+  turning into an advert.
 
 ### 6. The funnel
 
@@ -181,11 +181,14 @@ coached through it rather than filling in a form.
   sit 180px right of the header.
 - Lighthouse, and a real phone.
 
-## Decisions needed
+## Decisions made (8 October)
 
-1. **The eighth life area** — Purpose (recommended) or Space.
-2. **"Imagine" as the phase name**, replacing "Turn".
-3. **The printed footer** — anything beyond "Built at yearwellbuilt.com"?
+1. **The eighth life area is Purpose.**
+2. **The phase is called Imagine**, not Vision — the other phases are verbs the
+   visitor performs (Look back, Plan, Commit), and "vision" already belongs to
+   the vision document produced at the end.
+3. **The document footer reads** "Built at yearwellbuilt.com, part of
+   mattrutherfordcoaching.com" — so the artefact carries the practice.
 
 ## Deliberately not doing
 

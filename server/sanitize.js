@@ -24,7 +24,7 @@ const list = (v, max) => (Array.isArray(v) ? v.slice(0, max) : []);
 
 const isoDate = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v)) ? String(v) : null);
 
-export const LIFE_AREA_KEYS = ["career", "health", "relationships", "money", "growth", "fun"];
+export const LIFE_AREA_KEYS = ["career", "money", "health", "fun", "family", "friends", "growth", "purpose"];
 const BUCKETS = ["habit", "commitment", "should"];
 const CORNER_KEYS = ["partner", "friend", "colleague", "coach", "group", "alone"];
 
@@ -65,18 +65,19 @@ export function sanitizeAnswers(input) {
       .filter((v) => v.name),
     compromise: text(step2.compromise, 1500),
 
-    lessons: list(step3.lessons, 3).map((l) => text(l, 500)).filter(Boolean),
-    lettingGo: list(step3.lettingGo, 30)
+    // A lesson is what a challenge taught you, captured on the challenge.
+    lessons: list(step1.challenges, 3).map((c) => text(c?.lesson, 500)).filter(Boolean),
+    lettingGo: list(step2.lettingGo, 30)
       .map((l) => ({
         text: text(l?.text, 300),
         bucket: BUCKETS.includes(l?.bucket) ? l.bucket : "habit",
         released: Boolean(l?.releasedAt),
       }))
       .filter((l) => l.text),
-    closingLine: text(step3.closingLine, 400),
+    closingLine: text(step2.closingLine, 400),
 
-    headline: text(step4.headline, 300),
-    detail: text(step4.detail, 2000),
+    headline: text(step3.headline, 300),
+    detail: text(step3.detail, 2000),
     word: text(step4.word, 60),
     themes: list(step4.themes, 3).map((t) => text(t?.text, 200)).filter(Boolean),
 

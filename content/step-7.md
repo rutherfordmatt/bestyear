@@ -2,7 +2,7 @@
 
 Phase: Commit
 
-Status: DRAFT
+Status: LIVE
 
 ## Title
 
@@ -44,8 +44,8 @@ Then give it a life beyond today. A plan you never look at again was just a nice
 
 ## Document sections (order on the page)
 
-1. Hero: the headline from Step 4 and the word for the year ahead
-2. The year behind: word for the year just ended, and the closing line from Step 3
+1. Hero: the headline from Step 3 and the word for the year ahead
+2. The year behind: word for the year just ended, and the closing line from Step 2
 3. Life wheel chart
 4. Values
 5. Lessons carried forward
@@ -55,7 +55,7 @@ Then give it a life beyond today. A plan you never look at again was just a nice
 9. If-then plans
 10. My corner
 11. Note to future self and check-in dates
-12. Footer: Built at yearwellbuilt.com
+12. Footer: Built at yearwellbuilt.com, part of mattrutherfordcoaching.com
 
 ## Actions
 

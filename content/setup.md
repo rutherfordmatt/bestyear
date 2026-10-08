@@ -1,6 +1,6 @@
 # Setup
 
-Status: DRAFT
+Status: LIVE
 
 ## Title
 

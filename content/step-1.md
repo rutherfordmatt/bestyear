@@ -2,7 +2,7 @@
 
 Phase: Look back
 
-Status: DRAFT
+Status: LIVE
 
 ## Title
 
@@ -16,33 +16,39 @@ A clear picture of the year you actually had, not the one you remember.
 
 Most planning starts in the wrong place. It starts with the future.
 
-The trouble is that memory is a poor narrator. It inflates last month, forgets the spring and silently edits out your wins. We start with evidence instead: what went well, what was hard, and where your energy really went.
+The trouble is that memory is a poor narrator. It inflates last month, forgets the spring and silently edits out your wins. So we start with evidence.
+
+We'll begin with a quick read on eight areas of your life, then the detail: what went well, what was hard, and where your energy really went.
 
 Be honest, not harsh. Nobody else will see this. It lives on your device and nowhere else.
 
 ## Prompts
 
-### Prompt 1: Wins
+### Prompt 1: Life wheel
 
-- **Question:** What were your three biggest wins this year?
-- **Follow-up for each:** What made it possible?
-- **Placeholder example:** Finally had the conversation about my role. / I prepared properly and didn't wait for the perfect moment.
-- **Stuck? hint:** Wins don't have to be big. A hard conversation you finally had counts. Scroll back through your calendar or your photos if you're drawing a blank.
-
-### Prompt 2: Challenges
-
-- **Question:** What were the three hardest things you dealt with?
-- **Follow-up for each:** What did it teach you?
-- **Placeholder example:** A project that ran six months late. / I say yes too quickly.
-- **Stuck? hint:** Think about what kept you up at night. You don't need to have solved it to learn from it.
-
-### Prompt 3: Life wheel
 
 - **Question:** How satisfied are you with each area of your life right now?
 - **Placeholder example:** Sliders, 1 to 10 (see life-areas.md)
 - **Stuck? hint:** Go with your first number. You're measuring how it feels, not how it looks.
 
+### Prompt 2: Wins
+
+
+- **Question:** What went well this year?
+- **Follow-up for each:** What made it possible?
+- **Placeholder example:** Finally had the conversation about my role. / I prepared properly and didn't wait for the perfect moment.
+- **Stuck? hint:** One is enough to start, and you can add more. Wins don't have to be big. A hard conversation you finally had counts. Scroll back through your calendar or your photos if you're drawing a blank.
+
+### Prompt 3: Challenges
+
+
+- **Question:** What was hardest?
+- **Follow-up for each:** What did it teach you?
+- **Placeholder example:** A project that ran six months late. / I say yes too quickly.
+- **Stuck? hint:** One is enough to start, and you can add more. Think about what kept you up at night. You don't need to have solved it to learn from it.
+
 ### Prompt 4: Energy audit
+
 
 - **Question:** What gave you energy this year? What drained it?
 - **Placeholder example:** Gave: long walks with no phone. / Drained: back-to-back video calls.
@@ -50,7 +56,7 @@ Be honest, not harsh. Nobody else will see this. It lives on your device and now
 
 ## Transition line
 
-You know where you've been. Next, what actually matters to you, so the year ahead is built on something solid.
+You know where you've been. Next, what actually matters to you — and what you're ready to put down.
 
 ## Optional note (shown softly at the end of this step)
 

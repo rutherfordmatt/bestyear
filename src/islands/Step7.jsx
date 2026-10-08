@@ -33,8 +33,8 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
     set((s) => {
       // An edit to a field that lives on an earlier step writes back to that
       // step, so the plan panel and the email agree with the document.
-      if (field === "headline") s.step4.headline = value;
-      else if (field === "closingLine") s.step3.closingLine = value;
+      if (field === "headline") s.step3.headline = value;
+      else if (field === "closingLine") s.step2.closingLine = value;
       else if (field === "noteToFutureSelf") s.step7.noteToFutureSelf = value;
       else s.step7.overrides[field] = value;
     }, { immediate: true });

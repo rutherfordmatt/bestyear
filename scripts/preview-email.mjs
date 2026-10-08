@@ -12,8 +12,11 @@ const sample = {
   yearEnding: { word: "Rebuilding" },
   step1: {
     wins: [{ text: "Finally had the conversation about my role", enabler: "I prepared properly and didn't wait for the perfect moment" }],
-    challenges: [{ text: "A project that ran six months late", lesson: "I say yes too quickly" }],
-    wheel: { career: 7, health: 3, relationships: 8, money: 6, growth: 5, fun: 2 },
+    challenges: [
+      { text: "A project that ran six months late", lesson: "I do my best work when I protect my mornings" },
+      { text: "Leaving it too long before asking for help", lesson: "Asking for help early saves months" },
+    ],
+    wheel: { career: 7, money: 6, health: 3, fun: 2, family: 8, friends: 5, growth: 6, purpose: 4 },
     energy: { gave: ["Long walks with no phone"], drained: ["Back-to-back video calls"] },
   },
   step2: {
@@ -23,9 +26,6 @@ const sample = {
       { slug: "creativity", name: "Creativity", alignment: 1 },
     ],
     compromise: "I say family comes first, then worked most weekends in the spring.",
-  },
-  step3: {
-    lessons: ["I do my best work when I protect my mornings", "Asking for help early saves months"],
     lettingGo: [
       { text: "Checking my phone in bed", bucket: "habit", releasedAt: "2026-01-01" },
       { text: "Chairing the committee", bucket: "commitment", releasedAt: null },
@@ -33,9 +33,11 @@ const sample = {
     ],
     closingLine: "I learned to ask for help, eventually.",
   },
-  step4: {
+  step3: {
     headline: "Left the job that was draining me, and found my weekends again.",
     detail: "I sleep properly. I see my friends every week. Work feels like mine again.",
+  },
+  step4: {
     word: "Steady",
     themes: [
       { id: "t1", text: "Protect my energy" },

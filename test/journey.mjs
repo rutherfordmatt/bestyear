@@ -32,6 +32,8 @@ s.step1.energy.drained = ["Back-to-back video calls", "Saying yes to everything"
 
 ok("radar plots only rated areas", cf.ratedAreas(s).length === 3);
 ok("wheel reported incomplete", cf.wheelComplete(s) === false);
+ok("the wheel has eight areas", Object.keys(s.step1.wheel).length === 8);
+ok("purpose is one of them", "purpose" in s.step1.wheel);
 ok("lowest areas ordered", cf.lowestAreas(s, 2).map((a) => a.key).join(",") === "fun,health",
   cf.lowestAreas(s, 2).map((a) => `${a.key}:${a.score}`).join(" "));
 
@@ -50,21 +52,24 @@ ok("chosen values get meanings from the shared list",
 const sugg = cf.suggestedLettingGo(s);
 ok("drainers suggested for letting go",
   sugg.some((x) => x.text === "Back-to-back video calls"));
-ok("value gaps suggested for letting go",
-  sugg.filter((x) => x.from.includes("Step 2")).length === 2);
+ok("low-rated values suggested for letting go",
+  sugg.filter((x) => x.from.includes("values you rated low")).length === 2);
 
 const lg = emptyLettingGo("habit");
 lg.text = "Back-to-back video calls";
-s.step3.lettingGo.push(lg);
+s.step2.lettingGo.push(lg);
 ok("an added item stops being suggested",
   !cf.suggestedLettingGo(s).some((x) => x.text === "Back-to-back video calls"));
 
-s.step3.lessons = ["I do my best work when I protect my mornings", "", "Ask for help sooner"];
-s.step3.closingLine = "I learned to ask for help, eventually.";
-ok("blank lessons dropped", cf.lessons(s).length === 2);
+s.step2.closingLine = "I learned to ask for help, eventually.";
+// Lessons are no longer their own prompt: they ride on the challenges.
+s.step1.challenges[0].lesson = "I do my best work when I protect my mornings";
+ok("a lesson comes from its challenge", cf.lessons(s).length === 1);
+ok("the lesson remembers what produced it",
+  cf.lessonsWithSource(s)[0].from === "Project ran six months late");
 
 // --- Step 4 ---
-s.step4.headline = "Left the job that was draining me, and found my weekends again.";
+s.step3.headline = "Left the job that was draining me, and found my weekends again.";
 s.step4.word = "Steady";
 s.step4.themes[0].text = "Protect my energy";
 s.step4.themes[1].text = "Build something of my own";
@@ -106,8 +111,10 @@ const filled = [1, 2, 3, 4, 5, 6, 7].filter((n) => cf.stepHasContent(s, n));
 ok("plan panel sees all seven steps filled", filled.length === 7, `got ${filled.join(",")}`);
 
 // --- "Added to your plan" ---
-ok("step 4 summary names the headline",
-  cf.addedInStep(s, 4).some((x) => x.label === "Your headline"));
+ok("step 3 summary names the headline",
+  cf.addedInStep(s, 3).some((x) => x.label === "Your headline"));
+ok("step 4 summary names the word",
+  cf.addedInStep(s, 4).some((x) => x.label === "Your word"));
 ok("step 2 summary lists the gaps",
   cf.addedInStep(s, 2).find((x) => x.label === "Gaps to watch")?.detail === "Family, Creativity");
 
@@ -135,7 +142,7 @@ ok("server drops unrated wheel areas", clean.wheel.money === null && clean.wheel
 
 // --- Resume: a round trip through JSON must change nothing ---
 const roundTripped = repair(JSON.parse(JSON.stringify(s)));
-ok("round trip preserves the headline", roundTripped.step4.headline === s.step4.headline);
+ok("round trip preserves the headline", roundTripped.step3.headline === s.step3.headline);
 ok("round trip preserves goal ids", roundTripped.step5.goals[0].id === g1.id);
 ok("round trip preserves if-then keys",
   Object.keys(roundTripped.step6.ifThen)[0] === g1.id);

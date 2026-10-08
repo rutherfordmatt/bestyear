@@ -1,5 +1,8 @@
 /*
-  Step 2: values.
+  Step 2: what matters, and what doesn't.
+
+  Values and their alignment, where you compromised one, what you're leaving
+  behind, and the line that closes the chapter.
 
   Three ways in:
   1. Arriving from thevaluesfinder.com with values in the URL fragment.
@@ -14,10 +17,11 @@ import { useStore } from "../lib/use-store.js";
 import { useDisclosure } from "../lib/use-disclosure.js";
 import Reveal from "./Reveal.jsx";
 import ShowAll from "./ShowAll.jsx";
+import LettingGo from "./LettingGo.jsx";
 import { finderLink, consumeIncomingValues, MIN_VALUES, IDEAL_MIN_VALUES, MAX_VALUES } from "../lib/values-link.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
-export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} }) {
+export default function Step2({ card = {}, returnLine = "", prompts = {}, bucketLabels = [] }) {
   const [state, set] = useStore();
   const [families, setFamilies] = useState(null);
   const [query, setQuery] = useState("");
@@ -29,13 +33,18 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
   const chosenSlugs = new Set(chosen.map((v) => v.slug));
   const full = chosen.length >= MAX_VALUES;
 
-  // The gap question only makes sense once there are values, rated — it asks
-  // where you compromised one.
+  /*
+    Values and their ratings, then the gap, then what you're putting down,
+    then the line that closes it. Each arrives once the one before has
+    something in it.
+  */
   const { visible, allShown, showAll } = useDisclosure([
     chosen.length > 0 && chosen.some((v) => typeof v.alignment === "number"),
     Boolean(state.step2.compromise.trim()),
+    state.step2.lettingGo.some((l) => l.text.trim()),
+    Boolean(state.step2.closingLine.trim()),
   ]);
-  const [, showGap] = visible;
+  const [, showGap, showLetting, showClosing] = visible;
 
   // Catch values coming back from the Values Finder.
   useEffect(() => {
@@ -283,6 +292,39 @@ export default function ValuesPicker({ card = {}, returnLine = "", prompts = {} 
           {prompts.gap?.hint && <p class="tip">{prompts.gap.hint}</p>}
         </div>
       </section>
+      </Reveal>
+
+      {/* Letting go */}
+      <Reveal when={showLetting}>
+        <section class="prompt">
+          <div class="prompt-head">
+            <h2 class="prompt-question">{prompts.letting?.question?.split("?")[0]}?</h2>
+          </div>
+          <LettingGo prompt={prompts.letting || {}} bucketLabels={bucketLabels} />
+          {prompts.letting?.hint && <p class="tip">{prompts.letting.hint}</p>}
+        </section>
+      </Reveal>
+
+      {/* The line that closes the chapter */}
+      <Reveal when={showClosing}>
+        <section class="prompt">
+          <div class="prompt-head">
+            <h2 class="prompt-question">{prompts.closing?.question}</h2>
+          </div>
+          <div class="prompt-body">
+            <input
+              type="text"
+              class="closing-line"
+              value={state.step2.closingLine}
+              placeholder={prompts.closing?.example}
+              maxLength={400}
+              aria-label={prompts.closing?.question}
+              onInput={(e) => set((s) => { s.step2.closingLine = e.currentTarget.value; })}
+            />
+            <p class="hint">This becomes the closing quote on your vision document.</p>
+            {prompts.closing?.hint && <p class="tip">{prompts.closing.hint}</p>}
+          </div>
+        </section>
       </Reveal>
 
       <ShowAll allShown={allShown} onShow={showAll} />

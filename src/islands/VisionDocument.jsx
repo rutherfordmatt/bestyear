@@ -61,11 +61,11 @@ export default function VisionDocument({ state, compact = false, editable = fals
     <article class={`vision-doc${compact ? " compact" : ""}`}>
       {/* 1 — Hero */}
       <header class="vd-hero">
-        {has(s.step4.headline) ? (
-          <Editable field="headline" value={s.step4.headline} tag="h2" class="vd-headline" />
+        {has(s.step3.headline) ? (
+          <Editable field="headline" value={s.step3.headline} tag="h2" class="vd-headline" />
         ) : (
           <p class="vd-placeholder vd-headline-empty">
-            Your headline for the year ahead — <a href={pathForStep(4)}>Step 4</a>
+            Your headline for the year ahead — <a href={pathForStep(3)}>Step 3</a>
           </p>
         )}
         {has(s.step4.word) && (
@@ -76,15 +76,15 @@ export default function VisionDocument({ state, compact = false, editable = fals
       </header>
 
       {/* 2 — The year behind */}
-      {(has(s.yearEnding.word) || has(s.step3.closingLine)) && (
+      {(has(s.yearEnding.word) || has(s.step2.closingLine)) && (
         <section class="vd-section vd-behind">
           <h3 class="vd-h">The year behind</h3>
           {has(s.yearEnding.word) && (
             <p class="vd-behind-word">A year of <em>{s.yearEnding.word}</em></p>
           )}
-          {has(s.step3.closingLine) && (
+          {has(s.step2.closingLine) && (
             <blockquote class="vd-quote">
-              <Editable field="closingLine" value={s.step3.closingLine} tag="p" />
+              <Editable field="closingLine" value={s.step2.closingLine} tag="p" />
             </blockquote>
           )}
         </section>
@@ -114,15 +114,15 @@ export default function VisionDocument({ state, compact = false, editable = fals
       </Section>
 
       {/* 5 — Lessons */}
-      <Section title="Lessons I'm carrying forward" step={3} filled={lessons.length > 0} compact={compact}
-               hint="Name what the year taught you">
+      <Section title="Lessons I'm carrying forward" step={1} filled={lessons.length > 0} compact={compact}
+               hint="Say what your challenges taught you">
         <ol class="vd-list">
           {lessons.map((l, i) => <li key={i}>{l}</li>)}
         </ol>
       </Section>
 
       {/* 6 — Leaving behind */}
-      <Section title="Leaving behind" step={3} filled={letting.length > 0} compact={compact}
+      <Section title="Leaving behind" step={2} filled={letting.length > 0} compact={compact}
                hint="Name what you're putting down">
         <ul class="vd-letting">
           {LETTING_GO_BUCKETS.map((bucket) => {
@@ -218,7 +218,7 @@ export default function VisionDocument({ state, compact = false, editable = fals
 
       {!compact && (
         <footer class="vd-footer">
-          <p>Built at yearwellbuilt.com</p>
+          <p>Built at yearwellbuilt.com, part of mattrutherfordcoaching.com</p>
         </footer>
       )}
     </article>

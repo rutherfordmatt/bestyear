@@ -487,3 +487,17 @@ li.reveal-wrap.goal-card { display: grid; }
   .checkin-list li { grid-template-columns: minmax(0, 1fr) auto; }
   .checkin-day { grid-column: 1; grid-row: 2; }
 }
+
+/* --- Step 4: the headline recalled from the step before --- */
+.recall {
+  border-left: 2px solid var(--accent);
+  padding: var(--sp-1) 0 var(--sp-1) var(--sp-4);
+  display: grid; gap: var(--sp-1);
+  max-width: var(--measure);
+}
+.recall-headline {
+  font: 400 1.25rem / 1.3 var(--serif); color: var(--ink); text-wrap: pretty;
+}
+
+/* "Add another" sits quietly under the list it extends. */
+.add-another { justify-self: start; margin-left: calc(-1 * var(--sp-3)); }

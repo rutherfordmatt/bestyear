@@ -1,6 +1,6 @@
 # Emails (sent by Resend from yearwellbuilt.com)
 
-Status: DRAFT
+Status: LIVE
 
 Sender name: Matt at Year Well Built
 
@@ -25,13 +25,13 @@ P.S. We don't keep a copy of this. If you lose the email, it's gone, so save it 
 Sent only to people who chose "one step a day". Address deleted after Step 7.
 
 1. **Subject:** Step 1: The year you had
-   Today's step takes about fifteen minutes. Your wins, your challenges, and where your energy really went. [Carry on]
-2. **Subject:** Step 2: What matters
-   Today is about values. Not sure what yours are? The Values Finder will help, and it feeds straight back in. [Carry on]
-3. **Subject:** Step 3: Close the chapter
-   The step most people skip. What the year taught you, and what you're ready to put down. [Carry on]
-4. **Subject:** Step 4: Picture it first
+   Today's step takes about ten minutes. Eight areas of your life, your wins, what was hard, and where your energy went. [Carry on]
+2. **Subject:** Step 2: What matters, and what doesn't
+   Today is values — and what you're ready to leave behind. Not sure what yours are? The Values Finder will help, and it feeds straight back in. [Carry on]
+3. **Subject:** Step 3: Picture it
    It's a year from now and it's been a great year. Today you write the headline. [Carry on]
+4. **Subject:** Step 4: Your compass
+   One word to carry through the year, and three themes to steer by. [Carry on]
 5. **Subject:** Step 5: Make it real
    Up to three goals, one priority, and the small habit that carries each one. [Carry on]
 6. **Subject:** Step 6: Plan for the bad days

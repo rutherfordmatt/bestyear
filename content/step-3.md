@@ -1,52 +1,43 @@
-# Step 3: Lessons and letting go
+# Step 3: Picture it
 
-Phase: Look back
+Phase: Imagine
 
-Status: DRAFT
+Status: LIVE
 
 ## Title
 
-Close *the chapter*
+*Picture it* first
 
 ## One-line promise
 
-The lessons worth keeping, and a clear list of what you're leaving behind.
+A clear picture of the year you want, before a single goal is set.
 
 ## Intro
 
-Most people skip this bit. They go straight from reviewing the year to planning the next, carrying everything with them.
+It's hard to build something you can't picture.
 
-Every year teaches you something, whether you asked for the lesson or not. It also leaves behind things that no longer fit: habits, commitments, the quiet "shoulds" you picked up along the way.
+So before any goals, imagine it's twelve months from now and it's been a genuinely good year. Not perfect. Good.
 
-Name the lessons so you keep them. Name the rest so you can put it down. You can't make room for a new year while still holding all of the old one.
+What happened? What changed? How do you feel? Write it as though it has already happened — the future is easier to describe in the past tense.
 
 ## Prompts
 
-### Prompt 1: Lessons
+### Prompt 1: The headline
 
-- **Question:** What are three things this year taught you?
-- **Placeholder example:** I do my best work when I protect my mornings.
-- **Stuck? hint:** Look back at your challenges in Step 1. The hardest moments usually carry the clearest lessons.
+- **Question:** It's a year from now, and it's been a great year. Write the headline.
+- **Placeholder example:** Left the job that was draining me, and found my weekends again.
+- **Stuck? hint:** Write it like a friend describing your year to someone else. What would they be most pleased for you about?
 
-### Prompt 2: Letting go
+### Prompt 2: The detail
 
-- **Question:** What are you leaving behind? Sort each one into a pile.
-  - **Habits** I'm stopping
-  - **Commitments** I'm stepping back from
-  - **"Shoulds"** I'm done carrying
-- **Placeholder examples:** Checking my phone in bed. / Chairing the committee. / I should be further along by now.
-- **Stuck? hint:** Your energy drainers from Step 1 are a good place to start. The value gaps from Step 2 are another: what pulled you away from what matters?
-
-### Prompt 3: One line to close
-
-- **Question:** If this year were a chapter in a book, what would the last line be?
-- **Placeholder example:** I learned to ask for help, eventually.
-- **Stuck? hint:** It doesn't need to be tidy or triumphant. It just needs to be true.
+- **Question:** What's different about your life?
+- **Placeholder example:** I sleep properly. I see my friends every week. Work feels like mine again.
+- **Stuck? hint:** Start with your lowest-scoring areas from Step 1. What would a 7 or 8 look like?
 
 ## Transition line
 
-The chapter's closed. Now for the fun part: imagining what comes next.
+That's the year. Now for something to steer by when the detail gets noisy.
 
 ## Interactive output (for reference)
 
-Three lesson cards. A "leaving behind" list, which the visitor can mark as let go with a small, satisfying animation (cards fade or are crossed through). The closing line becomes a quote on the vision document.
+The headline set in large type as a "newspaper from the future" card. The lowest-scoring life wheel areas from Step 1 are shown alongside the detail prompt. The headline becomes the hero of the vision document.

@@ -65,14 +65,25 @@ export function valueGaps(s) {
   );
 }
 
-/* ---------- Step 3 ---------- */
+/* ---------- Lessons ----------
+   No longer a prompt of their own: a lesson is what a challenge taught you,
+   captured on the challenge itself in Step 1. See docs/build-2.md. */
 
 export function lessons(s) {
-  return s.step3.lessons.filter(filled);
+  return s.step1.challenges.map((c) => c.lesson).filter(filled);
 }
 
+/** Lessons paired with the challenge that produced them, for the document. */
+export function lessonsWithSource(s) {
+  return s.step1.challenges
+    .filter((c) => filled(c.lesson))
+    .map((c) => ({ id: c.id, lesson: c.lesson, from: c.text }));
+}
+
+/* ---------- Letting go (Step 2) ---------- */
+
 export function lettingGo(s) {
-  return s.step3.lettingGo.filter((l) => filled(l.text));
+  return s.step2.lettingGo.filter((l) => filled(l.text));
 }
 
 /** Drainers the visitor hasn't already added to their letting-go list. */
@@ -82,7 +93,7 @@ export function suggestedLettingGo(s) {
     ...energyDrainers(s).map((text) => ({ text, from: "Step 1 · energy drainers" })),
     ...valueGaps(s).map((v) => ({
       text: `Whatever pulled me away from ${v.name.toLowerCase()}`,
-      from: "Step 2 · value gaps",
+      from: "the values you rated low",
     })),
   ].filter((item) => !already.has(item.text.trim().toLowerCase()));
 }
@@ -153,10 +164,10 @@ export function wantsCoach(s) {
 /** Has this step got enough in it to count as done? */
 export function stepHasContent(s, n) {
   switch (Number(n)) {
-    case 1: return wins(s).length > 0 || challenges(s).length > 0 || ratedAreas(s).length > 0;
-    case 2: return chosenValues(s).length > 0;
-    case 3: return lessons(s).length > 0 || lettingGo(s).length > 0 || filled(s.step3.closingLine);
-    case 4: return filled(s.step4.headline) || filled(s.step4.word) || themes(s).length > 0;
+    case 1: return ratedAreas(s).length > 0 || wins(s).length > 0 || challenges(s).length > 0;
+    case 2: return chosenValues(s).length > 0 || lettingGo(s).length > 0 || filled(s.step2.closingLine);
+    case 3: return filled(s.step3.headline) || filled(s.step3.detail);
+    case 4: return filled(s.step4.word) || themes(s).length > 0;
     case 5: return goals(s).length > 0;
     case 6: return ifThenPairs(s).length > 0 || s.step6.corner.who.length > 0;
     case 7: return filled(s.step7.noteToFutureSelf) || s.step7.checkIns.length > 0;
@@ -171,23 +182,24 @@ export function addedInStep(s, n) {
 
   switch (Number(n)) {
     case 1:
+      add("Life wheel", ratedAreas(s).length ? `${ratedAreas(s).length} of ${LIFE_AREAS.length} areas rated` : "");
       add("Your wins", wins(s).length ? `${wins(s).length} recorded` : "");
       add("Your challenges", challenges(s).length ? `${challenges(s).length} recorded` : "");
-      add("Life wheel", ratedAreas(s).length ? `${ratedAreas(s).length} of ${LIFE_AREAS.length} areas rated` : "");
+      add("Lessons", lessons(s).length ? `${lessons(s).length} carried forward` : "");
       add("Energy audit", energyGivers(s).length || energyDrainers(s).length
         ? `${energyGivers(s).length} giving, ${energyDrainers(s).length} draining` : "");
       break;
     case 2:
       add("Your values", chosenValues(s).length ? chosenValues(s).map((v) => v.name).join(", ") : "");
       add("Gaps to watch", valueGaps(s).length ? valueGaps(s).map((v) => v.name).join(", ") : "");
+      add("Leaving behind", lettingGo(s).length ? `${lettingGo(s).length} named` : "");
+      add("Closing line", s.step2.closingLine);
       break;
     case 3:
-      add("Lessons", lessons(s).length ? `${lessons(s).length} carried forward` : "");
-      add("Leaving behind", lettingGo(s).length ? `${lettingGo(s).length} named` : "");
-      add("Closing line", s.step3.closingLine);
+      add("Your headline", s.step3.headline);
+      add("The detail", s.step3.detail ? "Written" : "");
       break;
     case 4:
-      add("Your headline", s.step4.headline);
       add("Your word", s.step4.word);
       add("Your themes", themes(s).length ? themes(s).map((t) => t.text).join(" · ") : "");
       break;

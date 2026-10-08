@@ -25,8 +25,8 @@ const TEAL = "#3A6B6B";
 const PALE = "#E6EFEF";
 
 const AREA_NAMES = {
-  career: "Career", health: "Health", relationships: "Relationships",
-  money: "Money", growth: "Growth", fun: "Fun",
+  career: "Career", money: "Money", health: "Health", fun: "Fun",
+  family: "Family", friends: "Friends", growth: "Growth", purpose: "Purpose",
 };
 
 const CORNER_NAMES = {

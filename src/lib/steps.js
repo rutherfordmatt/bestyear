@@ -2,20 +2,27 @@
 // Minutes are rough and only used for "about N min left" on the progress rail.
 
 export const PHASES = [
-  { id: "lookback", name: "Look back", steps: [1, 2, 3] },
-  { id: "turn", name: "Turn", steps: [4] },
+  { id: "lookback", name: "Look back", steps: [1, 2] },
+  { id: "imagine", name: "Imagine", steps: [3, 4] },
   { id: "plan", name: "Plan", steps: [5, 6] },
   { id: "commit", name: "Commit", steps: [7] },
 ];
 
 export const STEPS = [
-  { n: 1, slug: "the-year-you-had", title: "The year you had", short: "The year you had", phase: "lookback", minutes: 12 , blurb: "Wins, challenges, life wheel"},
-  { n: 2, slug: "what-matters", title: "What matters", short: "What matters", phase: "lookback", minutes: 10 , blurb: "Your values, and the gaps"},
-  { n: 3, slug: "lessons-and-letting-go", title: "Lessons and letting go", short: "Lessons", phase: "lookback", minutes: 8 , blurb: "Close the chapter"},
-  { n: 4, slug: "imagine-the-year-ahead", title: "Imagine the year ahead", short: "Imagine", phase: "turn", minutes: 10 , blurb: "Headline, word, themes"},
-  { n: 5, slug: "goals", title: "Goals", short: "Goals", phase: "plan", minutes: 12 , blurb: "Three, with one priority"},
-  { n: 6, slug: "obstacles-and-support", title: "Obstacles and support", short: "Obstacles", phase: "plan", minutes: 8 , blurb: "Plan for the bad days"},
-  { n: 7, slug: "your-year-on-one-page", title: "Your year, on one page", short: "One page", phase: "commit", minutes: 8 , blurb: "Print it, pin it up"},
+  { n: 1, slug: "the-year-you-had", title: "The year you had", short: "The year you had",
+    phase: "lookback", minutes: 11, blurb: "Life wheel, wins, challenges, energy" },
+  { n: 2, slug: "what-matters", title: "What matters, and what doesn't", short: "What matters",
+    phase: "lookback", minutes: 13, blurb: "Your values, and what you're putting down" },
+  { n: 3, slug: "picture-it", title: "Picture it", short: "Picture it",
+    phase: "imagine", minutes: 6, blurb: "The headline from a year ahead" },
+  { n: 4, slug: "your-compass", title: "Your compass", short: "Your compass",
+    phase: "imagine", minutes: 5, blurb: "One word, three themes" },
+  { n: 5, slug: "goals", title: "Goals", short: "Goals",
+    phase: "plan", minutes: 12, blurb: "Three, with one priority" },
+  { n: 6, slug: "obstacles-and-support", title: "Obstacles and support", short: "Obstacles",
+    phase: "plan", minutes: 8, blurb: "Plan for the bad days" },
+  { n: 7, slug: "your-year-on-one-page", title: "Your year, on one page", short: "One page",
+    phase: "commit", minutes: 8, blurb: "Print it, pin it up" },
 ];
 
 export const TOTAL_STEPS = STEPS.length;
@@ -45,13 +52,20 @@ export function timeLeftLabel(completed = []) {
   return `about ${rounded} min left`;
 }
 
+/*
+  Eight areas, in the order they sit on the radar, clockwise from 12 o'clock.
+  Order matters: the 3 and 9 o'clock positions carry the labels that reach
+  furthest sideways, so the shortest names go there.
+*/
 export const LIFE_AREAS = [
   { key: "career", name: "Career", blurb: "Your work, your progress, and whether it still fits" },
-  { key: "health", name: "Health", blurb: "Sleep, movement, food and how your body feels" },
-  { key: "relationships", name: "Relationships", blurb: "Partner, family, friends and the people you lean on" },
   { key: "money", name: "Money", blurb: "How secure and in control you feel, not how much you have" },
-  { key: "growth", name: "Growth", blurb: "Learning, curiosity and becoming more of who you want to be" },
+  { key: "health", name: "Health", blurb: "Sleep, movement, food and how your body feels" },
   { key: "fun", name: "Fun", blurb: "Play, rest, adventure and things done purely for joy" },
+  { key: "family", name: "Family", blurb: "Your partner, children, the people closest to you" },
+  { key: "friends", name: "Friends", blurb: "The wider circle, and feeling part of something" },
+  { key: "growth", name: "Growth", blurb: "Learning, curiosity and becoming more of who you want to be" },
+  { key: "purpose", name: "Purpose", blurb: "Whether what you spend your days on feels like it matters" },
 ];
 
 export const LETTING_GO_BUCKETS = [

@@ -1,6 +1,6 @@
 # Close
 
-Status: DRAFT
+Status: LIVE
 
 ## Congratulations
 

@@ -1,6 +1,6 @@
 # Privacy
 
-Status: DRAFT
+Status: LIVE
 
 ## Short version (landing page and footer)
 

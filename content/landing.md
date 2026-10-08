@@ -1,6 +1,6 @@
 # Landing page
 
-Status: DRAFT
+Status: LIVE
 
 ## Eyebrow
 

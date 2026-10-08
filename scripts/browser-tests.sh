@@ -20,7 +20,8 @@ fi
   --user-data-dir="$PROFILE" --window-size=1280,1000 \
   --no-first-run --no-default-browser-check about:blank > /dev/null 2>&1 &
 CHROME_PID=$!
-trap 'kill $CHROME_PID 2>/dev/null || true; rm -rf "$PROFILE"' EXIT
+# Chrome needs a moment to release the profile before it can be removed.
+trap 'kill $CHROME_PID 2>/dev/null || true; sleep 0.5; rm -rf "$PROFILE" 2>/dev/null || true' EXIT
 
 for _ in $(seq 1 20); do
   curl -sf --max-time 1 "http://127.0.0.1:$PORT/json/version" > /dev/null && break

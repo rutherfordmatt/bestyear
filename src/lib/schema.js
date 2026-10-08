@@ -1,11 +1,21 @@
 // The shape of everything a visitor writes. This object never leaves the
 // browser except when they explicitly ask for it (email, or JSON download).
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 export const STORAGE_KEY = "ywb:v1";
 export const EXPORT_MARKER = "yearwellbuilt";
 
-export const LIFE_AREA_KEYS = ["career", "health", "relationships", "money", "growth", "fun"];
+export const LIFE_AREA_KEYS = ["career", "money", "health", "fun", "family", "friends", "growth", "purpose"];
+
+/*
+  Schema 2 reshaped the journey (see docs/build-2.md):
+    - the duplicated "three lessons" prompt is gone; lessons now come from the
+      "what did it teach you?" follow-up on each challenge
+    - letting go and the closing line moved from step 3 into step 2
+    - the old step 4 split in two: step 3 is the headline and detail,
+      step 4 is the word and the themes
+  Theme ids stay in step4, so goals keep their themeId and nothing orphans.
+*/
 
 /** Short, stable ids for repeatable items. Carry-forward matches on these,
  *  never on text, so editing an answer can't orphan what depends on it. */
@@ -33,15 +43,16 @@ export function emptyState() {
     progress: { furthestStep: 0, completed: [] },
     yearEnding: { word: "" },
     step1: {
-      wins: [emptyWin(), emptyWin(), emptyWin()],
-      challenges: [emptyChallenge(), emptyChallenge(), emptyChallenge()],
+      // One of each to begin with: three is an aspiration, not an entry fee.
+      wins: [emptyWin()],
+      challenges: [emptyChallenge()],
       // null means "not answered yet". The radar plots only answered areas.
       wheel: Object.fromEntries(LIFE_AREA_KEYS.map((k) => [k, null])),
       energy: { gave: [], drained: [] },
     },
-    step2: { values: [], compromise: "" },
-    step3: { lessons: ["", "", ""], lettingGo: [], closingLine: "" },
-    step4: { headline: "", detail: "", word: "", themes: [emptyTheme(), emptyTheme(), emptyTheme()] },
+    step2: { values: [], compromise: "", lettingGo: [], closingLine: "" },
+    step3: { headline: "", detail: "" },
+    step4: { word: "", themes: [emptyTheme(), emptyTheme(), emptyTheme()] },
     step5: { goals: [], priorityGoalId: null },
     step6: { ifThen: {}, corner: { who: [], ask: "" } },
     step7: { overrides: {}, noteToFutureSelf: "", livesAt: "", checkIns: [] },
@@ -90,10 +101,10 @@ export function repair(input) {
   s.step1 = {
     wins: repairList(i1.wins, (w) => w && typeof w === "object"
       ? { id: str(w.id, 40) || newId("win"), text: str(w.text, 500), enabler: str(w.enabler, 500) }
-      : null, { min: 3, max: 10, factory: emptyWin }),
+      : null, { min: 1, max: 3, factory: emptyWin }),
     challenges: repairList(i1.challenges, (c) => c && typeof c === "object"
       ? { id: str(c.id, 40) || newId("ch"), text: str(c.text, 500), lesson: str(c.lesson, 500) }
-      : null, { min: 3, max: 10, factory: emptyChallenge }),
+      : null, { min: 1, max: 3, factory: emptyChallenge }),
     wheel: Object.fromEntries(
       LIFE_AREA_KEYS.map((k) => [k, bounded(i1.wheel?.[k], 1, 10)])
     ),
@@ -115,12 +126,7 @@ export function repair(input) {
       };
     }, { max: 8 }),
     compromise: str(i2.compromise, 1500),
-  };
-
-  const i3 = input.step3 || {};
-  s.step3 = {
-    lessons: [0, 1, 2].map((i) => str(arr(i3.lessons, 3)[i], 500)),
-    lettingGo: repairList(i3.lettingGo, (l) => l && typeof l === "object"
+    lettingGo: repairList(i2.lettingGo, (l) => l && typeof l === "object"
       ? {
           id: str(l.id, 40) || newId("lg"),
           text: str(l.text, 300),
@@ -128,13 +134,17 @@ export function repair(input) {
           releasedAt: typeof l.releasedAt === "string" ? l.releasedAt : null,
         }
       : null, { max: 30 }),
-    closingLine: str(i3.closingLine, 400),
+    closingLine: str(i2.closingLine, 400),
+  };
+
+  const i3 = input.step3 || {};
+  s.step3 = {
+    headline: str(i3.headline, 300),
+    detail: str(i3.detail, 2000),
   };
 
   const i4 = input.step4 || {};
   s.step4 = {
-    headline: str(i4.headline, 300),
-    detail: str(i4.detail, 2000),
     word: str(i4.word, 60),
     themes: repairList(i4.themes, (t) => t && typeof t === "object"
       ? { id: str(t.id, 40) || newId("th"), text: str(t.text, 200) }
@@ -190,6 +200,49 @@ export function repair(input) {
   return s;
 }
 
+/**
+ * Schema 1 to 2. The journey was reshaped, so saved answers have to move with
+ * it — see docs/build-2.md.
+ *
+ * Nothing is thrown away except the lessons list, and only because the same
+ * material now lives on the challenges that produced it. If a v1 save has
+ * lessons that don't match any challenge, they are carried onto challenges
+ * that have none, so a visitor mid-journey doesn't lose words they wrote.
+ */
+function v1ToV2(input) {
+  const old3 = input.step3 || {};
+  const old4 = input.step4 || {};
+
+  const challenges = Array.isArray(input.step1?.challenges) ? [...input.step1.challenges] : [];
+  const orphanLessons = (Array.isArray(old3.lessons) ? old3.lessons : [])
+    .map((l) => String(l ?? "").trim())
+    .filter(Boolean)
+    .filter((l) => !challenges.some((c) => String(c?.lesson ?? "").trim() === l));
+  for (const c of challenges) {
+    if (!orphanLessons.length) break;
+    if (!String(c?.lesson ?? "").trim()) c.lesson = orphanLessons.shift();
+  }
+  // Anything still unplaced joins the last challenge rather than being lost:
+  // a visitor must never find words they wrote have quietly vanished.
+  if (orphanLessons.length && challenges.length) {
+    const last = challenges[challenges.length - 1];
+    last.lesson = [last.lesson, ...orphanLessons].filter(Boolean).join(" · ");
+  }
+
+  return {
+    ...input,
+    schema: 2,
+    step1: { ...(input.step1 || {}), challenges },
+    step2: {
+      ...(input.step2 || {}),
+      lettingGo: old3.lettingGo || [],
+      closingLine: old3.closingLine || "",
+    },
+    step3: { headline: old4.headline || "", detail: old4.detail || "" },
+    step4: { word: old4.word || "", themes: old4.themes || [] },
+  };
+}
+
 /** Migrate older saves forward. Each step is one version hop. */
 export function migrate(input) {
   if (!input || typeof input !== "object") return { state: emptyState(), migrated: false };
@@ -201,8 +254,7 @@ export function migrate(input) {
   }
 
   let data = input;
-  // No migrations yet — version 1 is the first public schema.
-  // Future hops go here:  if (version < 2) { data = v1ToV2(data); }
+  if (version < 2) data = v1ToV2(data);
 
   return { state: repair(data), migrated: version !== SCHEMA_VERSION };
 }

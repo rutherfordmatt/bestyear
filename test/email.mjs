@@ -11,8 +11,9 @@ const hostile = {
   yearEnding: { word: "<img src=x onerror=alert(1)>" },
   step1: {
     wins: [{ text: "Had the conversation", enabler: "Prepared properly" }],
-    challenges: [{ text: "Project ran late", lesson: "I say yes too quickly" }],
-    wheel: { career: 7, health: 3, relationships: 99, money: null, growth: "4", fun: 2 },
+    challenges: [{ text: "Project ran late", lesson: "I say yes too quickly" },
+                 { text: "Asked for help late", lesson: "Protect my mornings" }],
+    wheel: { career: 7, money: null, health: 3, fun: 2, family: 99, friends: "4", growth: 6, purpose: 5 },
     energy: { gave: ["Long walks"], drained: ["Back-to-back calls"] },
   },
   step2: {
@@ -21,16 +22,15 @@ const hostile = {
       { slug: "family", name: "</td></tr><script>bad()</script>", alignment: 1 },
     ],
     compromise: "Worked most weekends",
-  },
-  step3: {
-    lessons: ["Protect my mornings", "", "Ask for help"],
     lettingGo: [{ text: "Phone in bed", bucket: "habit", releasedAt: "2026-01-01" },
                 { text: "The committee", bucket: "commitment", releasedAt: null }],
     closingLine: "I learned to ask for help, eventually.",
   },
-  step4: {
+  step3: {
     headline: "Left the job that was draining me \"&\" found my weekends",
     detail: "I sleep properly.",
+  },
+  step4: {
     word: "Steady",
     themes: [{ id: "t1", text: "Protect my energy" }, { id: "t2", text: "Build something of my own" }],
   },
