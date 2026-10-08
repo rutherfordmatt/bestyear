@@ -12,6 +12,7 @@ import Prompt from "./Prompt.jsx";
 import { themes as themesOf, chosenValues } from "../lib/carry-forward.js";
 import { emptyGoal } from "../lib/schema.js";
 import { pathForStep } from "../lib/steps.js";
+import { monthOptions } from "../lib/dates.js";
 
 export default function Step5({ prompts = [] }) {
   const [state, set] = useStore();
@@ -78,6 +79,7 @@ export default function Step5({ prompts = [] }) {
     ...themes.map((t) => filled(goalFor(t)?.done)),
   ]);
   const anyGoal = themes.some((t) => filled(goalFor(t)?.done));
+  const months = monthOptions();
 
   const q = {
     done: byName("what done"),
@@ -127,6 +129,7 @@ export default function Step5({ prompts = [] }) {
               <div class="goal-fields">
                 <div class="field">
                   <label for={`done-${goal.id}`}>{q.done.question}</label>
+                  {i === 0 && q.done.hint && <p class="tip">{q.done.hint}</p>}
                   <input
                     id={`done-${goal.id}`} type="text" value={goal.done}
                     placeholder={i === 0 ? q.done.example : ""} maxLength={500}
@@ -136,6 +139,7 @@ export default function Step5({ prompts = [] }) {
 
                 <div class="field">
                   <label for={`value-${goal.id}`}>{q.why.question}</label>
+                  {i === 0 && q.why.hint && <p class="tip">{q.why.hint}</p>}
                   <select
                     id={`value-${goal.id}`}
                     value={goal.valueSlug || ""}
@@ -156,15 +160,8 @@ export default function Step5({ prompts = [] }) {
                 </div>
 
                 <div class="field">
-                  <label for={`date-${goal.id}`}>{q.date.question}</label>
-                  <input
-                    id={`date-${goal.id}`} type="date" value={goal.date}
-                    onInput={(e) => setGoal(goal.id, "date", e.currentTarget.value)}
-                  />
-                </div>
-
-                <div class="field">
                   <label for={`habit-${goal.id}`}>{q.habit.question}</label>
+                  {i === 0 && q.habit.hint && <p class="tip">{q.habit.hint}</p>}
                   <input
                     id={`habit-${goal.id}`} type="text" value={goal.habit}
                     placeholder={i === 0 ? q.habit.example : ""} maxLength={400}
@@ -174,11 +171,29 @@ export default function Step5({ prompts = [] }) {
 
                 <div class="field">
                   <label for={`first-${goal.id}`}>{q.first.question}</label>
+                  {i === 0 && q.first.hint && <p class="tip">{q.first.hint}</p>}
                   <input
                     id={`first-${goal.id}`} type="text" value={goal.firstStep}
                     placeholder={i === 0 ? q.first.example : ""} maxLength={400}
                     onInput={(e) => setGoal(goal.id, "firstStep", e.currentTarget.value)}
                   />
+                </div>
+
+                {/* Last, and a month rather than a day: this is annual
+                    visioning, and an exact date is false precision. */}
+                <div class="field field-inline">
+                  <label for={`date-${goal.id}`}>{q.date.question}</label>
+                  <select
+                    id={`date-${goal.id}`}
+                    class="month-select"
+                    value={goal.date}
+                    onChange={(e) => setGoal(goal.id, "date", e.currentTarget.value)}
+                  >
+                    <option value="">No date yet</option>
+                    {months.map((m) => (
+                      <option key={m.value} value={m.value}>{m.label}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </Reveal>

@@ -10,6 +10,7 @@ import { useDisclosure } from "../lib/use-disclosure.js";
 import Reveal from "./Reveal.jsx";
 import ShowAll from "./ShowAll.jsx";
 import Prompt from "./Prompt.jsx";
+import { emptyTheme } from "../lib/schema.js";
 
 export default function Step4({ prompts = [] }) {
   const [state, set] = useStore();
@@ -23,12 +24,26 @@ export default function Step4({ prompts = [] }) {
   ]);
   const [, showThemes] = visible;
 
+  // Themes cap at three because goals map one-to-one onto them, but one is
+  // enough to move on. Same rule as the wins and challenges in Step 1.
+  const shownThemes = Math.max(1, s.themes.findLastIndex((t) => filled(t.text)) + 2);
+  const addTheme = () =>
+    set((st) => {
+      const blank = st.step4.themes.find((t) => !filled(t.text));
+      if (!blank) st.step4.themes.push(emptyTheme());
+    });
+
   return (
     <div class="step-prompts">
       {filled(state.step3.headline) && (
-        <aside class="recall" aria-label="Your headline, from the last step">
-          <p class="label">The year you just pictured</p>
+        <aside class="from-step recall" aria-label="Your headline, from Step 3">
+          <p class="from-step-head">
+            <span class="label">From Step 3</span>
+            <a href="/step/3" class="from-step-edit">Edit</a>
+          </p>
+          <h3>The year you pictured</h3>
           <p class="recall-headline">{state.step3.headline}</p>
+          <p class="from-step-note">Your word and themes are what get you there.</p>
         </aside>
       )}
 
@@ -50,7 +65,7 @@ export default function Step4({ prompts = [] }) {
       <Reveal when={showThemes}>
         <Prompt prompt={byName("themes")} from="valueGaps">
           <ol class="theme-list">
-            {s.themes.map((theme, i) => (
+            {s.themes.slice(0, Math.min(shownThemes, 3)).map((theme, i) => (
               <li key={theme.id} class="theme-row">
                 <span class="theme-n" aria-hidden="true">{i + 1}</span>
                 <input
@@ -67,7 +82,12 @@ export default function Step4({ prompts = [] }) {
               </li>
             ))}
           </ol>
-          <p class="hint">Each theme becomes a goal card in the next step.</p>
+          {Math.min(shownThemes, 3) < 3 && (
+            <button type="button" class="btn small text add-another" onClick={addTheme}>
+              + Add another theme
+            </button>
+          )}
+          <p class="hint">Each theme becomes a goal card in the next step. One is enough to carry on.</p>
         </Prompt>
       </Reveal>
 

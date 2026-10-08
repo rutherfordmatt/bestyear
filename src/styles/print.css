@@ -1,62 +1,144 @@
 /*
-  Print stylesheet — the vision document is the hero.
+  Print: the plan on a page.
+
+  This is the artefact — the thing someone pins up — so printing is not "the
+  web page, on paper". Everything except the vision document is removed, the
+  document is reset to print type sizes, and the sections flow in two columns
+  under a full-width hero so a normal plan lands on one sheet.
+
   Always light, regardless of any future theme setting.
 */
 
 @media print {
-  @page { size: A4 portrait; margin: 14mm 14mm 12mm; }
+  @page { size: A4 portrait; margin: 10mm; }
 
   :root {
     --ground: #FFFFFF;
     --ground-alt: #FFFFFF;
     --paper: #FFFFFF;
     --ink: #000000;
-    --muted: #444444;
-    --faint: #777777;
-    --line: #CCCCCC;
+    --muted: #3A3A3A;
+    --faint: #6A6A6A;
+    --faint-ui: #8A8A8A;
+    --line: #CFCFCF;
     --accent: #2F5858;
     --accent-dark: #2F5858;
     --accent-pale: #FFFFFF;
+    --placeholder: transparent;   /* never print an example as if it were an answer */
     --shadow-card: none;
     --shadow-paper: none;
   }
 
-  /* The bar is hidden in print, so its spacer must go too. */
+  html { scrollbar-gutter: auto; }
+
   body, body.has-bar {
     background: #FFFFFF !important;
     color: #000000 !important;
     padding: 0 !important;
-    font-size: 11pt;
-    line-height: 1.5;
+    margin: 0 !important;
+    font-size: 9pt;
+    line-height: 1.4;
   }
 
-  /* Chrome off: everything that isn't the document itself. */
-  header.site, footer.site, .phase-rail, .bar, .storage-controls,
-  .no-print, .skip, nav, .tip, .from-step, .step-summary,
-  button, .btn, form, input, textarea, select {
+  /* --- Everything that isn't the document, gone ---
+     Stated as a single rule about the document rather than as a path down to
+     it: islands are wrapped in <astro-island>, so any hand-written chain of
+     "> child" selectors breaks silently and takes the document with it.
+     Hide every element that is not the document, not inside it, and not an
+     ancestor of it. */
+  body *:not(.vision-doc):not(.vision-doc *):not(:has(.vision-doc)) {
     display: none !important;
   }
 
-  main { padding: 0 !important; max-width: none !important; }
+  main, .step-main, .step-layout {
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 
-  .vision-doc {
+  /* The document's wrapper section keeps the on-screen prompt padding and
+     hairline, which alone was enough to push the page over. */
+  .doc-section, .prompt {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    gap: 0 !important;
+  }
+
+  .doc-holder {
     box-shadow: none !important;
     border: 0 !important;
     padding: 0 !important;
+    margin: 0 !important;
     max-width: none !important;
+    width: auto !important;
   }
 
-  /* The document's own editable fields print as plain text. */
-  .vision-doc [contenteditable] { border: 0 !important; background: none !important; }
+  /* --- The document itself --- */
+  .vision-doc {
+    display: block !important;
+    column-count: 2;
+    column-gap: 8mm;
+    column-fill: balance;
+    orphans: 3;
+    widows: 3;
+  }
 
-  /* Keep sections whole where we can. */
-  .vision-doc section, .vision-doc .goal, .vision-doc .if-then { break-inside: avoid; }
-  .vision-doc h2, .vision-doc h3 { break-after: avoid; }
-  .vision-doc .hero { break-after: avoid; }
+  /* The hero and the footer run the full width of the page. */
+  .vd-hero { column-span: all; break-inside: avoid; }
+  /* The footer does NOT span: a second column-span: all inside a multicol
+     container forces Chrome to fragment and spills onto a second sheet. */
+  .vd-footer { break-inside: avoid; }
+
+  .vd-hero { margin-bottom: 4mm; padding-bottom: 2.5mm; border-bottom: 1px solid var(--line); }
+  .vd-headline { font-size: 20pt !important; line-height: 1.08; margin: 0 0 1.5mm; }
+  .vd-word { font-size: 9pt; }
+  .vd-word em { font-size: 13pt; }
+
+  .vd-section {
+    break-inside: avoid;
+    padding-top: 2mm;
+    margin-bottom: 2mm;
+    gap: 1.2mm;
+  }
+  .vd-h { font-size: 7pt; letter-spacing: 0.14em; margin-bottom: 1mm; }
+  .vd-quote { font-size: 10pt; padding-left: 3mm; }
+
+  /* Only the answered areas are worth the ink. */
+  .wheel-figure { justify-items: start; }
+  .wheel { width: 54mm !important; height: auto !important; }
+  .wheel-label { font-size: 6pt; }
+  .wheel-figure figcaption { display: none; }
+
+  .vd-values li, .vd-list li, .vd-themes li, .vd-dates li { font-size: 9pt; }
+  .vd-goals { gap: 2.5mm; }
+  .vd-goals .goal { break-inside: avoid; gap: 0.8mm; }
+  .vd-goal-head b { font-size: 10pt; }
+  /* Label inline rather than in its own column: "FIRST STEP" was wrapping to
+     two lines and taking a third of the width with it. */
+  .vd-goal-line { display: block; margin-top: 0.5mm; }
+  .vd-goal-line span {
+    display: inline; margin-right: 1.5mm; font-size: 6.5pt; letter-spacing: 0.1em;
+  }
+  .vd-ifthen .if-then { break-inside: avoid; }
+
+  .vd-footer {
+    margin-top: 4mm; padding-top: 2mm;
+    border-top: 1px solid var(--line);
+    font-size: 6.5pt; letter-spacing: 0.06em;
+  }
+
+  /* Editable fields print as plain text, with no hint of being inputs. */
+  .vision-doc [contenteditable] {
+    box-shadow: none !important;
+    background: none !important;
+    border: 0 !important;
+  }
+
+  /* Placeholders for unanswered sections have no business on paper. */
+  .vd-empty, .vd-placeholder { display: none !important; }
 
   a { text-decoration: none; color: #000000 !important; }
-  /* Don't litter the page with URLs, except the footer's one credit. */
   a[href]::after { content: ""; }
-
-  .page-break { break-before: page; }
 }

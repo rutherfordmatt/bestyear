@@ -163,7 +163,7 @@ export default function VisionDocument({ state, compact = false, editable = fals
                 <p class="vd-goal-meta">
                   {theme && <span>{theme.text}</span>}
                   {value && <span>{value.name}</span>}
-                  {has(g.date) && <span>by {formatDate(g.date)}</span>}
+                  {has(g.date) && <span>{formatDate(g.date)}</span>}
                 </p>
                 {has(g.why) && <p class="vd-goal-why">{g.why}</p>}
                 {has(g.habit) && <p class="vd-goal-line"><span>Habit</span> {g.habit}</p>}

@@ -52,7 +52,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
 
   return (
     <div class="step7">
-      <section class="prompt">
+      <section class="prompt doc-section">
         <div class="prompt-head">
           <h2 class="prompt-question">{byName("review").question || "Does this sound like you?"}</h2>
           <p class="note">Click any line to edit it. This is exactly what prints.</p>
@@ -75,6 +75,7 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{notePrompt.question}</h2>
+          {notePrompt.hint && <p class="tip">{notePrompt.hint}</p>}
         </div>
         <div class="prompt-body">
           <input
@@ -86,7 +87,6 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
             aria-label={notePrompt.question}
             onInput={(e) => set((s) => { s.step7.noteToFutureSelf = e.currentTarget.value; })}
           />
-          {notePrompt.hint && <p class="tip">{notePrompt.hint}</p>}
         </div>
       </section>
 

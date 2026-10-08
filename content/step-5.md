@@ -38,9 +38,9 @@ Then you choose the one that matters most.
 
 ### Prompt 3: By when
 
-- **Question:** When will you have done it?
+- **Question:** Which month will you have done it by?
 - **Placeholder example:** End of June
-- **Stuck? hint:** Pick a date that makes you slightly nervous but not panicked.
+- **Stuck? hint:** Pick a month that makes you slightly nervous but not panicked. A year is long enough that the month matters and the day doesn't.
 
 ### Prompt 4: The habit that carries it
 

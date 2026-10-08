@@ -47,6 +47,14 @@ const section = (title, inner) =>
 const para = (t, extra = "") =>
   `<p style="font:15px/1.7 ${SANS};color:${INK};margin:0 ${extra}">${esc(t)}</p>`;
 
+/** Goal targets are months ("YYYY-MM"), not days. */
+function formatGoalDate(value) {
+  const m = /^(\d{4})-(\d{2})$/.exec(String(value));
+  if (!m) return String(value || "");
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, 1);
+  return `End of ${d.toLocaleDateString("en-IE", { month: "long", year: "numeric" })}`;
+}
+
 function formatDate(iso, opts) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(iso))) return String(iso || "");
   const d = new Date(`${iso}T12:00:00`);
@@ -149,7 +157,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
   const goals = a.goals.length
     ? a.goals
         .map((g) => {
-          const meta = [g.theme, g.value, g.date ? `by ${formatDate(g.date, { day: "numeric", month: "long" })}` : ""]
+          const meta = [g.theme, g.value, g.date ? formatGoalDate(g.date) : ""]
             .filter(Boolean)
             .map(esc)
             .join(" &middot; ");
@@ -256,7 +264,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
     t.push("MY GOALS");
     a.goals.forEach((g) => {
       t.push(`  ${g.priority ? "* " : ""}${g.done}`);
-      const meta = [g.theme, g.value, g.date ? `by ${formatDate(g.date, { day: "numeric", month: "long" })}` : ""].filter(Boolean);
+      const meta = [g.theme, g.value, g.date ? formatGoalDate(g.date) : ""].filter(Boolean);
       if (meta.length) t.push(`      ${meta.join(" | ")}`);
       if (g.why) t.push(`      Why: ${g.why}`);
       if (g.habit) t.push(`      Habit: ${g.habit}`);

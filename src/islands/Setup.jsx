@@ -55,6 +55,7 @@ export default function Setup({ paceOptions = [], paceQuestion = "", prompt = {}
       <Reveal when={hasPace}>
         <section class="prompt">
           <label class="prompt-question" for="year-word">{prompt.question}</label>
+          {prompt.hint && <p class="tip">{prompt.hint}</p>}
           <input
             id="year-word"
             type="text"
@@ -65,7 +66,6 @@ export default function Setup({ paceOptions = [], paceQuestion = "", prompt = {}
             autoComplete="off"
             onInput={(e) => set((s) => { s.yearEnding.word = e.currentTarget.value; })}
           />
-          {prompt.hint && <p class="tip">{prompt.hint}</p>}
         </section>
       </Reveal>
 

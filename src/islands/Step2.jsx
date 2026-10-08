@@ -12,7 +12,7 @@
 
   The list is loaded on demand so it isn't in the initial payload.
 */
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { useStore } from "../lib/use-store.js";
 import { useDisclosure } from "../lib/use-disclosure.js";
 import Reveal from "./Reveal.jsx";
@@ -38,8 +38,11 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
     then the line that closes it. Each arrives once the one before has
     something in it.
   */
+  const allRated = chosen.length > 0 && chosen.every((v) => typeof v.alignment === "number");
   const { visible, allShown, showAll } = useDisclosure([
-    chosen.length > 0 && chosen.some((v) => typeof v.alignment === "number"),
+    // EVERY value rated, not just one. Unlocking on the first score sent the
+    // page to the bottom while the visitor was still working down the list.
+    allRated,
     Boolean(state.step2.compromise.trim()),
     state.step2.lettingGo.some((l) => l.text.trim()),
     Boolean(state.step2.closingLine.trim()),
@@ -63,6 +66,20 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
   }, []);
 
   const [valueCount, setValueCount] = useState(null);
+
+  const chosenRef = useRef(null);
+
+  const closePicker = () => {
+    setOpen(false);
+    // The chosen values sit above the picker, so returning there is the
+    // difference between "now score them" and "now go and find them".
+    requestAnimationFrame(() => {
+      chosenRef.current?.scrollIntoView({
+        behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  };
 
   const loadList = async () => {
     setOpen(true);
@@ -139,10 +156,15 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
       )}
 
       {/* Chosen values, with alignment */}
-      <section class="prompt">
+      <section class="prompt" ref={chosenRef}>
         <div class="prompt-head">
           <h2 class="prompt-question">{prompts.choose?.question}</h2>
-          <p class="note" aria-live="polite">{countLabel(chosen.length)}</p>
+          {prompts.choose?.hint && <p class="tip">{prompts.choose.hint}</p>}
+          <p class="note" aria-live="polite">
+            {chosen.length > 0 && !allRated
+              ? `${chosen.filter((v) => typeof v.alignment !== "number").length} left to score`
+              : countLabel(chosen.length)}
+          </p>
         </div>
 
         {chosen.length > 0 ? (
@@ -201,8 +223,6 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
             {chosen.length ? "Add or swap values" : "Pick from the list"}
           </button>
         </div>
-
-        {prompts.choose?.hint && <p class="tip">{prompts.choose.hint}</p>}
       </section>
 
       {/* The pick-list: 155 values, searchable, grouped by family */}
@@ -219,7 +239,9 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
             <p class="note" aria-live="polite">
               {families ? `${matchCount} shown · ${countLabel(chosen.length)}` : "Loading…"}
             </p>
-            <button type="button" class="btn small text" onClick={() => setOpen(false)}>Done</button>
+            <button type="button" class="btn small primary" onClick={closePicker}>
+              Done — score them
+            </button>
           </div>
 
           {families && matches.map((family) => (
@@ -280,6 +302,7 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{prompts.gap?.question}</h2>
+          {prompts.gap?.hint && <p class="tip">{prompts.gap.hint}</p>}
         </div>
         <div class="prompt-body">
           <textarea
@@ -289,7 +312,6 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
             aria-label={prompts.gap?.question}
             onInput={(e) => set((s) => { s.step2.compromise = e.currentTarget.value; })}
           ></textarea>
-          {prompts.gap?.hint && <p class="tip">{prompts.gap.hint}</p>}
         </div>
       </section>
       </Reveal>
@@ -299,9 +321,9 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
         <section class="prompt">
           <div class="prompt-head">
             <h2 class="prompt-question">{prompts.letting?.question?.split("?")[0]}?</h2>
+            {prompts.letting?.hint && <p class="tip">{prompts.letting.hint}</p>}
           </div>
           <LettingGo prompt={prompts.letting || {}} bucketLabels={bucketLabels} />
-          {prompts.letting?.hint && <p class="tip">{prompts.letting.hint}</p>}
         </section>
       </Reveal>
 
@@ -310,6 +332,7 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
         <section class="prompt">
           <div class="prompt-head">
             <h2 class="prompt-question">{prompts.closing?.question}</h2>
+            {prompts.closing?.hint && <p class="tip">{prompts.closing.hint}</p>}
           </div>
           <div class="prompt-body">
             <input
@@ -322,7 +345,6 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
               onInput={(e) => set((s) => { s.step2.closingLine = e.currentTarget.value; })}
             />
             <p class="hint">This becomes the closing quote on your vision document.</p>
-            {prompts.closing?.hint && <p class="tip">{prompts.closing.hint}</p>}
           </div>
         </section>
       </Reveal>

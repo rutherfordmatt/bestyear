@@ -31,3 +31,5 @@ done
 node test/browser/audit.mjs
 echo
 node test/browser/workflow.mjs
+echo
+node test/browser/print.mjs

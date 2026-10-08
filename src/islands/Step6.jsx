@@ -57,7 +57,8 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
       <section class="prompt">
         <div class="prompt-head">
           <h2 class="prompt-question">{ifPrompt.question || "What's most likely to get in the way?"}</h2>
-          <p class="note">One for each goal. Be specific about the trigger.</p>
+          <p class="note">One for each goal.</p>
+          {ifPrompt.hint && <p class="tip">{ifPrompt.hint}</p>}
         </div>
 
         {goals.length === 0 ? (
@@ -104,8 +105,6 @@ export default function Step6({ prompts = [], coachNote = "", cornerOptions = []
             })}
           </ul>
         )}
-
-        {ifPrompt.hint && <p class="tip">{ifPrompt.hint}</p>}
       </section>
 
       <Reveal when={showCorner}>

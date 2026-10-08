@@ -5,12 +5,37 @@
 
 const LOCALE = "en-IE";
 
-/** "End of June" style short form for a goal date (an ISO date or free text). */
-export function formatDate(value) {
+/*
+  Goal targets are months, not days. This is annual visioning: "by the end of
+  June" is a commitment someone can feel, and 23 June is false precision that
+  invites fiddling with a date picker instead of thinking about the goal.
+  Stored as "YYYY-MM".
+*/
+
+/** "End of June" / "End of June 2027" if it isn't the coming twelve months. */
+export function formatDate(value, from = new Date()) {
   if (!value) return "";
+  const m = /^(\d{4})-(\d{2})$/.exec(String(value));
+  if (m) {
+    const d = new Date(Number(m[1]), Number(m[2]) - 1, 1);
+    const sameYear = d.getFullYear() === from.getFullYear();
+    return `End of ${d.toLocaleDateString(LOCALE, { month: "long", ...(sameYear ? {} : { year: "numeric" }) })}`;
+  }
+  // Tolerate full dates from saves made before months replaced them.
   const d = parseISO(value);
   if (!d) return String(value);
-  return d.toLocaleDateString(LOCALE, { day: "numeric", month: "long" });
+  return `End of ${d.toLocaleDateString(LOCALE, { month: "long" })}`;
+}
+
+/** The next twelve months, as { value: "YYYY-MM", label: "End of June" }. */
+export function monthOptions(from = new Date(), count = 12) {
+  const out = [];
+  for (let i = 1; i <= count; i += 1) {
+    const d = addMonths(from, i);
+    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    out.push({ value, label: formatDate(value, from) });
+  }
+  return out;
 }
 
 /** "Monday 6 January" — used for check-in dates. */

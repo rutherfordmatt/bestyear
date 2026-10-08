@@ -23,6 +23,20 @@ export async function connect(port = 9333) {
     async viewport(width, height = 1000) {
       await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: false });
     },
+    /**
+     * Put answers in localStorage BEFORE any page script runs.
+     * Seeding after load is always too late: storage.js caches state in
+     * memory on first read, so a later setItem is ignored and then
+     * overwritten by the next save.
+     */
+    async seed(stateObject) {
+      const source = `try { localStorage.setItem("ywb:v1", ${JSON.stringify(JSON.stringify(stateObject))}); } catch (e) {}`;
+      const { result } = await send("Page.addScriptToEvaluateOnNewDocument", { source });
+      return result?.identifier;
+    },
+    async unseed(identifier) {
+      if (identifier) await send("Page.removeScriptToEvaluateOnNewDocument", { identifier });
+    },
     async goto(url, settle = 700) {
       await send("Page.navigate", { url });
       await new Promise((r) => setTimeout(r, settle));
