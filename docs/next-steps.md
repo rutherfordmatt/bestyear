@@ -1,6 +1,6 @@
 # What's left
 
-As of 14 October 2026. Scope and decisions live in `docs/plan.md`; this is the
+As of 14 October 2026, end of the card-deck polish session. Scope and decisions live in `docs/plan.md`; this is the
 working list of what remains.
 
 The MVP journey is built and working end to end locally: landing, setup, steps
@@ -32,7 +32,33 @@ deploy, which blocks testing with real people.
       security-relevant: the return URL needs validating against an origin
       allowlist, or it's an open redirect.
 
-## 2. Build work remaining
+## 2. Waiting on Matt's next pass
+
+He walked the deck on the evening of 14 October and these came out of it,
+all fixed and pushed: the footings merged into one footer, the deck nav
+anchored above it, setup's two opening cards merged, the deck no longer
+sliding while you type, the life wheel four-and-four with the shape below,
+the values scored on the wheel's own slider with an × to un-pick, every
+moment card using one field treatment, goal cards naming their theme and
+asking for a commitment rather than six fields, one spacing rhythm inside a
+card, Back going back one card across steps, and Save as PDF printing the
+whole plan instead of blank pages.
+
+Open from that session:
+
+- [ ] **The hand-over dot appears mid-typing.** On 0.2 the third dot arrives
+      with the first keystroke, because the hand-over card only exists once
+      there is a word. The alternative is to always show it and have it read
+      differently when empty. Matt has seen it; no decision yet.
+- [ ] **Unscored values on the plan.** The document prints "lived it n/5"
+      only for values that were scored. Matt noticed the gap — worth asking
+      whether an unscored value should say so.
+- [ ] **Inline editing on the document.** Two lines are editable (the
+      headline and the closing line) and nothing else. The affordance is
+      quiet now and the guidance is honest, but the feature is still odd:
+      either make everything editable or nothing.
+
+## 3. Build work remaining
 
 Short. The two rebuild passes in `docs/build-2.md` and `docs/build-3.md` are
 done: the journey is rebalanced, the interface calmed, and every page shares
@@ -51,7 +77,7 @@ one left edge.
       is marked LIVE, but the words are mine, not Matt's. `content/*.md` is
       plain markdown.
 
-## 3. Testing, once staging is up
+## 4. Testing, once staging is up
 
 - [ ] End-to-end on a real phone and a laptop: the whole journey, resume,
       clear, backup and restore.
@@ -65,7 +91,7 @@ one left edge.
       third-party requests, fonts self-hosted and subset, ~100kB of JS across
       the whole site.
 
-## 4. Decisions still open
+## 5. Decisions still open
 
 - **Dark theme.** Deferred for MVP. The tokens are structured for it; the
   palette needs signing off. Both sibling sites are light-only, so if it lands
@@ -80,7 +106,7 @@ one left edge.
   plus a 30/hour abuse guard. Fine for normal use; worth a look before a launch
   push.
 
-## 5. After launch (v1.1)
+## 6. After launch (v1.1)
 
 All flagged off in `src/lib/config.js`:
 
