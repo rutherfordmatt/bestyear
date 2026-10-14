@@ -52,7 +52,10 @@ const share = labelsOf(d, "Share (optional)");
 </Base>
 
 <style>
-  .close { display: grid; gap: var(--sp-8); padding-block: var(--sp-8) var(--sp-10); max-width: var(--prose); }
+  /* Left-aligned like every other page, rather than a centred narrow column
+     that jumped 180px right of the header. */
+  .close { display: grid; gap: var(--sp-8); padding-block: var(--sp-6) var(--sp-10); }
+  .close > * { max-width: var(--prose); }
   .clarity { display: grid; gap: var(--sp-4); justify-items: start; }
   .clarity h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
   .newsletter, .share { display: grid; gap: var(--sp-4); }

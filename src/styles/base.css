@@ -140,7 +140,6 @@ body.has-bar footer.site { display: none; }
 .field > label, .field-label {
   font: 500 0.88rem var(--sans); color: var(--ink);
 }
-.field .hint { font-size: var(--step--1); color: var(--muted); }
 input[type="text"], input[type="email"], input[type="date"], input[type="search"], textarea, select {
   width: 100%;
   border: var(--border); background: var(--paper); color: var(--ink);
@@ -185,11 +184,14 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); width
 .callout.warn { border-left-color: var(--warn); background: var(--warn-pale); }
 .callout h2, .callout h3, .callout h4 { font-family: var(--sans); font-size: 0.88rem; font-weight: 600; margin-bottom: var(--sp-1); }
 
-/* --- Tips ---
-   The guidance that used to hide behind a "Stuck?" disclosure. Shown
-   outright, quietly, under the field it belongs to. */
-.tip {
-  font-size: var(--step--1); font-style: italic; color: var(--muted);
+/* --- Guidance ---
+   One voice for "here is how to answer this", sitting under the question it
+   belongs to. Deliberately NOT italic: italic belongs to the exercise's own
+   voice — the transition lines and the document's quotes — and a prompt was
+   stacking serif, italic and sans against each other. */
+.tip, .field .hint {
+  font: 400 0.9rem / 1.5 var(--sans);
+  color: var(--muted);
   max-width: var(--measure-wide);
   text-wrap: pretty;   /* no single word stranded on the last line */
 }

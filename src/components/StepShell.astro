@@ -10,7 +10,6 @@
 */
 import PhaseRail from "../islands/PhaseRail.jsx";
 import StepSummary from "../islands/StepSummary.jsx";
-import SoftNote from "../islands/SoftNote.jsx";
 import StepBar from "../islands/StepBar.jsx";
 import StorageControls from "../islands/StorageControls.jsx";
 import { stepCopy, inline } from "../lib/content.js";
@@ -35,10 +34,6 @@ const copy = stepCopy(n);
     </div>
 
     <slot />
-
-    {copy.softNote && (
-      <SoftNote client:load step={n} paragraphs={copy.softNote} />
-    )}
 
     <StepSummary client:load step={n} transition={copy.transition} />
     <StorageControls client:visible />

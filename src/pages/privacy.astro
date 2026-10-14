@@ -21,7 +21,11 @@ const ledes = intro.filter((p) => !p.startsWith("Questions?"));
 const shortVersion = text(d, "Short version (landing page and footer)");
 ---
 <Base title="Privacy" description={shortVersion}>
-  <main id="main" class="privacy prose">
+  <main id="main" class="privacy">
+    <p class="back-link">
+      <a href="/" data-back>&larr; Back</a>
+    </p>
+
     <div class="intro">
       <p class="label">Privacy</p>
       <h1>{heading}</h1>
@@ -44,8 +48,30 @@ const shortVersion = text(d, "Short version (landing page and footer)");
   </main>
 </Base>
 
+<script is:inline>
+  /* The privacy page is a detour, so "back" should mean back to where you
+     were, not to the landing page. Falls back to the href when there is no
+     same-origin referrer (a direct visit, or arriving from a search). */
+  (() => {
+    const link = document.querySelector("[data-back]");
+    if (!link) return;
+    let from = null;
+    try { from = document.referrer ? new URL(document.referrer) : null; } catch {}
+    if (from && from.origin === window.location.origin && from.pathname !== window.location.pathname) {
+      link.setAttribute("href", from.pathname + from.search);
+      link.textContent = "\u2190 Back to where you were";
+    }
+  })();
+</script>
+
 <style>
-  .privacy { display: grid; gap: var(--sp-5); padding-block: var(--sp-7) var(--sp-10); }
+  /* Left-aligned in the same 1120px container as every other page: this was
+     sitting 180px right of the header. */
+  .privacy { display: grid; gap: var(--sp-5); padding-block: var(--sp-6) var(--sp-10); }
+  .privacy > * { max-width: var(--prose); }
+  .back-link { font-size: var(--step--1); }
+  .back-link a { color: var(--muted); text-decoration: none; }
+  .back-link a:hover { color: var(--accent); }
   .privacy-points { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
   .privacy-points li {
     padding-left: var(--sp-6); position: relative; color: var(--muted); max-width: var(--measure);

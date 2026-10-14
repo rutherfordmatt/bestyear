@@ -1,10 +1,9 @@
 /*
   Step 1: the year you had.
 
-  The life wheel comes first on purpose. It is eight sliders, it takes under a
-  minute, and it produces the radar chart — so the first thing that happens in
-  the whole journey is visible rather than typed. Wins, challenges and the
-  energy audit follow.
+  The life wheel comes LAST on purpose. It measures where you are now, not the
+  year behind, so it reads as the outcome of everything above it — and it
+  hands straight over to Step 3, which asks what a 7 or 8 would look like.
 
   One win and one challenge to begin with, with "add another" for the rest.
   Three was an entry fee rather than an aspiration.
@@ -27,12 +26,12 @@ export default function Step1({ prompts = [] }) {
 
   const filled = (v) => Boolean(v && String(v).trim());
   const { visible, allShown, showAll } = useDisclosure([
-    Object.values(s.wheel).some((v) => typeof v === "number"),
     s.wins.some((w) => filled(w.text)),
     s.challenges.some((c) => filled(c.text)),
     s.energy.gave.some(filled) || s.energy.drained.some(filled),
+    Object.values(s.wheel).some((v) => typeof v === "number"),
   ]);
-  const [, showWins, showChallenges, showEnergy] = visible;
+  const [, showChallenges, showEnergy, showWheel] = visible;
 
   const byName = (name) => prompts.find((p) => p.name.toLowerCase().includes(name)) || {};
   const wheelPrompt = byName("life wheel");
@@ -52,88 +51,39 @@ export default function Step1({ prompts = [] }) {
 
   return (
     <div class="step-prompts">
-      <Prompt prompt={wheelPrompt}>
-        <div class="wheel-layout">
-          <div class="sliders">
-            {LIFE_AREAS.map((area) => {
-              const value = s.wheel[area.key];
-              const id = `wheel-${area.key}`;
-              return (
-                <div class="slider-row" key={area.key}>
-                  <label for={id}>
-                    <b>{area.name}</b>
-                    <span>{area.blurb}</span>
-                  </label>
-                  <div class="slider-control">
-                    <input
-                      id={id}
-                      type="range"
-                      min="1"
-                      max="10"
-                      step="1"
-                      value={value ?? 5}
-                      class={value === null ? "unset" : ""}
-                      aria-valuetext={value === null ? "Not rated yet" : `${value} out of 10`}
-                      onInput={(e) => {
-                        const n = Number(e.currentTarget.value);
-                        set((st) => { st.step1.wheel[area.key] = n; });
-                      }}
-                    />
-                    <output for={id} class={value === null ? "unset" : ""}>
-                      {value === null ? "–" : value}
-                    </output>
-                  </div>
-                </div>
-              );
-            })}
-            <p class="tip">
-              Sliders start unset. Move one to rate that area; the chart draws only what you've rated.
-            </p>
-          </div>
-          <div class="wheel-holder">
-            <LifeWheelChart wheel={s.wheel} size={340} id="wheel-step1" />
-            <p class="note wheel-caption">
-              Your year, in one shape. Lopsided is normal. It's where the next year starts.
-            </p>
-          </div>
-        </div>
+      <Prompt prompt={winsPrompt}>
+        <ol class="pair-list">
+          {s.wins.map((win, i) => (
+            <li key={win.id} class="pair">
+              <span class="pair-n" aria-hidden="true">{i + 1}</span>
+              <div class="pair-fields">
+                <input
+                  type="text"
+                  value={win.text}
+                  placeholder={i === 0 ? winExample : ""}
+                  maxLength={500}
+                  aria-label={`Win ${i + 1}`}
+                  onInput={(e) => set((st) => { st.step1.wins[i].text = e.currentTarget.value; })}
+                />
+                <input
+                  type="text"
+                  class="pair-sub"
+                  value={win.enabler}
+                  placeholder={i === 0 ? winEnablerExample : winsPrompt.followUp}
+                  maxLength={500}
+                  aria-label={`What made win ${i + 1} possible?`}
+                  onInput={(e) => set((st) => { st.step1.wins[i].enabler = e.currentTarget.value; })}
+                />
+              </div>
+            </li>
+          ))}
+        </ol>
+        {s.wins.length < MAX_ENTRIES && (
+          <button type="button" class="btn small text add-another" onClick={addWin}>
+            + Add another win
+          </button>
+        )}
       </Prompt>
-
-      <Reveal when={showWins}>
-        <Prompt prompt={winsPrompt}>
-          <ol class="pair-list">
-            {s.wins.map((win, i) => (
-              <li key={win.id} class="pair">
-                <span class="pair-n" aria-hidden="true">{i + 1}</span>
-                <div class="pair-fields">
-                  <input
-                    type="text"
-                    value={win.text}
-                    placeholder={i === 0 ? winExample : ""}
-                    maxLength={500}
-                    aria-label={`Win ${i + 1}`}
-                    onInput={(e) => set((st) => { st.step1.wins[i].text = e.currentTarget.value; })}
-                  />
-                  <input
-                    type="text"
-                    class="pair-sub"
-                    value={win.enabler}
-                    placeholder={i === 0 ? winEnablerExample : winsPrompt.followUp}
-                    maxLength={500}
-                    aria-label={`What made win ${i + 1} possible?`}
-                    onInput={(e) => set((st) => { st.step1.wins[i].enabler = e.currentTarget.value; })}
-                  />
-                </div>
-              </li>
-            ))}
-          </ol>
-          {s.wins.length < MAX_ENTRIES && (
-            <button type="button" class="btn small text add-another" onClick={addWin}>
-              + Add another win
-            </button>
-          )}
-        </Prompt>
-      </Reveal>
 
       <Reveal when={showChallenges}>
         <Prompt prompt={challengesPrompt}>
@@ -195,6 +145,55 @@ export default function Step1({ prompts = [] }) {
                 onChange={(next) => set((st) => { st.step1.energy.drained = next; })}
               />
               <p class="hint">These come back in Step 2, as a head start on what to leave behind.</p>
+            </div>
+          </div>
+        </Prompt>
+      </Reveal>
+
+      <Reveal when={showWheel}>
+        <Prompt prompt={wheelPrompt}>
+          <div class="wheel-layout">
+            <div class="sliders">
+              {LIFE_AREAS.map((area) => {
+                const value = s.wheel[area.key];
+                const id = `wheel-${area.key}`;
+                return (
+                  <div class="slider-row" key={area.key}>
+                    <label for={id}>
+                      <b>{area.name}</b>
+                      <span>{area.blurb}</span>
+                    </label>
+                    <div class="slider-control">
+                      <input
+                        id={id}
+                        type="range"
+                        min="1"
+                        max="10"
+                        step="1"
+                        value={value ?? 5}
+                        class={value === null ? "unset" : ""}
+                        aria-valuetext={value === null ? "Not rated yet" : `${value} out of 10`}
+                        onInput={(e) => {
+                          const n = Number(e.currentTarget.value);
+                          set((st) => { st.step1.wheel[area.key] = n; });
+                        }}
+                      />
+                      <output for={id} class={value === null ? "unset" : ""}>
+                        {value === null ? "–" : value}
+                      </output>
+                    </div>
+                  </div>
+                );
+              })}
+              <p class="tip">
+                Sliders start unset. Move one to rate that area; the chart draws only what you've rated.
+              </p>
+            </div>
+            <div class="wheel-holder">
+              <LifeWheelChart wheel={s.wheel} size={340} id="wheel-step1" />
+              <p class="note wheel-caption">
+                Your year, in one shape. Lopsided is normal. It's where the next year starts.
+              </p>
             </div>
           </div>
         </Prompt>
