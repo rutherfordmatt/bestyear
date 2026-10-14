@@ -1,7 +1,5 @@
 /*
-  EXPERIMENT — Step 1 as a deck of cards, one question per screen.
-  Lives at /experiment/cards alongside the real /step/1 so the two can be
-  compared. Same content, same storage; only the presentation differs.
+  Step 1 as a deck of cards, one question per screen.
 */
 import { useStore } from "../lib/use-store.js";
 import CardDeck from "./CardDeck.jsx";
@@ -177,7 +175,15 @@ export default function Step1Cards({ prompts = [], titleHtml = "", intro = [], t
     body: <StepSummary step={1} transition={transition} showNext={false} />,
   });
 
-  return <CardDeck cards={cards} onLeave="/step/2" leaveLabel="Next: What matters" />;
+  return (
+    <CardDeck
+      cards={cards}
+      step={1}
+      backTo="/setup"
+      onLeave="/step/2"
+      leaveLabel="Next: What matters"
+    />
+  );
 }
 
 function splitExample(example = "") {

@@ -16,7 +16,7 @@ const SENDING = "sending";
 const SENT = "sent";
 const FAILED = "failed";
 
-export default function SendForm({ actions = {} }) {
+export default function SendForm({ actions = {}, headless = false }) {
   const [state] = useStore();
   const [email, setEmail] = useState("");
   const [newsletter, setNewsletter] = useState(false);
@@ -69,10 +69,12 @@ export default function SendForm({ actions = {} }) {
 
   return (
     <section class="prompt send-form no-print">
-      <div class="prompt-head">
-        <h2 class="prompt-question">Email it to me</h2>
-        <p class="note">{actions.line}</p>
-      </div>
+      {!headless && (
+        <div class="prompt-head">
+          <h2 class="prompt-question">Email it to me</h2>
+          <p class="note">{actions.line}</p>
+        </div>
+      )}
 
       <form onSubmit={onSubmit} class="send-fields">
         <div class="field">

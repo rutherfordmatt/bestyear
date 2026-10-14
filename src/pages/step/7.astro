@@ -1,20 +1,15 @@
 ---
 import Base from "../../layouts/Base.astro";
-import StepShell from "../../components/StepShell.astro";
-import Step7 from "../../islands/Step7.jsx";
-import { stepCopy, doc, promptsOf, section, fieldsOf } from "../../lib/content.js";
+import StepDeck from "../../components/StepDeck.astro";
+import Step7Cards from "../../islands/Step7Cards.jsx";
+import { stepCopy, doc, promptsOf, section, inline } from "../../lib/content.js";
 
 const copy = stepCopy(7);
 const d = doc("step-7");
 
-// "Where will this page live?" options sit in the third prompt's Options field.
 const alive = promptsOf(d).find((p) => p.name.toLowerCase().includes("keep it alive"));
-const livesOptions = (alive?.options || "")
-  .split("/")
-  .map((s) => s.trim())
-  .filter(Boolean);
+const livesOptions = (alive?.options || "").split("/").map((s) => s.trim()).filter(Boolean);
 
-// The email action block: plain "- Label: value" sub-items under Actions.
 const actionsSection = section(d, "Actions");
 const actionFields = {};
 for (const line of actionsSection?.body || []) {
@@ -29,8 +24,15 @@ const actions = {
   success: actionFields["Success"] || "",
 };
 ---
-<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
-  <StepShell step={7}>
-    <Step7 client:load prompts={copy.prompts} livesOptions={livesOptions} actions={actions} />
-  </StepShell>
+<Base title={copy.titlePlain} description={copy.promise}>
+  <StepDeck step={7}>
+    <Step7Cards
+      client:load
+      prompts={copy.prompts}
+      livesOptions={livesOptions}
+      actions={actions}
+      titleHtml={inline(copy.title)}
+      intro={[copy.promise, ...copy.intro]}
+    />
+  </StepDeck>
 </Base>

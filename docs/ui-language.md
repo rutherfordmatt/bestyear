@@ -17,8 +17,7 @@ Every step page is the same three parts.
 └──────────────────────────────────────────────────────────┘
            … the step's content …
 ┌──────────────────────────────────────────────────────────┐
-│  Step 2 of 7                      BACK   [ NEXT: … ]      │  ← bar
-│  Look back · about 50 min left                            │
+│     BACK          ● ● ○ ○ ○          [ NEXT → ]           │  ← deck nav
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -26,8 +25,8 @@ Every step page is the same three parts.
 | --- | --- | --- |
 | **header** | Wordmark and the two links. On every page. | `Base.astro` |
 | **rail** | The progress strip: four **phases**, seven **steps**. Ticks for done. | `PhaseRail.jsx` |
-| **bar** | The sticky footing: where you are, Back, and the way on. | `StepBar.jsx` |
-| **footer** | Credit and Privacy. Hidden on pages that have a bar. | `Base.astro` |
+| **deck nav** | Under the card: Back, the dots, and the way on. | `CardDeck.jsx` |
+| **footer** | Credit and Privacy. | `Base.astro` |
 
 A **phase** is one of the four groupings — Look back, Imagine, Plan, Commit.
 A **step** is one of the seven numbered stages.
@@ -55,6 +54,7 @@ A **step** is one of the seven numbered stages.
 | **deck** | The set of cards that make up one step. |
 | **card** | One screen in the deck. Moves sideways. |
 | **dots** | Position within the deck. Clickable. |
+| **card reference** | The small number in a card's corner — "2.4" is step 2, card 4. Setup is step 0. Point at one to ask for a change. |
 | **question** | The serif line asking the thing. |
 | **guidance** | The one muted line under it. (Was "hint" — that word is retired.) |
 | **control** | The input, textarea, chips, sliders, dial. |

@@ -95,29 +95,6 @@ a.rail-step:hover .rail-mark { border-color: var(--accent); }
 .step-intro { display: grid; gap: var(--sp-6); max-width: var(--measure); color: var(--muted); }
 .step-intro :global(strong) { color: var(--ink); font-weight: 500; }
 
-/* --- Fixed bottom bar --- */
-.bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
-  background: color-mix(in srgb, var(--ground) 96%, transparent);
-  backdrop-filter: blur(8px);
-  border-top: var(--border);
-  padding: var(--sp-3) var(--sp-5) calc(var(--sp-3) + env(safe-area-inset-bottom, 0px));
-}
-.bar .in {
-  max-width: var(--wide); margin-inline: auto;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--sp-4); flex-wrap: wrap;
-}
-.bar .status { display: grid; gap: 2px; }
-.bar .status b {
-  font: 500 1.35rem / 1.1 var(--serif); font-variant-numeric: tabular-nums;
-}
-.bar .status span { font-size: 0.82rem; color: var(--muted); }
-.bar .row { gap: var(--sp-2); }
-
-/* Keep the bar clear of the content it sits over. */
-body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
-
 /* --- Prompts --- */
 /* No rule between prompts: space does the separating. Nine sources of
    hairlines on one page read as clutter, not structure. */
@@ -190,12 +167,11 @@ body.has-bar { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 
 /* --- Storage controls --- */
 .storage-controls { display: grid; gap: var(--sp-3); }
-/* On pages with the fixed bar this is the page's footing, so it reads like
-   one: a hairline above it, sitting directly beneath the content. */
-body.has-bar .storage-controls {
+/* The page's footing, below the deck. */
+.storage-controls {
   border-top: var(--border);
   padding-top: var(--sp-5);
-  margin-top: var(--sp-2);
+  margin-top: var(--sp-7);
 }
 .storage-note { font-size: 0.78rem; color: var(--muted); }
 .storage-note a, .linklike {
@@ -633,7 +609,9 @@ li.reveal-wrap.goal-card { display: grid; }
 /* The coach's opening card: the step's title and framing, before any
    question. Quieter than a question card — it is being read, not filled in. */
 .deck-card-inner.is-scene {
-  background: transparent; border: 0; padding: var(--sp-7) var(--sp-2);
+  /* No inline padding: the scene card has no box, so its text should sit on
+     the same left edge as the header rather than 8px inside it. */
+  background: transparent; border: 0; padding: var(--sp-7) 0;
   gap: var(--sp-4);
 }
 .scene-title {
@@ -679,3 +657,14 @@ li.reveal-wrap.goal-card { display: grid; }
 @media (max-width: 640px) {
   .deck-card-inner.is-moment { padding: var(--sp-7) var(--sp-5); }
 }
+
+/* The card's reference, so a change can be asked for by pointing at one. */
+.card-ref {
+  position: absolute; top: var(--sp-4); right: var(--sp-5);
+  font: 500 0.68rem var(--sans); letter-spacing: 0.08em;
+  color: var(--faint-ui);
+  font-variant-numeric: tabular-nums;
+}
+.deck-card-inner { position: relative; }
+.deck-card-inner.is-scene .card-ref,
+.deck-card-inner.is-summary .card-ref { top: 0; right: 0; }

@@ -1,5 +1,5 @@
 /*
-  EXPERIMENT — Step 2 as a deck, divided as Matt described:
+  Step 2 as a deck, divided as Matt described:
   pick and score, where you compromised, what you're leaving behind, and the
   line that closes the chapter.
 
@@ -83,5 +83,13 @@ export default function Step2Cards({
     },
   ];
 
-  return <CardDeck cards={cards} onLeave="/step/3" leaveLabel="Next: Picture it" />;
+  return (
+    <CardDeck
+      cards={cards}
+      step={2}
+      backTo="/step/1"
+      onLeave="/step/3"
+      leaveLabel="Next: Picture it"
+    />
+  );
 }

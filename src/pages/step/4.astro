@@ -1,13 +1,19 @@
 ---
 import Base from "../../layouts/Base.astro";
-import StepShell from "../../components/StepShell.astro";
-import Step4 from "../../islands/Step4.jsx";
-import { stepCopy } from "../../lib/content.js";
+import StepDeck from "../../components/StepDeck.astro";
+import Step4Cards from "../../islands/Step4Cards.jsx";
+import { stepCopy, inline } from "../../lib/content.js";
 
 const copy = stepCopy(4);
 ---
-<Base title={copy.titlePlain} description={copy.promise} bodyClass="has-bar">
-  <StepShell step={4}>
-    <Step4 client:load prompts={copy.prompts} />
-  </StepShell>
+<Base title={copy.titlePlain} description={copy.promise}>
+  <StepDeck step={4}>
+    <Step4Cards
+      client:load
+      prompts={copy.prompts}
+      titleHtml={inline(copy.title)}
+      intro={[copy.promise, ...copy.intro]}
+      transition={copy.transition}
+    />
+  </StepDeck>
 </Base>

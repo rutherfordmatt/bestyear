@@ -110,10 +110,7 @@ footer.site {
 footer.site a { color: var(--muted); text-decoration: underline; }
 footer.site a:hover { color: var(--accent); }
 
-/* Pages with the fixed bar already have a footing. A second one stacked
-   above it reads as a mistake, so it goes — the storage controls carry the
-   privacy link on those pages instead. */
-body.has-bar footer.site { display: none; }
+
 
 /* --- Buttons --- */
 .btn {

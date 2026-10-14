@@ -19,12 +19,15 @@ const PROBE = `JSON.stringify((() => {
   return {
     wordmark: q(".wordmark", []),
     rail:     q(".phase-rail", []),
-    label:    q(".intro .label", TYPE),
-    h1:       q(".intro h1", TYPE),
-    lede:     q(".intro .lede", TYPE),
-    prompt1:  q(".prompt", ["paddingTop", "borderTopWidth"]),
-    question: q(".prompt-question", TYPE),
-    barIn:    q(".bar .in", []),
+    // Only ever the card on screen: every other card is in the DOM too, and
+    // measuring those compares a scene card against a moment card.
+    card:     q(".deck-card:not([inert]) .deck-card-inner", ["padding"]),
+    eyebrow:  q(".deck-card:not([inert]) .label", TYPE),
+    title:    q(".deck-card:not([inert]) .scene-title", TYPE),
+    lede:     q(".deck-card:not([inert]) .lede", TYPE),
+    cardRef:  q(".deck-card:not([inert]) .card-ref", TYPE),
+    nav:      q(".deck-nav", []),
+    h1:       q("h1", TYPE),   // non-deck pages: landing, close, privacy
     storage:  q(".storage-controls", []),
   };
 })())`;
@@ -66,17 +69,17 @@ const GEO = ["left", "top"];
 const TYPE = ["fontSize", "fontWeight", "fontFamily", "color"];
 compare("wordmark position", JOURNEY, "wordmark", GEO);
 compare("rail position", JOURNEY, "rail", GEO);
-compare("eyebrow", JOURNEY, "label", [...GEO, ...TYPE]);
-compare("h1", JOURNEY, "h1", [...GEO, "fontSize", "fontWeight", "fontFamily"]);
+compare("card frame", JOURNEY, "card", ["left", "top", "width", "padding"]);
+compare("eyebrow", JOURNEY, "eyebrow", [...GEO, ...TYPE]);
+compare("scene title", JOURNEY, "title", [...GEO, "fontSize", "fontWeight", "fontFamily"]);
 compare("lede", JOURNEY, "lede", [...GEO, ...TYPE]);
-compare("first prompt", JOURNEY, "prompt1", ["left", "paddingTop", "borderTopWidth"]);
-compare("question type", JOURNEY, "question", TYPE);
-compare("bar inner", JOURNEY, "barIn", ["left", "width"]);
+compare("card reference", JOURNEY, "cardRef", ["top", ...TYPE]);
+compare("deck nav", JOURNEY, "nav", ["left", "width"]);
 
 console.log("\n=== ALL PAGES, left edge of content ===");
 for (const p of [...JOURNEY, ...OTHER]) {
   const d = data[p];
-  const wm = d.wordmark?.left, h1 = d.h1?.left;
+  const wm = d.wordmark?.left, h1 = d.title?.left ?? d.h1?.left;
   const flag = wm != null && h1 != null && wm !== h1 ? `  <-- content ${h1 - wm}px off the header` : "";
   console.log(`  ${p.padEnd(10)} header ${String(wm).padStart(5)}   content ${String(h1).padStart(5)}${flag}`);
 }

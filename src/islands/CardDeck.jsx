@@ -1,31 +1,40 @@
 import { useEffect, useRef, useState } from "preact/hooks";
+import { markStepComplete } from "../lib/storage.js";
+import { track, EVENTS } from "../lib/analytics.js";
 
 /*
   One question per screen, moving sideways.
 
-  The thing this buys is not the animation — it is that a card can only ever
-  hold one question, so the clutter we keep chasing cannot accumulate. It also
-  retires progressive disclosure: there is no need to hide the next question
-  when it is not on screen anyway, which takes the settle timing, the reveal
-  animation and "Show all questions" out of the design altogether.
+  The thing this buys is not the animation. A card can hold exactly one
+  question, so the clutter we kept chasing cannot accumulate — and it retires
+  progressive disclosure, because there is no need to hide a question that is
+  off screen anyway.
 
-  Cards that are not showing are `inert`, so they are skipped by tab and by
-  screen readers rather than being invisible but still reachable.
+  The deck owns navigation. There is no separate bottom bar: Back at the first
+  card leaves to the previous step, Next at the last card leaves to the next
+  one, and everything between moves within the deck.
 
-  A card has a variant. "scene" is the coach setting up the step — the title
-  and the framing — so the step header does not have to sit permanently above
-  every question competing with it. "summary" closes the step. Everything
-  between is one question each.
+  Every card carries a reference like "2.4" — step 2, card 4 — so a change can
+  be asked for by pointing at one.
+
+  Cards that are not showing are inert, so tab and screen readers skip them.
 */
-export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Next" }) {
+export default function CardDeck({
+  cards = [],
+  step = null,
+  backTo = null,
+  backLabel = "Back",
+  onLeave = null,
+  leaveLabel = "Next",
+}) {
   const [index, setIndex] = useState(0);
   const trackRef = useRef(null);
   const liveRef = useRef(null);
-  const viewportRef = useRef(null);
   const [height, setHeight] = useState(null);
 
   const last = cards.length - 1;
   const atEnd = index >= last;
+  const atStart = index === 0;
 
   const go = (next) => {
     const clamped = Math.max(0, Math.min(last, next));
@@ -33,33 +42,29 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
     setIndex(clamped);
   };
 
-  // Announce the move for anyone not watching it happen.
-  useEffect(() => {
-    if (liveRef.current) {
-      liveRef.current.textContent = `${cards[index]?.title || "Question"}, ${index + 1} of ${cards.length}`;
-    }
-    // Put focus at the top of the new card, but never steal it mid-typing.
-    const active = document.activeElement;
-    const typing = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
-    if (!typing) {
-      const card = trackRef.current?.children[index];
-      card?.querySelector("[data-card-focus]")?.focus?.();
-    }
-  }, [index]);
-
-  /*
-    Every card is in the DOM, so without this the viewport is as tall as the
-    tallest one and a short card floats in a lot of empty space. Track the
-    card you are actually on, and follow it when its own content grows.
-  */
-  // `inert` as a JSX attribute did not reliably clear when a card became
-  // current, which left it present but invisible. Set the property directly.
+  // inert as a JSX attribute did not reliably clear when a card became
+  // current, which left it present but unreachable. Set the property.
   useEffect(() => {
     const children = trackRef.current?.children;
     if (!children) return;
     for (let i = 0; i < children.length; i += 1) children[i].inert = i !== index;
   }, [index, cards.length]);
 
+  useEffect(() => {
+    if (liveRef.current) {
+      liveRef.current.textContent = `${cards[index]?.title || "Card"}, ${index + 1} of ${cards.length}`;
+    }
+    const active = document.activeElement;
+    const typing = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
+    if (!typing) {
+      trackRef.current?.children[index]?.querySelector("[data-card-focus]")?.focus?.();
+    }
+  }, [index]);
+
+  /*
+    Every card is in the DOM, so without this the frame is as tall as the
+    tallest one. Follow the card you are on, and follow it as it grows.
+  */
   useEffect(() => {
     const card = trackRef.current?.children[index];
     if (!card) return;
@@ -76,27 +81,28 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
     if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); }
   };
 
+  const onLeaveForward = () => {
+    // Setup is step 0: it has cards and a reference, but it is not a step to
+    // mark complete.
+    if (!step) return;
+    markStepComplete(step);
+    track(EVENTS.stepReached(step + 1));
+  };
+
+  const hasStep = step !== null && step !== undefined;
+  const cardRef = (i) => (hasStep ? `${step}.${i + 1}` : `${i + 1}`);
+
   return (
     <div class="deck" onKeyDown={onKeyDown}>
       <p class="visually-hidden" role="status" aria-live="polite" ref={liveRef}></p>
 
-      <div
-        class="deck-viewport"
-        ref={viewportRef}
-        style={height ? { height: `${Math.round(height)}px` } : undefined}
-      >
-        <div
-          class="deck-track"
-          ref={trackRef}
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
+      <div class="deck-viewport" style={height ? { height: `${Math.round(height)}px` } : undefined}>
+        <div class="deck-track" ref={trackRef} style={{ transform: `translateX(-${index * 100}%)` }}>
           {cards.map((card, i) => (
-            <section
-              key={card.key || i}
-              class="deck-card"
-              aria-label={card.title}
-            >
+            <section key={card.key || i} class="deck-card" aria-label={card.title}>
               <div class={`deck-card-inner${card.variant ? ` is-${card.variant}` : ""}`}>
+                <p class="card-ref" aria-hidden="true">{cardRef(i)}</p>
+
                 {card.variant === "scene" ? (
                   <>
                     {card.eyebrow && <p class="label">{card.eyebrow}</p>}
@@ -118,23 +124,22 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
       </div>
 
       <div class="deck-nav">
-        <button
-          type="button"
-          class="btn text"
-          onClick={() => go(index - 1)}
-          disabled={index === 0}
-        >
-          Back
-        </button>
+        {atStart && backTo ? (
+          <a class="btn text" href={backTo}>{backLabel}</a>
+        ) : (
+          <button type="button" class="btn text" onClick={() => go(index - 1)} disabled={atStart}>
+            Back
+          </button>
+        )}
 
-        <ol class="deck-dots" aria-label={`Question ${index + 1} of ${cards.length}`}>
+        <ol class="deck-dots" aria-label={`Card ${index + 1} of ${cards.length}`}>
           {cards.map((card, i) => (
             <li key={card.key || i}>
               <button
                 type="button"
                 class={`deck-dot${i === index ? " is-here" : ""}${i < index ? " is-done" : ""}`}
                 aria-current={i === index ? "step" : undefined}
-                aria-label={`${card.title}, ${i + 1} of ${cards.length}`}
+                aria-label={`${card.title}, card ${cardRef(i)}`}
                 onClick={() => go(i)}
               />
             </li>
@@ -142,7 +147,9 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
         </ol>
 
         {atEnd && onLeave ? (
-          <a class="btn primary" href={onLeave}>{leaveLabel} <span aria-hidden="true">→</span></a>
+          <a class="btn primary" href={onLeave} onClick={onLeaveForward}>
+            {leaveLabel} <span aria-hidden="true">→</span>
+          </a>
         ) : (
           <button type="button" class="btn primary" onClick={() => go(index + 1)} disabled={atEnd}>
             {cards[index]?.nextLabel || "Next"} <span aria-hidden="true">→</span>

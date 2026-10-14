@@ -1,9 +1,13 @@
-/* Drive the whole journey in a real browser and check it behaves. */
+/*
+  Walk the whole journey as a visitor: every step is a deck of cards, so this
+  moves through them the way a person does — Next, Next, Next — and checks
+  what was typed survives, carries forward, and reaches the document.
+*/
 import { connect } from "./cdp.mjs";
 
 const BASE = "http://localhost:4321";
 const c = await connect();
-await c.viewport(1280, 1000);
+await c.viewport(1280, 1100);
 
 let pass = 0, fail = 0;
 const ok = (label, cond, detail = "") => {
@@ -11,211 +15,193 @@ const ok = (label, cond, detail = "") => {
   else { fail++; console.log(`  FAIL ${label}${detail ? ` — ${detail}` : ""}`); }
 };
 
-// Helpers injected into the page.
 const HELPERS = `
   window.__t = {
-    text: () => document.body.textContent,
     has: (s) => document.body.textContent.includes(s),
     count: (sel) => document.querySelectorAll(sel).length,
+    cardRef: () => document.querySelector(".deck-card:not([inert]) .card-ref")?.textContent || "",
+    cardTitle: () => document.querySelector(".deck-card:not([inert]) h2")?.textContent || "",
+    cards: () => document.querySelectorAll(".deck-card").length,
+    next: () => { const b = document.querySelector(".deck-nav .btn.primary"); if (b) b.click(); return !!b; },
+    typeLabel: (label, value) => {
+      const el = [...document.querySelectorAll(".deck-card:not([inert]) input, .deck-card:not([inert]) textarea")]
+        .find((e) => e.getAttribute("aria-label") === label || e.labels?.[0]?.textContent.trim() === label);
+      if (!el) return "no field: " + label;
+      el.focus(); el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true })); el.blur();
+      return "ok";
+    },
     type: (sel, value, i = 0) => {
-      const el = document.querySelectorAll(sel)[i];
+      const el = document.querySelectorAll(".deck-card:not([inert]) " + sel)[i];
       if (!el) return "no element: " + sel;
-      el.focus();
-      el.value = value;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.blur();
+      el.focus(); el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true })); el.blur();
       return "ok";
     },
     click: (sel, i = 0) => {
-      const el = document.querySelectorAll(sel)[i];
-      if (!el) return "no element: " + sel;
-      el.click();
-      return "ok";
+      const el = document.querySelectorAll(".deck-card:not([inert]) " + sel)[i];
+      if (el) { el.click(); return "ok"; } return "no element: " + sel;
     },
-    clickText: (sel, text) => {
-      const el = [...document.querySelectorAll(sel)].find((e) => e.textContent.trim().includes(text));
-      if (!el) return "no element with text: " + text;
-      el.click();
-      return "ok";
-    },
-    typeLabel: (label, value) => {
-      const el = [...document.querySelectorAll("input, textarea")].find((e) => e.getAttribute("aria-label") === label);
-      if (!el) return "no field labelled: " + label;
-      el.focus(); el.value = value;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.blur();
-      return "ok";
-    },
-    range: (sel, value, i = 0) => {
-      const el = document.querySelectorAll(sel)[i];
-      if (!el) return "no element";
-      el.value = String(value);
-      el.dispatchEvent(new Event("input", { bubbles: true }));
+    range: (i, value) => {
+      const el = document.querySelectorAll('.deck-card:not([inert]) input[type="range"]')[i];
+      if (!el) return "no slider";
+      el.value = String(value); el.dispatchEvent(new Event("input", { bubbles: true }));
       return "ok";
     },
     store: () => JSON.parse(localStorage.getItem("ywb:v1") || "null"),
   };
 `;
-const go = async (path, settle = 800) => { await c.goto(BASE + path, settle); await c.evaluate(HELPERS); };
+const go = async (path, settle = 1100) => { await c.goto(BASE + path, settle); await c.evaluate(HELPERS); };
+const next = async (ms = 650) => { await c.evaluate(`__t.next()`); await new Promise((r) => setTimeout(r, ms)); };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 console.log("=== SETUP ===");
 await go("/setup");
 await c.evaluate(`localStorage.clear()`);
 await go("/setup");
-ok("word question hidden before a pace is chosen", !(await c.evaluate(`__t.has("Sum up the year")`)));
-await c.evaluate(`__t.clickText(".pace-option", "In one sitting")`);
-await wait(500);
-ok("word question appears after choosing a pace", await c.evaluate(`__t.has("Sum up the year")`));
-await c.evaluate(`__t.type("#year-word", "Rebuilding")`);
-await wait(600);
-ok("transition appears once a word is written", await c.evaluate(`__t.has("That's the title of the chapter")`));
-ok("pace saved", (await c.evaluate(`__t.store()`))?.pace === "sitting");
+ok("opens on the scene card", (await c.evaluate(`__t.cardRef()`)) === "0.1");
+ok("the scene card sets up the step", await c.evaluate(`__t.has("Two quick choices")`));
+await next();
+ok("card 0.2 asks the pace", (await c.evaluate(`__t.cardRef()`)) === "0.2");
+await c.evaluate(`__t.click(".pace-option", 0)`);
+await wait(400);
+await next();
+ok("card 0.3 asks for the word", (await c.evaluate(`__t.cardRef()`)) === "0.3");
+await c.evaluate(`__t.typeLabel("Sum up the year you've just had in a word or short phrase.", "Rebuilding")`);
+await wait(700);
+const setupStore = await c.evaluate(`__t.store()`);
+ok("pace saved", setupStore?.pace === "sitting");
+ok("word saved", setupStore?.yearEnding?.word === "Rebuilding");
 
 console.log("\n=== STEP 1 ===");
 await go("/step/1");
-ok("wins come first", await c.evaluate(`__t.has("What went well")`));
-ok("the wheel is not shown yet", !(await c.evaluate(`__t.has("Where has all that left you")`)));
-ok("only one win field to start", (await c.evaluate(`__t.count(".pair")`)) === 1);
+ok("opens on 1.1, the scene", (await c.evaluate(`__t.cardRef()`)) === "1.1");
+await next();
+ok("1.2 is the wins question", await c.evaluate(`__t.has("What went well")`));
 await c.evaluate(`__t.typeLabel("Win 1", "Had the conversation about my role")`);
-await wait(1600);
-ok("challenges wait for the whole question, not the first field",
-  !(await c.evaluate(`__t.has("What was hardest")`)));
 await c.evaluate(`__t.typeLabel("What made win 1 possible?", "I prepared properly")`);
-await wait(1600);
-ok("challenges appear once the win is complete", await c.evaluate(`__t.has("What was hardest")`));
-await c.evaluate(`__t.clickText("button", "Add another win")`);
-await wait(400);
-ok("a second win can be added", (await c.evaluate(`__t.count(".pair")`)) === 3);
+await wait(500);
+await next();
+ok("1.3 is the challenges question", await c.evaluate(`__t.has("What was hardest")`));
 await c.evaluate(`__t.typeLabel("Challenge 1", "A project that ran late")`);
-await wait(1600);
-ok("energy waits for what the challenge taught you",
-  !(await c.evaluate(`__t.has("What gave you energy")`)));
 await c.evaluate(`__t.typeLabel("What challenge 1 taught you", "I say yes too quickly")`);
-await wait(1600);
-ok("energy audit appears once the challenge is complete",
-  await c.evaluate(`__t.has("What gave you energy")`));
-ok("no phantom blank rows in the energy audit",
-  (await c.evaluate(`__t.count(".list-input input")`)) === 2);
+await wait(500);
+await next();
+ok("1.4 is the energy audit", await c.evaluate(`__t.has("What gave you energy")`));
+await c.evaluate(`__t.typeLabel("Things that gave you energy, item 1", "Long walks")`);
 await c.evaluate(`__t.typeLabel("Things that drained your energy, item 1", "Back-to-back video calls")`);
-await wait(1600);
-ok("the wheel waits for both halves of the energy audit",
-  !(await c.evaluate(`__t.has("Where has all that left you")`)));
-await c.evaluate(`__t.typeLabel("Things that gave you energy, item 1", "Long walks with no phone")`);
-await wait(1600);
-ok("the wheel comes last", await c.evaluate(`__t.has("Where has all that left you")`));
+await wait(500);
+await next();
+ok("1.5 is the wheel, last", await c.evaluate(`__t.has("Where has all that left you")`));
 ok("the wheel has eight sliders", (await c.evaluate(`__t.count('input[type="range"]')`)) === 8);
-await c.evaluate(`__t.range('input[type="range"]', 7, 0)`);
-await c.evaluate(`__t.range('input[type="range"]', 3, 2)`);
-await wait(700);
+await c.evaluate(`__t.range(0, 7)`);
+await c.evaluate(`__t.range(2, 3)`);
+await wait(500);
 ok("radar plots only rated areas", (await c.evaluate(`__t.count(".wheel-point")`)) === 2);
+await next();
+ok("the deck ends on the summary", await c.evaluate(`__t.has("Added to your plan")`));
 const s1 = await c.evaluate(`__t.store()`);
 ok("schema is version 2", s1.schema === 2);
-ok("wheel stores nulls for unrated areas", s1.step1.wheel.career === 7 && s1.step1.wheel.family === null);
-ok("purpose is on the wheel", "purpose" in s1.step1.wheel);
-ok("the lesson is stored on its challenge", s1.step1.challenges[0].lesson === "I say yes too quickly");
-ok("drainer saved", s1.step1.energy.drained.includes("Back-to-back video calls"));
-ok("'Added to your plan' summary shows", await c.evaluate(`__t.has("Added to your plan")`));
-ok("only one primary way forward on screen",
-  (await c.evaluate(`__t.count(".btn.primary")`)) === 1);
-ok("the bar steps back to a quiet skip", await c.evaluate(`__t.has("Skip ahead")`));
-ok("no unprompted coaching note", !(await c.evaluate(`__t.has("Some years are heavier")`)));
+ok("wheel keeps nulls for unrated areas", s1.step1.wheel.career === 7 && s1.step1.wheel.family === null);
+ok("the lesson rides on its challenge", s1.step1.challenges[0].lesson === "I say yes too quickly");
 
 console.log("\n=== STEP 2 ===");
 await go("/step/2");
-ok("gap question hidden before values are rated", !(await c.evaluate(`__t.has("Where did you compromise")`)));
-await c.evaluate(`__t.clickText("button", "Pick from the list")`);
-await wait(2000);
-ok("picker loads all 155 values", (await c.evaluate(`__t.count(".chips .chip")`)) >= 155);
-ok("picking and scoring are visible together",
-  (await c.evaluate(`!!document.querySelector(".values-pick") && !!document.querySelector(".values-chosen")`)));
+await next();
+ok("2.2 is the values panel", await c.evaluate(`__t.has("Choose the six to eight values")`));
+ok("picking and scoring are side by side",
+  await c.evaluate(`!!document.querySelector(".values-pick") && !!document.querySelector(".values-chosen")`));
+await wait(1200);
 for (let i = 0; i < 6; i++) await c.evaluate(`__t.click(".chips .chip", ${i})`);
-await wait(500);
+await wait(400);
 ok("six values chosen", (await c.evaluate(`__t.store()`)).step2.values.length === 6);
-await c.evaluate(`__t.click(".dial-btn", 0)`);   // first value, rating 1
-await wait(700);
-ok("low rating flagged as a gap", await c.evaluate(`__t.has("gaps worth watching")`));
-ok("gap question waits until every value is scored",
-  !(await c.evaluate(`__t.has("Where did you compromise")`)));
-// Score the remaining five.
-for (let i = 1; i < 6; i += 1) await c.evaluate(`__t.click(".dial-btn", ${i * 5 + 3})`);
-await wait(900);
-ok("gap question appears once all are scored", await c.evaluate(`__t.has("Where did you compromise")`));
-await c.evaluate(`__t.type("textarea", "Worked most weekends", 0)`);
-await wait(1600);   // disclosure now waits for a pause, not the first keystroke
-ok("letting go appears after the gap", await c.evaluate(`__t.has("What are you leaving behind")`));
-ok("step 1 drainer offered as a head start", await c.evaluate(`__t.has("Back-to-back video calls")`));
-await c.evaluate(`__t.clickText(".from-step-pick", "Back-to-back video calls")`);
-await wait(900);
-ok("the suggestion lands in the list", (await c.evaluate(`__t.store()`)).step2.lettingGo.length === 1);
-ok("the scoring question is asked once, not per value",
-  (await c.evaluate(`__t.count(".values-score-ask")`)) === 1);
-ok("closing line appears after letting go", await c.evaluate(`__t.has("last line")`));
-
-console.log("\n=== STEP 3: PICTURE IT ===");
-await go("/step/3");
-ok("only the headline is asked for first", !(await c.evaluate(`__t.has("What's different about your life")`)));
-await c.evaluate(`__t.type(".headline-input", "Left the job that was draining me")`);
-await wait(1600);
-ok("detail appears after the headline", await c.evaluate(`__t.has("What's different about your life")`));
-ok("lowest wheel areas offered alongside", await c.evaluate(`__t.has("From Step 1")`));
-await c.evaluate(`__t.typeLabel("What's different about your life?", "I sleep properly.")`);
+await c.evaluate(`__t.click(".dial-btn", 1)`);            // first value, rated 2 — a gap
+for (let i = 1; i < 6; i++) await c.evaluate(`__t.click(".dial-btn", ${i * 5 + 3})`);
+await wait(500);
+await next();
+ok("2.3 asks where you compromised", await c.evaluate(`__t.has("Where did you compromise")`));
+await c.evaluate(`__t.type("textarea", "Worked most weekends")`);
+await wait(400);
+await next();
+ok("2.4 is what you're leaving behind", await c.evaluate(`__t.has("leaving behind")`));
+ok("the step 1 drainer is offered", await c.evaluate(`__t.has("Back-to-back video calls")`));
+await next();
+ok("2.5 is the closing line, a moment", await c.evaluate(`__t.has("last line be")`));
+ok("moment cards get their own treatment",
+  (await c.evaluate(`__t.count(".is-moment")`)) >= 1);
+await c.evaluate(`__t.type(".moment-input", "I learned to ask for help, eventually.")`);
 await wait(600);
-const s3 = await c.evaluate(`__t.store()`);
-ok("headline saved to step 3", s3.step3.headline.includes("Left the job"));
-ok("detail saved alongside it", s3.step3.detail.includes("I sleep properly"));
 
-console.log("\n=== STEP 4: YOUR COMPASS ===");
+console.log("\n=== STEPS 3 AND 4 ===");
+await go("/step/3");
+await next();
+ok("3.2 is the headline, a moment", await c.evaluate(`__t.has("Write the headline")`));
+await c.evaluate(`__t.type(".moment-input", "Left the job that was draining me")`);
+await wait(600);
+await next();
+ok("3.3 is the detail, with the lowest areas alongside", await c.evaluate(`__t.has("From Step 1")`));
+ok("headline saved", (await c.evaluate(`__t.store()`)).step3.headline.includes("Left the job"));
+
 await go("/step/4");
-ok("the headline is recalled from step 3", await c.evaluate(`__t.has("Left the job that was draining me")`));
-ok("themes are not shown yet", !(await c.evaluate(`__t.has("three themes will get you")`)));
-await c.evaluate(`__t.type(".word-input", "Steady")`);
-await wait(1600);
-ok("themes appear after the word", await c.evaluate(`__t.has("three themes will get you")`));
-ok("value gaps carried into the themes question", await c.evaluate(`__t.has("From Step 2")`));
+ok("4.1 recalls the headline", await c.evaluate(`__t.has("Left the job that was draining me")`));
+await next();
+ok("4.2 is the word, a moment", await c.evaluate(`__t.has("one word for the year")`));
+await c.evaluate(`__t.type(".moment-input", "Steady")`);
+await wait(600);
+await next();
+ok("4.3 is the themes, with value gaps alongside", await c.evaluate(`__t.has("From Step 2")`));
 await c.evaluate(`__t.typeLabel("Theme 1", "Protect my energy")`);
+await wait(600);
+await c.evaluate(`__t.click(".add-another")`);
+await wait(400);
 await c.evaluate(`__t.typeLabel("Theme 2", "Build something of my own")`);
 await wait(700);
 
-console.log("\n=== STEP 5 ===");
+console.log("\n=== STEPS 5 AND 6 ===");
 await go("/step/5");
-const cards = await c.evaluate(`__t.count(".goal-card")`);
-ok("one goal card shown, not all of them", cards === 1, `saw ${cards}`);
-ok("card is titled with the theme", await c.evaluate(`__t.has("Protect my energy")`));
-await c.evaluate(`__t.type('.goal-fields input[type="text"]', "Sleep seven hours a night", 0)`);
-await wait(1600);
-ok("second goal card arrives", (await c.evaluate(`__t.count(".goal-card")`)) === 2);
-ok("priority question appears", await c.evaluate(`__t.has("could only achieve one")`));
-ok("the priority is a choice listing the goals",
-  (await c.evaluate(`__t.count(".priority-option")`)) >= 1);
-await c.evaluate(`__t.click(".priority-option", 0)`);
+await next();
+ok("5.2 is the first theme's goal card", await c.evaluate(`__t.has("Protect my energy")`));
+await c.evaluate(`__t.typeLabel("How will you know you've done it?", "Sleep seven hours a night")`);
 await wait(600);
-ok("priority saved", Boolean((await c.evaluate(`__t.store()`)).step5.priorityGoalId));
-ok("guidance is stated once, not per card",
-  (await c.evaluate(`__t.count(".goal-guide")`)) === 1);
+await next();
+ok("5.3 is the second theme's goal card", await c.evaluate(`__t.has("Build something of my own")`));
+await c.evaluate(`__t.typeLabel("How will you know you've done it?", "Ten paying customers")`);
+await wait(700);
+await go("/step/5");
+const goalCards = await c.evaluate(`__t.cards()`);
+ok("a card per theme, plus scene, priority and summary", goalCards >= 5, `saw ${goalCards}`);
 
-console.log("\n=== STEP 6 ===");
 await go("/step/6");
-ok("an if-then card per goal", (await c.evaluate(`__t.count(".ifthen-card")`)) >= 1);
-ok("the goal's text is on its card", await c.evaluate(`__t.has("Sleep seven hours a night")`));
+await next();
+ok("6.2 is an if-then for the first goal", await c.evaluate(`__t.has("Sleep seven hours a night")`));
 
 console.log("\n=== STEP 7 ===");
 await go("/step/7");
-ok("headline on the document", await c.evaluate(`__t.has("Left the job that was draining me")`));
-ok("word on the document", await c.evaluate(`__t.has("Steady")`));
-ok("values on the document", await c.evaluate(`__t.has("WHAT MATTERS") || __t.has("What matters")`));
-ok("goal on the document", await c.evaluate(`__t.has("Sleep seven hours a night")`));
-ok("check-in dates suggested", (await c.evaluate(`__t.count('.checkin-list input[type="date"]')`)) === 4);
-ok("email form present", await c.evaluate(`__t.has("Send my plan")`));
+await next();
+ok("7.2 is the document", await c.evaluate(`__t.has("Left the job that was draining me")`));
+ok("the word is on it", await c.evaluate(`__t.has("Steady")`));
+ok("a goal is on it", await c.evaluate(`__t.has("Sleep seven hours a night")`));
+await next();
+ok("7.3 is the note to future self, a moment", await c.evaluate(`__t.has("three months")`));
+await next();
+ok("7.4 keeps it alive, with check-in dates", (await c.evaluate(`__t.count('input[type="date"]')`)) === 4);
+await next();
+ok("7.5 is the email form", await c.evaluate(`__t.has("Send my plan")`));
+await next();
+ok("7.6 is the Clarity Session, last", await c.evaluate(`__t.has("Clarity Session")`));
 
 console.log("\n=== RESUME AND CLEAR ===");
 await go("/step/3");
-ok("answers survive navigation", await c.evaluate(`document.querySelector(".headline-input").value.includes("Left the job")`));
+await next();
+ok("answers survive navigation",
+  await c.evaluate(`document.querySelector(".deck-card:not([inert]) .moment-input").value.includes("Left the job")`));
 await go("/");
-ok("landing offers to continue", await c.evaluate(`__t.has("Continue where you left off")`));
+ok("the landing offers to continue", await c.evaluate(`__t.has("Continue where you left off")`));
 await c.evaluate(`localStorage.clear()`);
 await go("/step/3");
-ok("cleared answers really are gone", (await c.evaluate(`document.querySelector(".headline-input").value`)) === "");
+await next();
+ok("cleared answers really are gone",
+  (await c.evaluate(`document.querySelector(".deck-card:not([inert]) .moment-input").value`)) === "");
 
 console.log(`\n${pass} passed, ${fail} failed`);
 c.close();

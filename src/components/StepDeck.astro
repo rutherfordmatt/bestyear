@@ -1,0 +1,19 @@
+---
+/*
+  The frame for every step: the rail, and the step's deck of cards.
+
+  No bottom bar — the deck owns navigation now. No step header either: a
+  step's title and framing are its first card, so nothing sits permanently
+  above the question competing with it.
+*/
+import PhaseRail from "../islands/PhaseRail.jsx";
+import StorageControls from "../islands/StorageControls.jsx";
+
+const { step } = Astro.props;
+---
+<PhaseRail client:load current={Number(step)} />
+
+<main id="main" class="step-layout deck-layout">
+  <slot />
+  <StorageControls client:visible />
+</main>

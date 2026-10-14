@@ -31,7 +31,7 @@
 
   html { scrollbar-gutter: auto; }
 
-  body, body.has-bar {
+  body {
     background: #FFFFFF !important;
     color: #000000 !important;
     padding: 0 !important;
