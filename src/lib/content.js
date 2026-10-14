@@ -225,6 +225,7 @@ export function promptsOf(stepDoc) {
       // changing it should not mean editing a component.
       label: f["Field label"] || "",
       valueLabel: f["Value field label"] || "",
+      groupLabel: f["Group label"] || "",
       example: f["Placeholder example"] || f["Placeholder examples"] || "",
       hint: f["Stuck? hint"] || f["Stuck"] || "",
       options: f.Options || f["Options (pick any)"] || "",

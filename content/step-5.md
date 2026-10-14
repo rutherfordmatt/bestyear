@@ -34,6 +34,7 @@ Up to three, one per theme. Big goals aren't achieved in big moments — they're
 - **Question:** Why does this matter to you? Pick the value it serves.
 - **Field label:** Why it matters to you
 - **Value field label:** The value it serves
+- **Group label:** What's underneath it
 - **Placeholder example:** Creativity. I want to make something that's mine.
 - **Stuck? hint:** If it doesn't connect to any of your values, ask whether it's really your goal or one you've borrowed.
 

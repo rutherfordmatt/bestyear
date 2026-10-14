@@ -451,16 +451,35 @@ li.reveal-wrap.goal-card { display: grid; }
 .goal-card-head .goal-card-title { font-size: 1.4rem; }
 
 /* The first field runs full width; the rest pair up. */
-.goal-fields {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--sp-4) var(--sp-5);
+/* Three visible lines: what done looks like, when, and this week. The rest
+   is behind one summary, because six empty boxes read as paperwork and a
+   goal only needs an outcome, a date and a next move to be real. */
+.goal-commit { display: grid; gap: var(--sp-5); }
+.goal-line {
+  display: grid; grid-template-columns: 13rem minmax(0, 1fr);
+  gap: var(--sp-5);
 }
-.goal-fields .goal-done { grid-column: 1 / -1; }
-.goal-fields .field { gap: var(--sp-2); align-content: start; }
-.goal-fields .field label { font-size: 0.86rem; font-weight: 500; }
-/* Every row is two controls of equal height, so the columns line up. */
-.goal-fields .month-select { max-width: 14rem; }
+.goal-commit .field { gap: var(--sp-2); align-content: start; }
+.goal-commit .field label { font-size: 0.86rem; font-weight: 500; }
+.goal-commit .month-select { width: 100%; }
+
+.goal-more > summary {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  cursor: pointer; list-style: none;
+  font-size: var(--step--1); color: var(--muted);
+  width: max-content;
+}
+/* The underline belongs to the words, not to the +. */
+.goal-more > summary span { text-decoration: underline; text-underline-offset: 2px; }
+.goal-more > summary::-webkit-details-marker { display: none; }
+.goal-more > summary::before { content: "+"; color: var(--faint-ui); }
+.goal-more[open] > summary::before { content: "–"; }
+.goal-more > summary:hover { color: var(--accent); }
+.goal-more-fields {
+  display: grid; grid-template-columns: 13rem minmax(0, 1fr);
+  gap: var(--sp-4) var(--sp-5); margin-top: var(--sp-4);
+}
+.goal-more-fields .goal-habit { grid-column: 1 / -1; }
 
 /* --- Choosing the priority ---
    A star tucked in the card corner was easy to miss, and the question that
@@ -482,7 +501,7 @@ li.reveal-wrap.goal-card { display: grid; }
 .priority-text em { font-style: normal; font-size: var(--step--1); color: var(--muted); }
 
 @media (max-width: 760px) {
-  .goal-fields { grid-template-columns: minmax(0, 1fr); }
+  .goal-line, .goal-more-fields { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* --- Step 6: if-then --- */
