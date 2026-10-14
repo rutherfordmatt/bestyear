@@ -243,6 +243,18 @@ ok("7.5 is the email form", await c.evaluate(`__t.has("Send my plan")`));
 await next();
 ok("7.6 is the Clarity Session, last", await c.evaluate(`__t.has("Clarity Session")`));
 
+console.log("\n=== BACK ===");
+await go("/step/6");
+const sixFirst = await c.evaluate(`__t.cardRef()`);
+await c.evaluate(`document.querySelector(".deck-nav .btn.text").click()`);
+await wait(1400);
+await c.evaluate(HELPERS);   // a real navigation, so the helpers go in again
+const landed = await c.evaluate(`location.pathname + "|" + __t.cardRef()`);
+const [path, ref] = landed.split("|");
+ok(`Back from ${sixFirst} lands on the previous card, not the top of the step`,
+  path === "/step/5" && ref !== "5.1", landed);
+ok("the hash it travelled on is stripped", await c.evaluate(`location.hash === ""`));
+
 console.log("\n=== RESUME AND CLEAR ===");
 await go("/step/3");
 await next();

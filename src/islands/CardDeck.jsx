@@ -28,6 +28,7 @@ export default function CardDeck({
   leaveLabel = "Next",
 }) {
   const [index, setIndex] = useState(0);
+  const [wantLast, setWantLast] = useState(false);
   const deckRef = useRef(null);
   const trackRef = useRef(null);
   const liveRef = useRef(null);
@@ -44,6 +45,28 @@ export default function CardDeck({
     if (clamped === index) return;
     setIndex(clamped);
   };
+
+  /*
+    Back from the first card of a step leaves to the step before it — and
+    landing at the top of that step means Back jumped backwards through five
+    cards at once. "#last" says: open on the card they were actually on.
+
+    A hash, not a query: fragments never reach the server or analytics, and
+    this one is stripped the moment it is read. The card count can still
+    grow after mount (a hand-over card appears once there is an answer), so
+    the intent is held until the deck is its full size.
+  */
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash !== "#last") return;
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    setWantLast(true);
+  }, []);
+
+  useEffect(() => {
+    if (!wantLast || !cards.length) return;
+    setIndex(cards.length - 1);
+    setWantLast(false);
+  }, [wantLast, cards.length]);
 
   // inert as a JSX attribute did not reliably clear when a card became
   // current, which left it present but unreachable. Set the property.
@@ -195,7 +218,9 @@ export default function CardDeck({
 
       <div class="deck-nav">
         {atStart && backTo ? (
-          <a class="btn text" href={backTo}>{backLabel}</a>
+          <a class="btn text" href={backTo.startsWith("/step/") ? `${backTo}#last` : backTo}>
+            {backLabel}
+          </a>
         ) : (
           <button type="button" class="btn text" onClick={() => go(index - 1)} disabled={atStart}>
             Back
