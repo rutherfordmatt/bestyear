@@ -1,15 +1,19 @@
 import { markStepComplete } from "../lib/storage.js";
 import { useStore } from "../lib/use-store.js";
+import { stepHasContent } from "../lib/carry-forward.js";
 import { STEPS, PHASES, pathForStep, timeLeftLabel, phaseOf, stepByNumber } from "../lib/steps.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
 /*
-  The fixed bottom bar, as on thevaluesfinder.com: where you are on the left,
-  what to do next on the right. Navigation stays reachable without scrolling,
-  and it gives "time left" a home so the progress rail stays clean.
+  The fixed bottom bar: where you are on the left, how to move on the right.
 
-  "Next" marks the step complete and saves immediately — a fast navigation
-  must never lose the step.
+  Only ever ONE way forward on screen. Once the step has something in it the
+  "Added to your plan" panel carries the primary Next, so the bar steps back
+  to a quiet "Skip ahead" — still there for anyone who wants past a step they
+  have nothing to say to, but no longer a second competing button.
+
+  Next marks the step complete and saves immediately: a fast navigation must
+  never lose the step.
 */
 export default function StepBar({ step }) {
   const [state] = useStore();
@@ -25,6 +29,8 @@ export default function StepBar({ step }) {
   const nextStep = isSetup ? STEPS[0] : isLast ? null : stepByNumber(n + 1);
 
   const timeLeft = timeLeftLabel(state.progress.completed);
+  // The summary panel owns the primary Next once there is anything to summarise.
+  const summaryHasIt = !isSetup && stepHasContent(state, n);
 
   const status = isSetup
     ? { title: "Setup", detail: "Two quick choices, then Step 1" }
@@ -54,7 +60,11 @@ export default function StepBar({ step }) {
         </div>
         <div class="row">
           <a class="btn text" href={prev}>Back</a>
-          <a class="btn primary" href={next} onClick={onNext}>{nextLabel}</a>
+          {summaryHasIt ? (
+            <a class="btn text" href={next} onClick={onNext}>Skip ahead</a>
+          ) : (
+            <a class="btn primary" href={next} onClick={onNext}>{nextLabel}</a>
+          )}
         </div>
       </div>
     </div>

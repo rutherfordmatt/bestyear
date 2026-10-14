@@ -355,7 +355,6 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
               aria-label={prompts.closing?.question}
               onInput={(e) => set((s) => { s.step2.closingLine = e.currentTarget.value; })}
             />
-            <p class="hint">This becomes the closing quote on your vision document.</p>
           </div>
         </section>
       </Reveal>

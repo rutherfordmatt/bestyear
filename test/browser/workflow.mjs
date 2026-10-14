@@ -116,6 +116,9 @@ ok("purpose is on the wheel", "purpose" in s1.step1.wheel);
 ok("the lesson is stored on its challenge", s1.step1.challenges[0].lesson === "I say yes too quickly");
 ok("drainer saved", s1.step1.energy.drained.includes("Back-to-back video calls"));
 ok("'Added to your plan' summary shows", await c.evaluate(`__t.has("Added to your plan")`));
+ok("only one primary way forward on screen",
+  (await c.evaluate(`__t.count(".btn.primary")`)) === 1);
+ok("the bar steps back to a quiet skip", await c.evaluate(`__t.has("Skip ahead")`));
 ok("no unprompted coaching note", !(await c.evaluate(`__t.has("Some years are heavier")`)));
 
 console.log("\n=== STEP 2 ===");

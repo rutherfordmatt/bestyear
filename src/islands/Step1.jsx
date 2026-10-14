@@ -119,9 +119,6 @@ export default function Step1({ prompts = [] }) {
               </li>
             ))}
           </ol>
-          <p class="hint">
-            What each one taught you is carried forward as a lesson on your vision document.
-          </p>
           {s.challenges.length < MAX_ENTRIES && (
             <button type="button" class="btn small text add-another" onClick={addChallenge}>
               + Add another
@@ -150,7 +147,6 @@ export default function Step1({ prompts = [] }) {
                 placeholder={drainedExample}
                 onChange={(next) => set((st) => { st.step1.energy.drained = next; })}
               />
-              <p class="hint">These come back in Step 2, as a head start on what to leave behind.</p>
             </div>
           </div>
         </Prompt>

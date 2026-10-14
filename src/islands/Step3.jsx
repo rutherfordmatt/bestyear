@@ -35,7 +35,6 @@ export default function Step3({ prompts = [] }) {
             aria-label={byName("headline").question}
             onInput={(e) => set((st) => { st.step3.headline = e.currentTarget.value; })}
           ></textarea>
-          <p class="note">This leads your vision document.</p>
         </div>
       </Prompt>
 

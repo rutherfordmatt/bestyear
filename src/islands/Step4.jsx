@@ -87,7 +87,6 @@ export default function Step4({ prompts = [] }) {
               + Add another theme
             </button>
           )}
-          <p class="hint">Each theme becomes a goal card in the next step. One is enough to carry on.</p>
         </Prompt>
       </Reveal>
 
