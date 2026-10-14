@@ -84,7 +84,7 @@ A **step** is one of the seven numbered stages.
 | **the panel** | The values pick-and-score, shared by the page and the deck. |
 | **the piles** | The three letting-go columns: habits, commitments, shoulds. |
 | **the wheel** | The eight-area life wheel and its radar chart. |
-| **the dial** | The 1–5 scoring row beside a value. |
+| **the dial** | The 1–5 slider beside a value — the same control as the life wheel's, so scoring is one gesture across the journey. |
 
 ## Type and spacing
 

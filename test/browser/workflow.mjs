@@ -15,6 +15,19 @@ const ok = (label, cond, detail = "") => {
   else { fail++; console.log(`  FAIL ${label}${detail ? ` — ${detail}` : ""}`); }
 };
 
+/* Poll for rendered elements instead of sleeping a guessed number of
+   milliseconds: the scored rows arrive a render after the chips are
+   clicked, and a fixed wait made the step-2 scoring flaky. */
+const waitFor = async (sel, count = 1, ms = 4000) => {
+  const until = Date.now() + ms;
+  for (;;) {
+    const n = await c.evaluate(`document.querySelectorAll(${JSON.stringify(sel)}).length`);
+    if (n >= count) return n;
+    if (Date.now() > until) throw new Error(`timed out waiting for ${count}× ${sel} (saw ${n})`);
+    await new Promise((r) => setTimeout(r, 100));
+  }
+};
+
 const HELPERS = `
   window.__t = {
     has: (s) => document.body.textContent.includes(s),
@@ -152,8 +165,11 @@ await wait(1200);
 for (let i = 0; i < 6; i++) await c.evaluate(`__t.click(".chips .chip", ${i})`);
 await wait(400);
 ok("six values chosen", (await c.evaluate(`__t.store()`)).step2.values.length === 6);
-await c.evaluate(`__t.click(".dial-btn", 1)`);            // first value, rated 2 — a gap
-for (let i = 1; i < 6; i++) await c.evaluate(`__t.click(".dial-btn", ${i * 5 + 3})`);
+// The same slider as the life wheel. First value scored 2, so it reads as a
+// gap; the rest a 4.
+await waitFor('.deck-card:not([inert]) .scored-value input[type="range"]', 6);
+await c.evaluate(`__t.range(0, 2)`);
+for (let i = 1; i < 6; i++) await c.evaluate(`__t.range(${i}, 4)`);
 await wait(500);
 await next();
 ok("2.3 asks where you compromised", await c.evaluate(`__t.has("Where did you compromise")`));

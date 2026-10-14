@@ -168,13 +168,17 @@ export default function ValuesPanel({ card = {}, returnLine = "", prompts = {}, 
                           <button
                             key={v.slug}
                             type="button"
-                            class="chip"
+                            class={`chip${picked ? " is-picked" : ""}`}
                             aria-pressed={picked}
                             disabled={!picked && full}
-                            title={v.meaning}
+                            title={picked ? `Remove ${v.name}` : v.meaning}
                             onClick={() => toggle(v)}
                           >
                             {v.name}
+                            {/* A picked chip looks chosen but says nothing about
+                                being changeable. Hovering one shows what clicking
+                                it will do. */}
+                            {picked && <span class="chip-x" aria-hidden="true">×</span>}
                           </button>
                         );
                       })}
@@ -223,23 +227,27 @@ export default function ValuesPanel({ card = {}, returnLine = "", prompts = {}, 
                 </p>
                 <ul class="scored-values">
                   {chosen.map((v) => {
-                    const isGap = typeof v.alignment === "number" && v.alignment <= 2;
+                    const scored = typeof v.alignment === "number";
+                    const isGap = scored && v.alignment <= 2;
+                    const id = `align-${v.slug}`;
                     return (
                       <li key={v.slug} class={`scored-value${isGap ? " is-gap" : ""}`}>
-                        <span class="scored-name">{v.name}</span>
-                        <div class="dial" role="group" aria-label={`How well you lived ${v.name}`}>
-                          {[1, 2, 3, 4, 5].map((n) => (
-                            <button
-                              key={n}
-                              type="button"
-                              class="dial-btn"
-                              aria-pressed={v.alignment === n}
-                              aria-label={`${v.name}: ${n} out of 5`}
-                              onClick={() => setAlignment(v.slug, n)}
-                            >
-                              {n}
-                            </button>
-                          ))}
+                        <label class="scored-name" for={id}>{v.name}</label>
+                        {/* The same slider as the life wheel, so scoring feels
+                            like one gesture across the journey rather than two
+                            inventions. */}
+                        <div class="slider-control">
+                          <input
+                            id={id} type="range" min="1" max="5" step="1"
+                            value={scored ? v.alignment : 3}
+                            class={scored ? "" : "unset"}
+                            aria-label={`How well you lived ${v.name}`}
+                            aria-valuetext={scored ? `${v.alignment} out of 5` : "Not scored yet"}
+                            onInput={(e) => setAlignment(v.slug, Number(e.currentTarget.value))}
+                          />
+                          <output for={id} class={scored ? "" : "unset"}>
+                            {scored ? v.alignment : "–"}
+                          </output>
                         </div>
                         <button
                           type="button"
