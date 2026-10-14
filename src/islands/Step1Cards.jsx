@@ -161,7 +161,7 @@ export default function Step1Cards({ prompts = [], titleHtml = "", intro = [], t
             })}
           </div>
           <div class="wheel-holder">
-            <LifeWheelChart wheel={s.wheel} size={300} id="wheel-cards" />
+            <LifeWheelChart wheel={s.wheel} size={340} id="wheel-cards" />
           </div>
         </div>
       ),

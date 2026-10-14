@@ -245,8 +245,17 @@ li.reveal-wrap.goal-card { display: grid; }
 .list-remove:hover { color: var(--warn); }
 
 /* --- Life wheel step --- */
-.wheel-layout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-7); align-items: start; }
-.sliders { display: grid; gap: var(--sp-4); }
+/* The eight areas in two columns of four, with the shape they make below
+   them — rather than a single tall column of sliders with the wheel parked
+   beside it, which pushed the card to twice the height of any other. */
+.wheel-layout { display: grid; gap: var(--sp-7); justify-items: center; }
+.sliders {
+  display: grid; gap: var(--sp-4) var(--sp-8);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  width: 100%;
+}
 .slider-row { display: grid; gap: var(--sp-2); }
 .slider-row label { display: grid; gap: 1px; }
 .slider-row label b { font-weight: 500; font-size: 0.94rem; }
@@ -268,8 +277,7 @@ li.reveal-wrap.goal-card { display: grid; }
 .list-input-wrap .list-input { width: 100%; }
 
 @media (max-width: 860px) {
-  .wheel-layout { grid-template-columns: minmax(0, 1fr); }
-  .wheel-holder { order: -1; }
+  .sliders { grid-template-columns: minmax(0, 1fr); grid-auto-flow: row; grid-template-rows: none; }
   .energy-grid { grid-template-columns: 1fr; }
 }
 
