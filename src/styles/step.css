@@ -379,7 +379,9 @@ li.reveal-wrap.goal-card { display: grid; }
 }
 
 /* --- Step 3: letting go --- */
-.letting-layout { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: var(--sp-6); align-items: start; }
+/* The head-start aside was 230px, which made it wrap every other line while
+   the piles had width to spare. Divider moves left. */
+.letting-layout { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; gap: var(--sp-5); align-items: start; }
 .piles { display: grid; gap: var(--sp-5); }
 .pile { display: grid; gap: var(--sp-2); }
 .pile-head {
@@ -596,6 +598,9 @@ li.reveal-wrap.goal-card { display: grid; }
   padding: var(--sp-8);
   display: grid; gap: var(--sp-4);
   align-content: start;
+  /* A floor, not a fixed height: short cards stop the frame collapsing and
+     jumping as you move between them; tall ones still grow. */
+  min-height: 26rem;
 }
 .deck-card-inner .prompt-question { outline: none; }
 .deck-card-body { margin-top: var(--sp-2); }
@@ -621,7 +626,8 @@ li.reveal-wrap.goal-card { display: grid; }
   .deck-track, .deck-viewport { transition: none; }
 }
 @media (max-width: 640px) {
-  .deck-card-inner { padding: var(--sp-5); min-height: 0; }
+  .deck-card-inner { padding: var(--sp-5); min-height: 20rem; }
+  .letting-layout { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* The coach's opening card: the step's title and framing, before any
