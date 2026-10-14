@@ -95,6 +95,17 @@ await next();
 ok("card 0.2 asks for the word", (await c.evaluate(`__t.cardRef()`)) === "0.2");
 await c.evaluate(`__t.typeLabel("Sum up the year you've just had in a word or short phrase.", "Rebuilding")`);
 await wait(700);
+/* Typing the word appends the hand-over card. The deck must not move for
+   that: when the slide distance was a fraction of the track's width, a card
+   arriving mid-deck changed the fraction and the deck slid away and back
+   while you typed. */
+ok("the deck stays put when a card is added mid-typing", await c.evaluate(`(() => {
+  const vp = document.querySelector(".deck-viewport").getBoundingClientRect();
+  const a = document.querySelector(".deck-card:not([inert])").getBoundingClientRect();
+  return Math.round(a.left - vp.left) === 0;
+})()`));
+ok("the hand-over card has appeared", (await c.evaluate(`document.querySelectorAll(".deck-dot").length`)) === 3);
+
 const setupStore = await c.evaluate(`__t.store()`);
 ok("pace saved", setupStore?.pace === "sitting");
 ok("word saved", setupStore?.yearEnding?.word === "Rebuilding");

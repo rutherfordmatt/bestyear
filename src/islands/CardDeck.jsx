@@ -154,17 +154,18 @@ export default function CardDeck({
         onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}
         style={height ? { height: `${Math.round(height)}px` } : undefined}
       >
-        {/* The track is as wide as all the cards together and each card is a
-            fraction of it, rather than cards overflowing a viewport-width
-            track. Same result, but the slide distance is derived from the
-            track rather than depending on overflow behaviour. */}
+        {/*
+          The track stays one viewport wide and the cards overflow it, so a
+          card's width — and the slide distance — is 100% whatever the deck
+          holds. Sizing the track to the cards instead made the transform a
+          fraction of a changing width: adding a card mid-deck (the hand-over
+          appears as soon as you type) changed the fraction and the width in
+          the same frame, and the deck slid away and back while you typed.
+        */}
         <div
           class="deck-track"
           ref={trackRef}
-          style={{
-            width: `${cards.length * 100}%`,
-            transform: `translateX(-${(index * 100) / cards.length}%)`,
-          }}
+          style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {cards.map((card, i) => (
             <section key={card.key || i} class="deck-card" aria-label={card.title}>

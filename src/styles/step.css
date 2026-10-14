@@ -577,7 +577,7 @@ li.reveal-wrap.goal-card { display: grid; }
   transition: transform var(--slow) var(--ease);
   align-items: start;
 }
-.deck-card { flex: 1 1 0; min-width: 0; }
+.deck-card { flex: 0 0 100%; min-width: 0; }
 .deck-card-inner {
   background: var(--paper); border: var(--border); border-radius: var(--radius);
   padding: var(--sp-8);
