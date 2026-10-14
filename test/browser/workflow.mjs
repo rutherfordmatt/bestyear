@@ -55,7 +55,34 @@ const go = async (path, settle = 1100) => { await c.goto(BASE + path, settle); a
 const next = async (ms = 650) => { await c.evaluate(`__t.next()`); await new Promise((r) => setTimeout(r, ms)); };
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-console.log("=== SETUP ===");
+/*
+  A guard for the bug where one Next moved two cards: focusing the new card's
+  heading scrolled the overflow:hidden viewport, so the transform moved one
+  card and the scroll moved another.
+*/
+async function advancesExactlyOne(path, expected) {
+  await go(path);
+  const before = await c.evaluate(`__t.cardRef()`);
+  await next(800);
+  const after = await c.evaluate(`__t.cardRef()`);
+  const aligned = await c.evaluate(`(() => {
+    const vp = document.querySelector(".deck-viewport");
+    const a = document.querySelector(".deck-card:not([inert])");
+    return Math.round(a.getBoundingClientRect().left) === Math.round(vp.getBoundingClientRect().left)
+      && vp.scrollLeft === 0;
+  })()`);
+  ok(`${path}: Next moves exactly one card (${before} → ${after})`, after === expected, `got ${after}`);
+  ok(`${path}: the card on screen is the active one`, aligned);
+}
+
+console.log("=== ONE CLICK, ONE CARD ===");
+for (const [path, expected] of [["/setup", "0.2"], ["/step/1", "1.2"], ["/step/7", "7.2"]]) {
+  await c.goto(BASE + path, 900);
+  await c.evaluate(`localStorage.clear()`);
+  await advancesExactlyOne(path, expected);
+}
+
+console.log("\n=== SETUP ===");
 await go("/setup");
 await c.evaluate(`localStorage.clear()`);
 await go("/setup");

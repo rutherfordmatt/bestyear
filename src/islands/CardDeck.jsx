@@ -30,6 +30,7 @@ export default function CardDeck({
   const [index, setIndex] = useState(0);
   const trackRef = useRef(null);
   const liveRef = useRef(null);
+  const viewportRef = useRef(null);
   const [height, setHeight] = useState(null);
 
   const last = cards.length - 1;
@@ -57,8 +58,19 @@ export default function CardDeck({
     const active = document.activeElement;
     const typing = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
     if (!typing) {
-      trackRef.current?.children[index]?.querySelector("[data-card-focus]")?.focus?.();
+      /*
+        preventScroll matters more than it looks. Focusing an element inside
+        an overflow:hidden box makes the browser scroll that box to reveal
+        it — and a hidden overflow still scrolls programmatically. The track
+        would slide one card by transform and the viewport would scroll
+        another, landing two cards on from where you asked to go.
+      */
+      trackRef.current?.children[index]
+        ?.querySelector("[data-card-focus]")
+        ?.focus?.({ preventScroll: true });
     }
+    // Belt and braces: nothing should ever scroll the viewport sideways.
+    if (viewportRef.current) viewportRef.current.scrollLeft = 0;
   }, [index]);
 
   /*
@@ -96,8 +108,24 @@ export default function CardDeck({
     <div class="deck" onKeyDown={onKeyDown}>
       <p class="visually-hidden" role="status" aria-live="polite" ref={liveRef}></p>
 
-      <div class="deck-viewport" style={height ? { height: `${Math.round(height)}px` } : undefined}>
-        <div class="deck-track" ref={trackRef} style={{ transform: `translateX(-${index * 100}%)` }}>
+      <div
+        class="deck-viewport"
+        ref={viewportRef}
+        onScroll={(e) => { e.currentTarget.scrollLeft = 0; }}
+        style={height ? { height: `${Math.round(height)}px` } : undefined}
+      >
+        {/* The track is as wide as all the cards together and each card is a
+            fraction of it, rather than cards overflowing a viewport-width
+            track. Same result, but the slide distance is derived from the
+            track rather than depending on overflow behaviour. */}
+        <div
+          class="deck-track"
+          ref={trackRef}
+          style={{
+            width: `${cards.length * 100}%`,
+            transform: `translateX(-${(index * 100) / cards.length}%)`,
+          }}
+        >
           {cards.map((card, i) => (
             <section key={card.key || i} class="deck-card" aria-label={card.title}>
               <div class={`deck-card-inner${card.variant ? ` is-${card.variant}` : ""}`}>

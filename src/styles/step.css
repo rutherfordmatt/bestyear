@@ -568,7 +568,7 @@ li.reveal-wrap.goal-card { display: grid; }
   transition: transform var(--slow) var(--ease);
   align-items: start;
 }
-.deck-card { flex: 0 0 100%; min-width: 0; }
+.deck-card { flex: 1 1 0; min-width: 0; }
 .deck-card-inner {
   background: var(--paper); border: var(--border); border-radius: var(--radius);
   padding: var(--sp-8);
@@ -576,7 +576,7 @@ li.reveal-wrap.goal-card { display: grid; }
   align-content: start;
   /* A floor, not a fixed height: short cards stop the frame collapsing and
      jumping as you move between them; tall ones still grow. */
-  min-height: 26rem;
+  min-height: 20rem;
 }
 .deck-card-inner .prompt-question { outline: none; }
 .deck-card-body { margin-top: var(--sp-2); }
@@ -610,9 +610,12 @@ li.reveal-wrap.goal-card { display: grid; }
    question. Quieter than a question card — it is being read, not filled in. */
 .deck-card-inner.is-scene {
   /* No inline padding: the scene card has no box, so its text should sit on
-     the same left edge as the header rather than 8px inside it. */
+     the same left edge as the header rather than 8px inside it. And no floor
+     — a card with no box and no field should hug its words, not leave a
+     screenful of white under them. */
   background: transparent; border: 0; padding: var(--sp-7) 0;
   gap: var(--sp-4);
+  min-height: 0;
 }
 .scene-title {
   font: 400 var(--step-3) / var(--leading-tight) var(--serif);
@@ -623,7 +626,7 @@ li.reveal-wrap.goal-card { display: grid; }
 .scene-body .lede:first-child { font-size: 1.25rem; color: var(--ink); }
 .scene-body .lede { font-size: 1rem; color: var(--muted); }
 
-.deck-card-inner.is-summary { background: transparent; border: 0; padding: 0; }
+.deck-card-inner.is-summary { background: transparent; border: 0; padding: 0; min-height: 0; }
 .deck-card-inner.is-summary .step-summary { padding: var(--sp-7); }
 
 /* A "moment" card. Some questions are not form fields — they are the point
