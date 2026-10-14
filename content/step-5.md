@@ -14,11 +14,9 @@ Up to three clear goals, one priority, and a habit to carry each of them.
 
 ## Intro
 
-Vague goals feel safe because you can never quite fail them. Too many goals feel ambitious and quietly guarantee you'll do none of them.
+Vague goals feel safe because you can never quite fail them. Too many quietly guarantee you'll do none of them.
 
-We keep it tight. Up to three goals, one for each theme. Each gets four answers: what done looks like, why it matters, a date, and the habit that will get you there. Big goals are rarely achieved in big moments. They're achieved in the small thing you do every week.
-
-Then you choose the one that matters most.
+Up to three, one per theme. Big goals aren't achieved in big moments — they're achieved in the small thing you do every week.
 
 ## Prompts
 

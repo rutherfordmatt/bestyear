@@ -14,11 +14,9 @@ One word to carry through the year, and three themes to hold the course.
 
 ## Intro
 
-A picture of the year is not much use on a Tuesday in February. You need something smaller to carry around.
+A picture of the year is no use on a wet Tuesday in February. You need something smaller to carry.
 
-So choose one word. It's a compass you can check in two seconds on a bad day — am I being that, right now?
-
-Then three themes. Resolutions snap the first time you miss one. Themes bend without breaking, and they're what your goals will hang off in the next step.
+One word as a compass, and three themes. Resolutions snap the first time you miss one; themes bend.
 
 ## Prompts
 

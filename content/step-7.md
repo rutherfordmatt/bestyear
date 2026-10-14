@@ -14,11 +14,9 @@ A one-page vision to print, pin up and come back to, with your check-ins already
 
 ## Intro
 
-Here's everything you've built, in one place. Your headline, your word, your goals and your plan for the bad days, with your values underneath it all.
+Here's everything you've built, in one place. Read it through once and change anything that doesn't sound like you.
 
-Read it through once. Change anything that doesn't sound like you.
-
-Then give it a life beyond today. A plan you never look at again was just a nice afternoon. A plan on the fridge door, with a check-in in the diary, is something else entirely.
+Then give it a life beyond today. A plan you never look at again was a nice afternoon.
 
 ## Prompts
 

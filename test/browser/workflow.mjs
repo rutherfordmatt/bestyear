@@ -112,12 +112,14 @@ ok("gap question hidden before values are rated", !(await c.evaluate(`__t.has("W
 await c.evaluate(`__t.clickText("button", "Pick from the list")`);
 await wait(2000);
 ok("picker loads all 155 values", (await c.evaluate(`__t.count(".chips .chip")`)) >= 155);
+ok("picking and scoring are visible together",
+  (await c.evaluate(`!!document.querySelector(".values-pick") && !!document.querySelector(".values-chosen")`)));
 for (let i = 0; i < 6; i++) await c.evaluate(`__t.click(".chips .chip", ${i})`);
 await wait(500);
 ok("six values chosen", (await c.evaluate(`__t.store()`)).step2.values.length === 6);
 await c.evaluate(`__t.click(".dial-btn", 0)`);   // first value, rating 1
 await wait(700);
-ok("low rating flagged as a gap", await c.evaluate(`__t.has("A gap worth watching")`));
+ok("low rating flagged as a gap", await c.evaluate(`__t.has("gaps worth watching")`));
 ok("gap question waits until every value is scored",
   !(await c.evaluate(`__t.has("Where did you compromise")`)));
 // Score the remaining five.
@@ -131,6 +133,8 @@ ok("step 1 drainer offered as a head start", await c.evaluate(`__t.has("Back-to-
 await c.evaluate(`__t.clickText(".from-step-pick", "Back-to-back video calls")`);
 await wait(900);
 ok("the suggestion lands in the list", (await c.evaluate(`__t.store()`)).step2.lettingGo.length === 1);
+ok("the scoring question is asked once, not per value",
+  (await c.evaluate(`__t.count(".values-score-ask")`)) === 1);
 ok("closing line appears after letting go", await c.evaluate(`__t.has("last line")`));
 
 console.log("\n=== STEP 3: PICTURE IT ===");
@@ -167,9 +171,13 @@ await c.evaluate(`__t.type('.goal-fields input[type="text"]', "Sleep seven hours
 await wait(1600);
 ok("second goal card arrives", (await c.evaluate(`__t.count(".goal-card")`)) === 2);
 ok("priority question appears", await c.evaluate(`__t.has("could only achieve one")`));
-await c.evaluate(`__t.click(".star-btn", 0)`);
-await wait(500);
+ok("the priority is a choice listing the goals",
+  (await c.evaluate(`__t.count(".priority-option")`)) >= 1);
+await c.evaluate(`__t.click(".priority-option", 0)`);
+await wait(600);
 ok("priority saved", Boolean((await c.evaluate(`__t.store()`)).step5.priorityGoalId));
+ok("guidance is stated once, not per card",
+  (await c.evaluate(`__t.count(".goal-guide")`)) === 1);
 
 console.log("\n=== STEP 6 ===");
 await go("/step/6");

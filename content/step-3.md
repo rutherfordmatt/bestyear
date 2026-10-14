@@ -16,9 +16,7 @@ A clear picture of the year you want, before a single goal is set.
 
 It's hard to build something you can't picture.
 
-So before any goals, imagine it's twelve months from now and it's been a genuinely good year. Not perfect. Good.
-
-What happened? What changed? How do you feel? Write it as though it has already happened — the future is easier to describe in the past tense.
+So before any goals: it's twelve months from now and it's been a genuinely good year. Not perfect. Good. Write it as though it has already happened.
 
 ## Prompts
 

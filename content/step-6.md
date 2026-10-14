@@ -16,9 +16,7 @@ A ready-made response for the moments most likely to knock you off course, and t
 
 Optimism is lovely. It's also a terrible plan.
 
-Things will get in the way. Work will spike, motivation will dip, life will happen. The people who keep going aren't more disciplined. They decided in advance what they'd do when it happened, and they didn't try to do it alone.
-
-For each goal, name the most likely obstacle and write your response. The research behind this kind of if-then planning is strong. Then decide who's in your corner.
+The people who keep going aren't more disciplined. They decided in advance what they'd do when it got hard, and they didn't do it alone.
 
 ## Prompts
 

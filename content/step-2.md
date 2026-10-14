@@ -16,9 +16,7 @@ Your core values, an honest read on how well you lived them, and a clear list of
 
 Goals are easy to set and easy to drop. The ones that last are anchored to something deeper: what you'd still stand for when it costs you something.
 
-Most people have never written their values down, so they end up chasing someone else's. Pick yours. Then look at the gap between what you say matters and how you actually spent the year. The gap isn't failure. It's information.
-
-Then the part most people skip. Every year leaves behind things that no longer fit: habits, commitments, the quiet "shoulds" you picked up along the way. Name them so you can put them down. You can't make room for a new year while still holding all of the old one.
+Then the part most people skip. Name what no longer fits, so you can put it down.
 
 ## Values Finder card
 

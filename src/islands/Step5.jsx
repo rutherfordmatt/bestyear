@@ -92,10 +92,18 @@ export default function Step5({ prompts = [] }) {
 
   return (
     <div class="step-prompts">
-      <p class="goal-intro muted">
-        One goal per theme, up to three. Every field is optional — a half-filled goal
-        still beats a vague one.
-      </p>
+      <div class="goal-guide">
+        <p class="goal-intro">
+          One goal per theme, up to three. Every field is optional — a half-filled
+          goal still beats a vague one.
+        </p>
+        <ul class="goal-guide-list">
+          <li><b>How you'll know</b> — what would make you say yes without hesitating?</li>
+          <li><b>Why it matters</b> — if it serves none of your values, is it really yours?</li>
+          <li><b>The habit</b> — small enough to survive a busy week.</li>
+          <li><b>This week</b> — if it takes more than an hour, break it down again.</li>
+        </ul>
+      </div>
 
       <ol class="goal-cards">
         {themes.map((theme, i) => {
@@ -112,24 +120,11 @@ export default function Step5({ prompts = [] }) {
               <div class="goal-card-head">
                 <p class="label">Theme {i + 1}</p>
                 <h2 class="goal-card-title">{theme.text}</h2>
-                <button
-                  type="button"
-                  class="star-btn"
-                  aria-pressed={isPriority}
-                  onClick={() => setPriority(goal.id)}
-                  title={isPriority ? "Remove priority" : "Make this my priority"}
-                >
-                  <span aria-hidden="true">{isPriority ? "★" : "☆"}</span>
-                  <span class="visually-hidden">
-                    {isPriority ? `${theme.text} is your priority goal` : `Make ${theme.text} your priority goal`}
-                  </span>
-                </button>
               </div>
 
               <div class="goal-fields">
-                <div class="field">
+                <div class="field goal-done">
                   <label for={`done-${goal.id}`}>{q.done.question}</label>
-                  {i === 0 && q.done.hint && <p class="tip">{q.done.hint}</p>}
                   <input
                     id={`done-${goal.id}`} type="text" value={goal.done}
                     placeholder={i === 0 ? q.done.example : ""} maxLength={500}
@@ -138,8 +133,7 @@ export default function Step5({ prompts = [] }) {
                 </div>
 
                 <div class="field">
-                  <label for={`value-${goal.id}`}>{q.why.question}</label>
-                  {i === 0 && q.why.hint && <p class="tip">{q.why.hint}</p>}
+                  <label for={`value-${goal.id}`}>The value it serves</label>
                   <select
                     id={`value-${goal.id}`}
                     value={goal.valueSlug || ""}
@@ -150,18 +144,21 @@ export default function Step5({ prompts = [] }) {
                       <option key={v.slug} value={v.slug}>{v.name}</option>
                     ))}
                   </select>
+                </div>
+
+                <div class="field">
+                  <label for={`why-${goal.id}`}>Why it matters to you</label>
                   <input
+                    id={`why-${goal.id}`}
                     type="text" value={goal.why}
                     placeholder={i === 0 ? stripValue(q.why.example) : ""}
                     maxLength={500}
-                    aria-label={`Why ${theme.text} matters`}
                     onInput={(e) => setGoal(goal.id, "why", e.currentTarget.value)}
                   />
                 </div>
 
                 <div class="field">
-                  <label for={`habit-${goal.id}`}>{q.habit.question}</label>
-                  {i === 0 && q.habit.hint && <p class="tip">{q.habit.hint}</p>}
+                  <label for={`habit-${goal.id}`}>The habit that carries it</label>
                   <input
                     id={`habit-${goal.id}`} type="text" value={goal.habit}
                     placeholder={i === 0 ? q.habit.example : ""} maxLength={400}
@@ -170,8 +167,7 @@ export default function Step5({ prompts = [] }) {
                 </div>
 
                 <div class="field">
-                  <label for={`first-${goal.id}`}>{q.first.question}</label>
-                  {i === 0 && q.first.hint && <p class="tip">{q.first.hint}</p>}
+                  <label for={`first-${goal.id}`}>This week</label>
                   <input
                     id={`first-${goal.id}`} type="text" value={goal.firstStep}
                     placeholder={i === 0 ? q.first.example : ""} maxLength={400}
@@ -179,10 +175,8 @@ export default function Step5({ prompts = [] }) {
                   />
                 </div>
 
-                {/* Last, and a month rather than a day: this is annual
-                    visioning, and an exact date is false precision. */}
-                <div class="field field-inline">
-                  <label for={`date-${goal.id}`}>{q.date.question}</label>
+                <div class="field">
+                  <label for={`date-${goal.id}`}>Done by</label>
                   <select
                     id={`date-${goal.id}`}
                     class="month-select"
@@ -202,13 +196,35 @@ export default function Step5({ prompts = [] }) {
       </ol>
 
       <Reveal when={anyGoal}>
-      <Prompt prompt={q.priority}>
-        <p class="muted">
-          {state.step5.priorityGoalId
-            ? "Starred above. It leads your vision document."
-            : "Star one of the cards above."}
-        </p>
-      </Prompt>
+        <Prompt prompt={q.priority}>
+          <ul class="priority-choice" role="radiogroup" aria-label={q.priority.question}>
+            {themes.map((theme) => {
+              const goal = goalFor(theme);
+              if (!goal || !filled(goal.done)) return null;
+              const isPriority = state.step5.priorityGoalId === goal.id;
+              return (
+                <li key={goal.id}>
+                  <button
+                    type="button"
+                    class="priority-option"
+                    role="radio"
+                    aria-checked={isPriority}
+                    onClick={() => setPriority(goal.id)}
+                  >
+                    <span class="priority-mark" aria-hidden="true">{isPriority ? "★" : "☆"}</span>
+                    <span class="priority-text">
+                      <b>{goal.done}</b>
+                      <em>{theme.text}</em>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          {state.step5.priorityGoalId && (
+            <p class="note">This one leads your vision document.</p>
+          )}
+        </Prompt>
       </Reveal>
 
       <ShowAll allShown={allShown} onShow={showAll} label="Show all goals" />

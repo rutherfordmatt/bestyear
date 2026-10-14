@@ -11,6 +11,14 @@ if [ ! -x "$CHROME" ]; then
   exit 1
 fi
 
+# A browser already on this port would be used instead of the clean one we
+# launch, and a seeded profile silently produces misleading results.
+if curl -sf --max-time 1 "http://127.0.0.1:$PORT/json/version" > /dev/null 2>&1; then
+  echo "Something is already listening on $PORT — a stray Chrome from a manual run?" >&2
+  echo "Close it first:  pkill -f 'remote-debugging-port=$PORT'" >&2
+  exit 1
+fi
+
 if ! curl -sf --max-time 2 "${BASE:-http://localhost:4321}" > /dev/null; then
   echo "Dev server not reachable at ${BASE:-http://localhost:4321} — run 'npm run dev' first." >&2
   exit 1

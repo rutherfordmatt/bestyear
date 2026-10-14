@@ -89,6 +89,12 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
     setValueCount(mod.VALUE_COUNT);
   };
 
+  // With nothing chosen the pick column is just a button and a lot of empty
+  // space, and the list is what the visitor needs anyway. Open it.
+  useEffect(() => {
+    if (!chosen.length) loadList();
+  }, []);
+
   const matches = useMemo(() => {
     if (!families) return [];
     const q = query.trim().toLowerCase();
@@ -155,147 +161,152 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
         </div>
       )}
 
-      {/* Chosen values, with alignment */}
-      <section class="prompt" ref={chosenRef}>
+      {/* Picker and scoring side by side: the chosen list used to sit above
+          the picker, so you only found it after scrolling back up, and every
+          value reprinted the alignment question. */}
+      <section class="prompt values-step" ref={chosenRef}>
         <div class="prompt-head">
           <h2 class="prompt-question">{prompts.choose?.question}</h2>
           {prompts.choose?.hint && <p class="tip">{prompts.choose.hint}</p>}
-          <p class="note" aria-live="polite">
-            {chosen.length > 0 && !allRated
-              ? `${chosen.filter((v) => typeof v.alignment !== "number").length} left to score`
-              : countLabel(chosen.length)}
-          </p>
         </div>
 
-        {chosen.length > 0 ? (
-          <ul class="chosen-values">
-            {chosen.map((v) => (
-              <li key={v.slug} class="chosen-value">
-                <div class="chosen-head">
-                  <b>{v.name}</b>
-                  <button
-                    type="button"
-                    class="list-remove"
-                    onClick={() => toggle(v)}
-                    aria-label={`Remove ${v.name}`}
-                  >
-                    ×
-                  </button>
-                </div>
-                {/* A <legend> sits outside its fieldset's grid flow, so the
-                    gap never applies to it. A labelled group spaces correctly. */}
-                <div class="alignment">
-                  <span class="alignment-label" id={`align-${v.slug}`}>
-                    {prompts.alignment?.question || "How well did it show up?"}
-                  </span>
-                  <div class="dial" role="group" aria-labelledby={`align-${v.slug}`}>
-                    {[1, 2, 3, 4, 5].map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        class="dial-btn"
-                        aria-pressed={v.alignment === n}
-                        aria-label={`${v.name}: ${n} out of 5`}
-                        onClick={() => setAlignment(v.slug, n)}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                    <span class="dial-ends" aria-hidden="true">
-                      <span>barely</span><span>fully</span>
-                    </span>
+        <p class="note values-finder-line">
+          Not sure what yours are?{" "}
+          <a href={finderLink("/step/2")} onClick={() => track(EVENTS.valuesImported)}>
+            Take the Values Finder first
+          </a>{" "}
+          — about ten minutes, and your results come straight back here.
+        </p>
+
+        <div class="values-grid">
+          <div class="values-pick">
+            <div class="values-col-head">
+              <h3>Pick</h3>
+              {open && (
+                <input
+                  type="search"
+                  value={query}
+                  placeholder={valueCount ? `Search ${valueCount}…` : "Search…"}
+                  aria-label="Search values"
+                  onInput={(e) => setQuery(e.currentTarget.value)}
+                />
+              )}
+            </div>
+
+            {!open ? (
+              <div class="values-start">
+                <button type="button" class="btn" onClick={loadList} disabled={full}>
+                  {chosen.length ? "Add or swap values" : "Pick from the list"}
+                </button>
+              </div>
+            ) : (
+              <div class="picker">
+                {families && matches.map((family) => (
+                  <div class="family" key={family.name}>
+                    <h4 class="family-name">{family.name}</h4>
+                    <div class="chips">
+                      {family.values.map((v) => {
+                        const picked = chosenSlugs.has(v.slug);
+                        return (
+                          <button
+                            key={v.slug}
+                            type="button"
+                            class="chip"
+                            aria-pressed={picked}
+                            disabled={!picked && full}
+                            title={v.meaning}
+                            onClick={() => toggle(v)}
+                          >
+                            {v.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                {families && matchCount === 0 && (
+                  <p class="muted">Nothing matches "{query}". Add it as your own below.</p>
+                )}
+                {!families && <p class="muted">Loading…</p>}
+                <div class="add-own">
+                  <label class="field-label" for="custom-value">Not on the list?</label>
+                  <div class="row">
+                    <input
+                      id="custom-value"
+                      type="text"
+                      value={custom}
+                      maxLength={40}
+                      placeholder="Your own word"
+                      disabled={full}
+                      onInput={(e) => setCustom(e.currentTarget.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustom(); } }}
+                    />
+                    <button type="button" class="btn small" onClick={addCustom} disabled={full || !custom.trim()}>
+                      Add
+                    </button>
                   </div>
                 </div>
-                {typeof v.alignment === "number" && v.alignment <= 2 && (
+              </div>
+            )}
+          </div>
+
+          <div class="values-chosen">
+            <div class="values-col-head">
+              <h3>Yours</h3>
+              <p class="note" aria-live="polite">{statusLine(chosen, allRated)}</p>
+            </div>
+
+            {chosen.length === 0 ? (
+              <p class="values-none">They'll appear here as you pick them.</p>
+            ) : (
+              <>
+                {/* Asked once, not once per value. */}
+                <p class="tip values-score-ask">
+                  {prompts.alignment?.question || "How well did each show up in how you spent your time?"}
+                </p>
+                <ul class="scored-values">
+                  {chosen.map((v) => {
+                    const isGap = typeof v.alignment === "number" && v.alignment <= 2;
+                    return (
+                      <li key={v.slug} class={`scored-value${isGap ? " is-gap" : ""}`}>
+                        <span class="scored-name">{v.name}</span>
+                        <div class="dial" role="group" aria-label={`How well you lived ${v.name}`}>
+                          {[1, 2, 3, 4, 5].map((n) => (
+                            <button
+                              key={n}
+                              type="button"
+                              class="dial-btn"
+                              aria-pressed={v.alignment === n}
+                              aria-label={`${v.name}: ${n} out of 5`}
+                              onClick={() => setAlignment(v.slug, n)}
+                            >
+                              {n}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          type="button"
+                          class="list-remove"
+                          onClick={() => toggle(v)}
+                          aria-label={`Remove ${v.name}`}
+                        >
+                          ×
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p class="dial-ends" aria-hidden="true"><span>1 barely</span><span>5 fully</span></p>
+                {chosen.some((v) => typeof v.alignment === "number" && v.alignment <= 2) && (
                   <p class="gap-flag">
-                    A gap worth watching. This one comes back in Step 4.
+                    The low ones are gaps worth watching. They come back in Step 4.
                   </p>
                 )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p class="muted empty-values">No values chosen yet.</p>
-        )}
-
-        <div class="row">
-          <button type="button" class="btn small" onClick={loadList} disabled={full}>
-            {chosen.length ? "Add or swap values" : "Pick from the list"}
-          </button>
+              </>
+            )}
+          </div>
         </div>
       </section>
-
-      {/* The pick-list: 155 values, searchable, grouped by family */}
-      {open && (
-        <section class="picker" aria-label="Choose your values">
-          <div class="picker-tools">
-            <input
-              type="search"
-              value={query}
-              placeholder={valueCount ? `Search ${valueCount} values…` : "Search values…"}
-              aria-label="Search values"
-              onInput={(e) => setQuery(e.currentTarget.value)}
-            />
-            <p class="note" aria-live="polite">
-              {families ? `${matchCount} shown · ${countLabel(chosen.length)}` : "Loading…"}
-            </p>
-            <button type="button" class="btn small primary" onClick={closePicker}>
-              Done — score them
-            </button>
-          </div>
-
-          {families && matches.map((family) => (
-            <div class="family" key={family.name}>
-              <div class="family-head">
-                <h3>{family.name}</h3>
-                <p class="note">{family.blurb}</p>
-              </div>
-              <div class="chips">
-                {family.values.map((v) => {
-                  const picked = chosenSlugs.has(v.slug);
-                  return (
-                    <button
-                      key={v.slug}
-                      type="button"
-                      class="chip"
-                      aria-pressed={picked}
-                      disabled={!picked && full}
-                      title={v.meaning}
-                      onClick={() => toggle(v)}
-                    >
-                      <span class="chip-name">{v.name}</span>
-                      <span class="chip-meaning">{v.meaning}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-
-          {families && matchCount === 0 && (
-            <p class="muted">Nothing matches "{query}". Add it as your own below.</p>
-          )}
-
-          <div class="add-own">
-            <label class="field-label" for="custom-value">Not on the list?</label>
-            <div class="row">
-              <input
-                id="custom-value"
-                type="text"
-                value={custom}
-                maxLength={40}
-                placeholder="Your own word"
-                disabled={full}
-                onInput={(e) => setCustom(e.currentTarget.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustom(); } }}
-              />
-              <button type="button" class="btn small" onClick={addCustom} disabled={full || !custom.trim()}>
-                Add
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* The gap */}
       <Reveal when={showGap}>
@@ -352,6 +363,15 @@ export default function Step2({ card = {}, returnLine = "", prompts = {}, bucket
       <ShowAll allShown={allShown} onShow={showAll} />
     </div>
   );
+}
+
+/** One status line for the chosen column: how many, and what's left to do. */
+function statusLine(chosen, allRated) {
+  if (!chosen.length) return countLabel(0);
+  const unscored = chosen.filter((v) => typeof v.alignment !== "number").length;
+  if (unscored) return `${chosen.length} chosen · ${unscored} left to score`;
+  if (!allRated) return `${chosen.length} chosen`;
+  return `${chosen.length} chosen and scored`;
 }
 
 /**

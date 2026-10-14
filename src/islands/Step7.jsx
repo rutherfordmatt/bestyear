@@ -11,6 +11,7 @@ import SendForm from "./SendForm.jsx";
 import { downloadIcs } from "../lib/ics.js";
 import { suggestedCheckIns, formatLongDate } from "../lib/dates.js";
 import { track, EVENTS } from "../lib/analytics.js";
+import { BOOKING_URL } from "../lib/config.js";
 
 export default function Step7({ prompts = [], livesOptions = [], actions = {} }) {
   const [state, set] = useStore();
@@ -90,11 +91,12 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
         </div>
       </section>
 
-      <section class="prompt">
+      <section class="prompt keep-alive">
         <div class="prompt-head">
           {/* This prompt asks two questions, so its name is the heading and
               each question labels its own field. */}
           <h2 class="prompt-question">{alivePrompt.name || "Keep it alive"}</h2>
+          {alivePrompt.hint && <p class="tip">{alivePrompt.hint}</p>}
         </div>
 
         <div class="field">
@@ -125,10 +127,9 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
                 <input
                   type="date"
                   value={date}
-                  aria-label={`Check-in ${i + 1}`}
+                  aria-label={`Check-in ${i + 1}, ${formatLongDate(date)}`}
                   onInput={(e) => setCheckIn(i, e.currentTarget.value)}
                 />
-                <span class="checkin-day">{formatLongDate(date)}</span>
                 <button
                   type="button"
                   class="list-remove"
@@ -159,6 +160,26 @@ export default function Step7({ prompts = [], livesOptions = [], actions = {} })
       </section>
 
       <SendForm actions={actions} />
+
+      {/* The booking ask belongs here as well as on the close screen: this is
+          where people get what they came for, and many will stop. Quiet, and
+          after the document is safely theirs — not before. */}
+      <aside class="clarity-aside">
+        <p class="label">If you'd like a second pair of eyes</p>
+        <p>
+          A Clarity Session is one focused hour to pressure-test the plan you've
+          just made. Bring it along — it's the pre-work.
+        </p>
+        <a
+          class="btn"
+          href={BOOKING_URL}
+          onClick={() => track(EVENTS.bookingClicked)}
+          data-umami-event="booking-clicked"
+          data-umami-event-from="step-7"
+        >
+          Book a Clarity Session
+        </a>
+      </aside>
     </div>
   );
 }

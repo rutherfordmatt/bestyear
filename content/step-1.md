@@ -14,13 +14,9 @@ A clear picture of the year you actually had, not the one you remember.
 
 ## Intro
 
-Most planning starts in the wrong place. It starts with the future.
+Memory is a poor narrator. It inflates last month, forgets the spring and quietly edits out your wins. So we start with evidence.
 
-The trouble is that memory is a poor narrator. It inflates last month, forgets the spring and silently edits out your wins. So we start with evidence.
-
-What went well, what was hard, where your energy went — and then a read on where all of that has left you.
-
-Be honest, not harsh. Nobody else will see this. It lives on your device and nowhere else.
+Be honest, not harsh. Nobody else sees this — it lives on your device and nowhere else.
 
 ## Prompts
 
