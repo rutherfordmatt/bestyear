@@ -48,15 +48,19 @@ Created by Matt Rutherford, Career and Leadership coach and writer of Stuff that
 Sample answers shown in the example card, mirroring the Values Finder's
 "Sam's core values". Edit freely — these are illustrative, not real.
 
+Keyed by step **slug**, not number. They were keyed by number and a renumber
+silently paired the wrong answer with the wrong step. `npm test` now fails if
+a step has no sample.
+
 - **Title:** Alex's annual plan
 - **Label:** Annual plan
-- **1:** A year of rebuilding. Fun and health were the thin spots.
-- **2:** Integrity, Family, Creativity, Freedom, Growth, Courage.
-- **3:** Putting down the committee, and the phone in bed.
-- **4:** Left the job that was draining me, and found my weekends again.
-- **5:** Ten paying customers by June. Sleep seven hours a night.
-- **6:** If work runs late on Friday, I'll do an hour on Sunday.
-- **7:** On the fridge, checked every three months.
+- **the-year-you-had:** A year of rebuilding. Fun and health were the thin spots.
+- **what-matters:** Integrity, Family, Creativity. Putting down the committee, and the phone in bed.
+- **picture-it:** Left the job that was draining me, and found my weekends again.
+- **your-compass:** Steady. Protect my energy, build something of my own, show up for my people.
+- **goals:** Ten paying customers by June. Sleep seven hours a night.
+- **obstacles-and-support:** If work runs late on Friday, I'll do an hour on Sunday.
+- **your-year-on-one-page:** On the fridge, checked every three months.
 
 ## Returning visitor
 

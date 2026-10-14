@@ -79,7 +79,7 @@ const valuesLine = returning["Values confirmation"] || "";
                 <li>
                   <span class="n">{s.n}</span>
                   <b>{s.title}</b>
-                  <span>{example[String(s.n)] || s.blurb}</span>
+                  <span>{example[s.slug] || s.blurb}</span>
                 </li>
               ))}
             </ol>

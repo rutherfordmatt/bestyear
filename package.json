@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "values": "node scripts/build-values.mjs",
-    "test": "node test/journey.mjs && node test/email.mjs",
+    "test": "node test/journey.mjs && node test/email.mjs && node test/content.mjs",
     "start": "node --env-file-if-exists=.env server/index.js",
     "serve": "npm run build && npm start",
     "preview:email": "node scripts/preview-email.mjs",
