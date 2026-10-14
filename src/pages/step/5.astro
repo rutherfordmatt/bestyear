@@ -6,7 +6,7 @@ import { stepCopy, inline } from "../../lib/content.js";
 
 const copy = stepCopy(5);
 ---
-<Base title={copy.titlePlain} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} storage>
   <StepDeck step={5}>
     <Step5Cards
       client:load

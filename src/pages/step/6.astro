@@ -11,7 +11,7 @@ const coachNote = text(d, 'Coaching touchpoint (shown if "A coach" is selected)'
 const cornerPrompt = promptsOf(d).find((p) => p.name.toLowerCase().includes("corner"));
 const cornerOptions = (cornerPrompt?.options || "").split("/").map((s) => s.trim()).filter(Boolean);
 ---
-<Base title={copy.titlePlain} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} storage>
   <StepDeck step={6}>
     <Step6Cards
       client:load

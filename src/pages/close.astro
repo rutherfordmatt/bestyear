@@ -1,7 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 import NewsletterForm from "../islands/NewsletterForm.jsx";
-import StorageControls from "../islands/StorageControls.jsx";
 import { doc, text, labelsOf, inline } from "../lib/content.js";
 import { BOOKING_URL } from "../lib/config.js";
 
@@ -11,7 +10,7 @@ const cta = labelsOf(d, "Clarity Session CTA (primary)");
 const news = labelsOf(d, "Newsletter (secondary)");
 const share = labelsOf(d, "Share (optional)");
 ---
-<Base title="You've built your year" description="Your year is built. One focused hour can pressure-test it.">
+<Base title="You've built your year" description="Your year is built. One focused hour can pressure-test it." storage>
   <main id="main" class="close">
     <section class="intro prose">
       <p class="label">Done</p>
@@ -43,10 +42,6 @@ const share = labelsOf(d, "Share (optional)");
 
     <section class="share prose">
       <p class="muted" set:html={inline(share.Line || "")}></p>
-    </section>
-
-    <section class="prose">
-      <StorageControls client:visible />
     </section>
   </main>
 </Base>

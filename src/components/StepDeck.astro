@@ -5,9 +5,11 @@
   No bottom bar — the deck owns navigation now. No step header either: a
   step's title and framing are its first card, so nothing sits permanently
   above the question competing with it.
+
+  The footing — "your answers stay on this device" — is the layout's footer,
+  not ours. One rule across the bottom of the page, not two.
 */
 import PhaseRail from "../islands/PhaseRail.jsx";
-import StorageControls from "../islands/StorageControls.jsx";
 
 const { step } = Astro.props;
 ---
@@ -15,5 +17,4 @@ const { step } = Astro.props;
 
 <main id="main" class="step-layout deck-layout">
   <slot />
-  <StorageControls client:visible />
 </main>

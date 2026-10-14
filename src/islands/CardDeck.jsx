@@ -28,10 +28,12 @@ export default function CardDeck({
   leaveLabel = "Next",
 }) {
   const [index, setIndex] = useState(0);
+  const deckRef = useRef(null);
   const trackRef = useRef(null);
   const liveRef = useRef(null);
   const viewportRef = useRef(null);
   const [height, setHeight] = useState(null);
+  const [floor, setFloor] = useState(null);
 
   const last = cards.length - 1;
   const atEnd = index >= last;
@@ -87,6 +89,39 @@ export default function CardDeck({
     return () => ro.disconnect();
   }, [index, cards.length]);
 
+  /*
+    The way on is anchored to the bottom of the screen, just above the footer,
+    so it is in the same place on every card. Otherwise it rides up and down
+    with the card's height and the thing you are reaching for moves between
+    one question and the next.
+
+    Measured rather than guessed: the deck's own top, the window, and the
+    footer's real height. A card taller than the space still grows and pushes
+    the nav below the fold, which is correct — then the page scrolls.
+  */
+  useEffect(() => {
+    const footer = document.querySelector("footer.site");
+    const measure = () => {
+      const deck = deckRef.current;
+      if (!deck || !footer) return;
+      const d = deck.getBoundingClientRect();
+      const f = footer.getBoundingClientRect();
+      // The gap between the deck and the footer — the page's bottom padding
+      // and the footer's margin — does not change with the deck's height, so
+      // measuring it here stays true after the floor is applied.
+      const gap = f.top - d.bottom;
+      setFloor(Math.max(0, window.innerHeight - d.top - gap - f.height));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    const ro = footer ? new ResizeObserver(measure) : null;
+    if (footer) ro.observe(footer);
+    return () => {
+      window.removeEventListener("resize", measure);
+      ro?.disconnect();
+    };
+  }, []);
+
   const onKeyDown = (e) => {
     if (e.target.closest("input, textarea, select")) return;
     if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); }
@@ -105,7 +140,12 @@ export default function CardDeck({
   const cardRef = (i) => (hasStep ? `${step}.${i + 1}` : `${i + 1}`);
 
   return (
-    <div class="deck" onKeyDown={onKeyDown}>
+    <div
+      class="deck"
+      ref={deckRef}
+      onKeyDown={onKeyDown}
+      style={floor ? { minHeight: `${Math.round(floor)}px` } : undefined}
+    >
       <p class="visually-hidden" role="status" aria-live="polite" ref={liveRef}></p>
 
       <div

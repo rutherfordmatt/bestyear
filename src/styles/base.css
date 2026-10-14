@@ -106,6 +106,18 @@ header.site { padding-block: calc(22px + env(safe-area-inset-top, 0px)) 22px; }
 footer.site {
   padding-block: var(--sp-6) var(--sp-7); border-top: var(--border);
   margin-top: var(--sp-8); font-size: var(--step--1); color: var(--muted);
+  align-items: start;
+}
+/* The credit and Privacy are one unit. On their own they span the row; with
+   the footing beside them they sit compactly at the right, so the page has
+   one rule across its bottom rather than two a few lines apart. */
+.footer-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-5); flex: 1 1 auto;
+}
+footer.site.with-storage .footer-meta { flex: 0 0 auto; }
+footer.site .storage-controls {
+  border: 0; margin: 0; padding: 0; flex: 1 1 22rem; min-width: 0;
 }
 footer.site a { color: var(--muted); text-decoration: underline; }
 footer.site a:hover { color: var(--accent); }

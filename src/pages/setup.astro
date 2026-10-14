@@ -35,7 +35,7 @@ const prompt = {
   hint: grab("Stuck? hint"),
 };
 ---
-<Base title={plain(title)} description="Two quick choices before you start.">
+<Base title={plain(title)} description="Two quick choices before you start." storage>
   <StepDeck step={0}>
     <SetupCards
       client:load

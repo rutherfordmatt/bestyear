@@ -22,7 +22,7 @@ const bucketLabels = bulletsOf(d, "Prompts", "Prompt 4: Letting go")
   .map((b) => b.replace(/\*\*/g, "").trim())
   .filter((b) => /stopping|stepping back|carrying/i.test(b));
 ---
-<Base title={copy.titlePlain} description={copy.promise}>
+<Base title={copy.titlePlain} description={copy.promise} storage>
   <StepDeck step={2}>
     <Step2Cards
       client:load

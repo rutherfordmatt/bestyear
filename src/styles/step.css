@@ -550,7 +550,9 @@ li.reveal-wrap.goal-card { display: grid; }
 /* --- EXPERIMENT: one question per screen ---
    A card can only hold one question, so the clutter we keep chasing cannot
    accumulate. See /experiment/cards. */
-.deck-layout { max-width: var(--wide); }
+/* The way on is anchored just above the footer, so the page's long bottom
+   padding only pushed the two apart. */
+.deck-layout { max-width: var(--wide); padding-bottom: var(--sp-6); }
 .experiment-flag {
   font-size: var(--step--1); color: var(--muted);
   background: var(--warn-pale); border-left: 2px solid var(--warn);
@@ -559,7 +561,14 @@ li.reveal-wrap.goal-card { display: grid; }
 }
 .experiment-flag a { color: var(--warn); }
 
-.deck { display: grid; gap: var(--sp-5); margin-top: var(--sp-6); }
+/* A column, not a grid, so the nav can be pushed to the bottom of the deck
+   — see the min-height the island measures. */
+.deck {
+  display: flex; flex-direction: column;
+  gap: var(--sp-5); margin-top: var(--sp-6);
+}
+.deck-viewport { flex: 0 0 auto; }
+.deck-nav { margin-top: auto; }
 
 /* The viewport clips; the track slides. */
 .deck-viewport { overflow: hidden; transition: height var(--slow) var(--ease); }

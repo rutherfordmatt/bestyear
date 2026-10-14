@@ -10,7 +10,9 @@ import { useRef, useState } from "preact/hooks";
 import { clearAll, downloadJson, importFromFile } from "../lib/storage.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
-export default function StorageControls({ expanded = false }) {
+/* showPrivacy: in the footer the Privacy link is already there, a few words
+   to the right. Everywhere else the footing carries its own. */
+export default function StorageControls({ expanded = false, showPrivacy = true }) {
   const fileRef = useRef(null);
   const [open, setOpen] = useState(expanded);
   const [message, setMessage] = useState("");
@@ -46,8 +48,7 @@ export default function StorageControls({ expanded = false }) {
           <button type="button" class="linklike" onClick={() => setOpen(true)}>
             Manage my answers
           </button>
-          {" · "}
-          <a href="/privacy">Privacy</a>
+          {showPrivacy && <>{" · "}<a href="/privacy">Privacy</a></>}
         </p>
       ) : (
         <div class="storage-detail">

@@ -26,7 +26,12 @@ Every step page is the same three parts.
 | **header** | Wordmark and the two links. On every page. | `Base.astro` |
 | **rail** | The progress strip: four **phases**, seven **steps**. Ticks for done. | `PhaseRail.jsx` |
 | **deck nav** | Under the card: Back, the dots, and the way on. | `CardDeck.jsx` |
-| **footer** | Credit and Privacy. | `Base.astro` |
+| **footer** | One row across the bottom: the **footing** on the left, credit and Privacy on the right. | `Base.astro` |
+
+The **footing** is "Your answers stay on this device. Manage my answers" — the
+backup, restore and clear controls. It lives inside the footer rather than
+above it: two rules a few lines apart read as two footers, and the visitor
+only has one.
 
 A **phase** is one of the four groupings — Look back, Imagine, Plan, Commit.
 A **step** is one of the seven numbered stages.
@@ -109,3 +114,11 @@ least 20rem tall, so short ones do not collapse and the frame stays still as
 you move. Tall ones still grow, and the viewport follows. Scene and summary
 cards are exempt — they have no fields, so a floor would only leave a
 screenful of white under the words.
+
+The **deck nav is anchored**, which matters more than the floor: the deck
+fills the space down to the footer, so Back, the dots and the way on sit in
+the same place on every card instead of riding up and down with the card's
+height. The space is measured in the island — the deck's own top, the
+window, and the footer's real height — so there is no magic number to go
+stale. A card taller than the space still pushes the nav below the fold, and
+then the page scrolls, which is right.
