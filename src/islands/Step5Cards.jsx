@@ -17,7 +17,7 @@ export default function Step5Cards({ prompts = [], titleHtml = "", intro = [], t
   const byName = (n) => prompts.find((p) => p.name.toLowerCase().includes(n)) || {};
   const q = {
     done: byName("what done"), why: byName("why it matters"), habit: byName("habit"),
-    first: byName("first step"), priority: byName("priority"),
+    first: byName("first step"), priority: byName("priority"), when: byName("by when"),
   };
   const filled = (v) => Boolean(v && String(v).trim());
   const themes = themesOf(state);
@@ -75,18 +75,21 @@ export default function Step5Cards({ prompts = [], titleHtml = "", intro = [], t
     cards.push({
       key: theme.id,
       variant: "wide",
+      // The first line of a goal card is the visitor's own theme, carried
+      // from Step 4. Without saying so it reads as a question we invented.
+      eyebrow: `Theme ${i + 1} of ${themes.length} · from Step 4`,
       title: theme.text,
       guidance: i === 0 ? "Every field is optional — a half-filled goal still beats a vague one." : null,
       body: (
         <div class="goal-fields">
           <div class="field goal-done">
-            <label for={`done-${goal.id}`}>{q.done.question}</label>
+            <label for={`done-${goal.id}`}>{q.done.label || q.done.question}</label>
             <input id={`done-${goal.id}`} type="text" value={goal.done}
               placeholder={i === 0 ? q.done.example : ""} maxLength={500}
               onInput={(e) => setGoal(goal.id, "done", e.currentTarget.value)} />
           </div>
           <div class="field">
-            <label for={`value-${goal.id}`}>The value it serves</label>
+            <label for={`value-${goal.id}`}>{q.why.valueLabel || "The value it serves"}</label>
             <select id={`value-${goal.id}`} value={goal.valueSlug || ""}
               onChange={(e) => setGoal(goal.id, "valueSlug", e.currentTarget.value || null)}>
               <option value="">Choose a value…</option>
@@ -94,25 +97,25 @@ export default function Step5Cards({ prompts = [], titleHtml = "", intro = [], t
             </select>
           </div>
           <div class="field">
-            <label for={`why-${goal.id}`}>Why it matters to you</label>
+            <label for={`why-${goal.id}`}>{q.why.label || "Why it matters to you"}</label>
             <input id={`why-${goal.id}`} type="text" value={goal.why}
               maxLength={500}
               onInput={(e) => setGoal(goal.id, "why", e.currentTarget.value)} />
           </div>
           <div class="field">
-            <label for={`habit-${goal.id}`}>The habit that carries it</label>
+            <label for={`habit-${goal.id}`}>{q.habit.label || "The habit that carries it"}</label>
             <input id={`habit-${goal.id}`} type="text" value={goal.habit}
               placeholder={i === 0 ? q.habit.example : ""} maxLength={400}
               onInput={(e) => setGoal(goal.id, "habit", e.currentTarget.value)} />
           </div>
           <div class="field">
-            <label for={`first-${goal.id}`}>This week</label>
+            <label for={`first-${goal.id}`}>{q.first.label || "Your first step, this week"}</label>
             <input id={`first-${goal.id}`} type="text" value={goal.firstStep}
               placeholder={i === 0 ? q.first.example : ""} maxLength={400}
               onInput={(e) => setGoal(goal.id, "firstStep", e.currentTarget.value)} />
           </div>
           <div class="field">
-            <label for={`date-${goal.id}`}>Done by</label>
+            <label for={`date-${goal.id}`}>{q.when.label || "Done by"}</label>
             <select id={`date-${goal.id}`} class="month-select" value={goal.date}
               onChange={(e) => setGoal(goal.id, "date", e.currentTarget.value)}>
               <option value="">No date yet</option>

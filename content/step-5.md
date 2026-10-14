@@ -25,30 +25,36 @@ Up to three, one per theme. Big goals aren't achieved in big moments — they're
 ### Prompt 1: What done looks like
 
 - **Question:** How will you know you've done it?
+- **Field label:** What done looks like
 - **Placeholder example:** Ten paying customers for my side project.
 - **Stuck? hint:** Imagine a friend asking "did you do it?" in a year's time. What would need to be true for you to say yes without hesitating?
 
 ### Prompt 2: Why it matters
 
 - **Question:** Why does this matter to you? Pick the value it serves.
+- **Field label:** Why it matters to you
+- **Value field label:** The value it serves
 - **Placeholder example:** Creativity. I want to make something that's mine.
 - **Stuck? hint:** If it doesn't connect to any of your values, ask whether it's really your goal or one you've borrowed.
 
 ### Prompt 3: By when
 
 - **Question:** Which month will you have done it by?
+- **Field label:** Done by
 - **Placeholder example:** End of June
 - **Stuck? hint:** Pick a month that makes you slightly nervous but not panicked. A year is long enough that the month matters and the day doesn't.
 
 ### Prompt 4: The habit that carries it
 
 - **Question:** What's the small, regular thing that will get you there?
+- **Field label:** The habit that carries it
 - **Placeholder example:** Two hours on it every Saturday morning, before anything else.
 - **Stuck? hint:** Make it so small it feels almost silly. Small habits survive busy weeks. Big ones don't.
 
 ### Prompt 5: First step
 
 - **Question:** What will you do this week to get started?
+- **Field label:** Your first step, this week
 - **Placeholder example:** Talk to three people who might buy it.
 - **Stuck? hint:** If it would take more than an hour, it's not the first step. Break it down again.
 

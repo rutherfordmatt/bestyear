@@ -221,6 +221,10 @@ export function promptsOf(stepDoc) {
       question: f.Question || "",
       questions: f.all?.Question || (f.Question ? [f.Question] : []),
       followUp: f["Follow-up for each"] || f["Follow-up"] || "",
+      // A field's label is copy too: "This week" said when, not what, and
+      // changing it should not mean editing a component.
+      label: f["Field label"] || "",
+      valueLabel: f["Value field label"] || "",
       example: f["Placeholder example"] || f["Placeholder examples"] || "",
       hint: f["Stuck? hint"] || f["Stuck"] || "",
       options: f.Options || f["Options (pick any)"] || "",

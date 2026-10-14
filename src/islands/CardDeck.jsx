@@ -181,6 +181,7 @@ export default function CardDeck({
                   </>
                 ) : (
                   <>
+                    {card.eyebrow && <p class="label">{card.eyebrow}</p>}
                     <h2 class="prompt-question" tabIndex={-1} data-card-focus>{card.title}</h2>
                     {card.guidance && <p class="tip">{card.guidance}</p>}
                     <div class="deck-card-body">{card.body}</div>
