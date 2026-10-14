@@ -79,17 +79,29 @@ ok("the wheel is not shown yet", !(await c.evaluate(`__t.has("Where has all that
 ok("only one win field to start", (await c.evaluate(`__t.count(".pair")`)) === 1);
 await c.evaluate(`__t.typeLabel("Win 1", "Had the conversation about my role")`);
 await wait(1600);
-ok("challenges appear after a win", await c.evaluate(`__t.has("What was hardest")`));
+ok("challenges wait for the whole question, not the first field",
+  !(await c.evaluate(`__t.has("What was hardest")`)));
+await c.evaluate(`__t.typeLabel("What made win 1 possible?", "I prepared properly")`);
+await wait(1600);
+ok("challenges appear once the win is complete", await c.evaluate(`__t.has("What was hardest")`));
 await c.evaluate(`__t.clickText("button", "Add another win")`);
 await wait(400);
 ok("a second win can be added", (await c.evaluate(`__t.count(".pair")`)) === 3);
 await c.evaluate(`__t.typeLabel("Challenge 1", "A project that ran late")`);
+await wait(1600);
+ok("energy waits for what the challenge taught you",
+  !(await c.evaluate(`__t.has("What gave you energy")`)));
 await c.evaluate(`__t.typeLabel("What challenge 1 taught you", "I say yes too quickly")`);
 await wait(1600);
-ok("energy audit appears after a challenge", await c.evaluate(`__t.has("What gave you energy")`));
+ok("energy audit appears once the challenge is complete",
+  await c.evaluate(`__t.has("What gave you energy")`));
 ok("no phantom blank rows in the energy audit",
   (await c.evaluate(`__t.count(".list-input input")`)) === 2);
 await c.evaluate(`__t.typeLabel("Things that drained your energy, item 1", "Back-to-back video calls")`);
+await wait(1600);
+ok("the wheel waits for both halves of the energy audit",
+  !(await c.evaluate(`__t.has("Where has all that left you")`)));
+await c.evaluate(`__t.typeLabel("Things that gave you energy, item 1", "Long walks with no phone")`);
 await wait(1600);
 ok("the wheel comes last", await c.evaluate(`__t.has("Where has all that left you")`));
 ok("the wheel has eight sliders", (await c.evaluate(`__t.count('input[type="range"]')`)) === 8);

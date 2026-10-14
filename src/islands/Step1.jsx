@@ -24,11 +24,17 @@ export default function Step1({ prompts = [] }) {
   const [state, set] = useStore();
   const s = state.step1;
 
+  /*
+    A prompt counts as answered only when the WHOLE question is answered, not
+    its first field. Wins ask two things — what went well, and what made it
+    possible — so unlocking on the first meant the next question arrived while
+    the visitor was still halfway through this one.
+  */
   const filled = (v) => Boolean(v && String(v).trim());
   const { visible, allShown, showAll } = useDisclosure([
-    s.wins.some((w) => filled(w.text)),
-    s.challenges.some((c) => filled(c.text)),
-    s.energy.gave.some(filled) || s.energy.drained.some(filled),
+    s.wins.some((w) => filled(w.text) && filled(w.enabler)),
+    s.challenges.some((c) => filled(c.text) && filled(c.lesson)),
+    s.energy.gave.some(filled) && s.energy.drained.some(filled),
     Object.values(s.wheel).some((v) => typeof v === "number"),
   ]);
   const [, showChallenges, showEnergy, showWheel] = visible;
