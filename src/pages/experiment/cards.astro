@@ -19,12 +19,13 @@ const copy = stepCopy(1);
       <a href="/step/1">Compare with the current Step 1</a>
     </p>
 
-    <div class="intro">
-      <p class="label">Step 1 of 7</p>
-      <h1 set:html={inline(copy.title)}></h1>
-      <p class="lede">{copy.promise}</p>
-    </div>
-
-    <Step1Cards client:load prompts={copy.prompts} />
+    {/* No permanent header: the title and the framing are the first card. */}
+    <Step1Cards
+      client:load
+      prompts={copy.prompts}
+      titleHtml={inline(copy.title)}
+      intro={[copy.promise, ...copy.intro]}
+      transition={copy.transition}
+    />
   </main>
 </Base>

@@ -12,7 +12,7 @@ import { markStepComplete } from "../lib/storage.js";
 import { STEPS, pathForStep, stepByNumber } from "../lib/steps.js";
 import { track, EVENTS } from "../lib/analytics.js";
 
-export default function StepSummary({ step, transition }) {
+export default function StepSummary({ step, transition, showNext = true }) {
   const [state] = useStore();
   const n = Number(step);
   const added = addedInStep(state, n);
@@ -43,11 +43,13 @@ export default function StepSummary({ step, transition }) {
         ))}
       </ul>
       {transition && <p class="step-transition">{transition}</p>}
-      <p class="summary-next">
-        <a class="btn primary" href={next} onClick={onNext}>
-          {label} <span aria-hidden="true">→</span>
-        </a>
-      </p>
+      {showNext && (
+        <p class="summary-next">
+          <a class="btn primary" href={next} onClick={onNext}>
+            {label} <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      )}
     </div>
   );
 }

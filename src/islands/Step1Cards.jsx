@@ -5,6 +5,7 @@
 */
 import { useStore } from "../lib/use-store.js";
 import CardDeck from "./CardDeck.jsx";
+import StepSummary from "./StepSummary.jsx";
 import LifeWheelChart from "./LifeWheelChart.jsx";
 import ListInput from "./ListInput.jsx";
 import { LIFE_AREAS } from "../lib/steps.js";
@@ -12,7 +13,7 @@ import { emptyWin, emptyChallenge } from "../lib/schema.js";
 
 const MAX_ENTRIES = 3;
 
-export default function Step1Cards({ prompts = [] }) {
+export default function Step1Cards({ prompts = [], titleHtml = "", intro = [], transition = "" }) {
   const [state, set] = useStore();
   const s = state.step1;
   const byName = (name) => prompts.find((p) => p.name.toLowerCase().includes(name)) || {};
@@ -30,6 +31,17 @@ export default function Step1Cards({ prompts = [] }) {
     set((st) => { if (st.step1.challenges.length < MAX_ENTRIES) st.step1.challenges.push(emptyChallenge()); });
 
   const cards = [
+    {
+      // The coach setting the scene, so the step header does not have to sit
+      // permanently above every question competing with it.
+      key: "scene",
+      variant: "scene",
+      eyebrow: "Step 1 of 7",
+      title: "The year you had",
+      titleHtml,
+      nextLabel: "Begin",
+      body: <>{intro.map((p, i) => <p class="lede" key={i}>{p}</p>)}</>,
+    },
     {
       key: "wins",
       title: winsPrompt.question,
@@ -157,6 +169,13 @@ export default function Step1Cards({ prompts = [] }) {
       ),
     },
   ];
+
+  cards.push({
+    key: "summary",
+    variant: "summary",
+    title: "Added to your plan",
+    body: <StepSummary step={1} transition={transition} showNext={false} />,
+  });
 
   return <CardDeck cards={cards} onLeave="/step/2" leaveLabel="Next: What matters" />;
 }

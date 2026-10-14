@@ -11,6 +11,11 @@ import { useEffect, useRef, useState } from "preact/hooks";
 
   Cards that are not showing are `inert`, so they are skipped by tab and by
   screen readers rather than being invisible but still reachable.
+
+  A card has a variant. "scene" is the coach setting up the step — the title
+  and the framing — so the step header does not have to sit permanently above
+  every question competing with it. "summary" closes the step. Everything
+  between is one question each.
 */
 export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Next" }) {
   const [index, setIndex] = useState(0);
@@ -47,6 +52,14 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
     tallest one and a short card floats in a lot of empty space. Track the
     card you are actually on, and follow it when its own content grows.
   */
+  // `inert` as a JSX attribute did not reliably clear when a card became
+  // current, which left it present but invisible. Set the property directly.
+  useEffect(() => {
+    const children = trackRef.current?.children;
+    if (!children) return;
+    for (let i = 0; i < children.length; i += 1) children[i].inert = i !== index;
+  }, [index, cards.length]);
+
   useEffect(() => {
     const card = trackRef.current?.children[index];
     if (!card) return;
@@ -82,13 +95,22 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
               key={card.key || i}
               class="deck-card"
               aria-label={card.title}
-              // @ts-ignore — inert is a real attribute, Preact passes it through
-              inert={i === index ? undefined : ""}
             >
-              <div class="deck-card-inner">
-                <h2 class="prompt-question" tabIndex={-1} data-card-focus>{card.title}</h2>
-                {card.guidance && <p class="tip">{card.guidance}</p>}
-                <div class="deck-card-body">{card.body}</div>
+              <div class={`deck-card-inner${card.variant ? ` is-${card.variant}` : ""}`}>
+                {card.variant === "scene" ? (
+                  <>
+                    {card.eyebrow && <p class="label">{card.eyebrow}</p>}
+                    <h2 class="scene-title" tabIndex={-1} data-card-focus
+                        dangerouslySetInnerHTML={{ __html: card.titleHtml || card.title }} />
+                    <div class="deck-card-body scene-body">{card.body}</div>
+                  </>
+                ) : (
+                  <>
+                    <h2 class="prompt-question" tabIndex={-1} data-card-focus>{card.title}</h2>
+                    {card.guidance && <p class="tip">{card.guidance}</p>}
+                    <div class="deck-card-body">{card.body}</div>
+                  </>
+                )}
               </div>
             </section>
           ))}
@@ -123,7 +145,7 @@ export default function CardDeck({ cards = [], onLeave = null, leaveLabel = "Nex
           <a class="btn primary" href={onLeave}>{leaveLabel} <span aria-hidden="true">→</span></a>
         ) : (
           <button type="button" class="btn primary" onClick={() => go(index + 1)} disabled={atEnd}>
-            Next <span aria-hidden="true">→</span>
+            {cards[index]?.nextLabel || "Next"} <span aria-hidden="true">→</span>
           </button>
         )}
       </div>

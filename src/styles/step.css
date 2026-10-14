@@ -591,7 +591,6 @@ li.reveal-wrap.goal-card { display: grid; }
   align-items: start;
 }
 .deck-card { flex: 0 0 100%; min-width: 0; }
-.deck-card[inert] { opacity: 0; }
 .deck-card-inner {
   background: var(--paper); border: var(--border); border-radius: var(--radius);
   padding: var(--sp-8);
@@ -624,3 +623,21 @@ li.reveal-wrap.goal-card { display: grid; }
 @media (max-width: 640px) {
   .deck-card-inner { padding: var(--sp-5); min-height: 0; }
 }
+
+/* The coach's opening card: the step's title and framing, before any
+   question. Quieter than a question card — it is being read, not filled in. */
+.deck-card-inner.is-scene {
+  background: transparent; border: 0; padding: var(--sp-7) var(--sp-2);
+  gap: var(--sp-4);
+}
+.scene-title {
+  font: 400 var(--step-3) / var(--leading-tight) var(--serif);
+  color: var(--ink); text-wrap: balance; outline: none;
+}
+.scene-title :global(em) { font-style: italic; color: var(--accent); }
+.scene-body { display: grid; gap: var(--sp-4); max-width: var(--measure); }
+.scene-body .lede:first-child { font-size: 1.25rem; color: var(--ink); }
+.scene-body .lede { font-size: 1rem; color: var(--muted); }
+
+.deck-card-inner.is-summary { background: transparent; border: 0; padding: 0; }
+.deck-card-inner.is-summary .step-summary { padding: var(--sp-7); }
