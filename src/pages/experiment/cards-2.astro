@@ -1,0 +1,44 @@
+---
+/* EXPERIMENT — Step 2 as a deck. */
+import Base from "../../layouts/Base.astro";
+import PhaseRail from "../../islands/PhaseRail.jsx";
+import Step2Cards from "../../islands/Step2Cards.jsx";
+import { stepCopy, doc, text, labelsOf, bulletsOf, inline } from "../../lib/content.js";
+
+const copy = stepCopy(2);
+const d = doc("step-2");
+const f = labelsOf(d, "Values Finder card");
+const card = {
+  heading: f.Heading || "", body: f.Body || "",
+  primary: f["Primary button"] || "Find my values",
+  secondary: f["Secondary link"] || "",
+};
+const returnLine = text(d, "Returning from Values Finder (confirmation line)");
+const byName = (n) => copy.prompts.find((p) => p.name.toLowerCase().includes(n)) || {};
+const prompts = {
+  choose: byName("choose"), alignment: byName("alignment"), gap: byName("gap"),
+  letting: byName("letting go"), closing: byName("one line"),
+};
+const bucketLabels = bulletsOf(d, "Prompts", "Prompt 4: Letting go")
+  .map((b) => b.replace(/\*\*/g, "").trim())
+  .filter((b) => /stopping|stepping back|carrying/i.test(b));
+---
+<Base title={`Experiment — ${copy.titlePlain}`} description="One question per screen.">
+  <PhaseRail client:load current={2} />
+  <main id="main" class="step-layout deck-layout">
+    <p class="experiment-flag">
+      Experiment · Step 2 as cards.
+      <a href="/experiment/cards">Step 1 deck</a> · <a href="/step/2">current Step 2</a>
+    </p>
+    <Step2Cards
+      client:load
+      card={card}
+      returnLine={returnLine}
+      prompts={prompts}
+      bucketLabels={bucketLabels}
+      titleHtml={inline(copy.title)}
+      intro={[copy.promise, ...copy.intro]}
+      transition={copy.transition}
+    />
+  </main>
+</Base>

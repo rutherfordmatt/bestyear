@@ -641,3 +641,35 @@ li.reveal-wrap.goal-card { display: grid; }
 
 .deck-card-inner.is-summary { background: transparent; border: 0; padding: 0; }
 .deck-card-inner.is-summary .step-summary { padding: var(--sp-7); }
+
+/* A "moment" card. Some questions are not form fields — they are the point
+   of the exercise. "If this year were a chapter, what would the last line
+   be?" deserves room, not another box in a list. */
+.deck-card-inner.is-moment {
+  background: var(--paper);
+  border: var(--border);
+  border-top: 2px solid var(--accent);
+  padding: var(--sp-10) var(--sp-8);
+  gap: var(--sp-5);
+  text-align: center;
+  justify-items: center;
+}
+.deck-card-inner.is-moment .prompt-question {
+  font-size: var(--step-3); line-height: var(--leading-tight);
+  max-width: 24ch;
+}
+.deck-card-inner.is-moment .tip { text-align: center; }
+.deck-card-inner.is-moment .deck-card-body { width: 100%; max-width: 34rem; }
+.moment-input {
+  font-size: 1.15rem; text-align: center;
+  padding: var(--sp-4); border-width: 0 0 1px 0; border-radius: 0;
+  background: transparent;
+}
+.moment-input:focus { box-shadow: none; border-bottom-color: var(--accent); }
+
+/* A card that needs the full column: the values panel, the letting-go piles. */
+.deck-card-inner.is-wide { padding: var(--sp-7); }
+
+@media (max-width: 640px) {
+  .deck-card-inner.is-moment { padding: var(--sp-7) var(--sp-5); }
+}
