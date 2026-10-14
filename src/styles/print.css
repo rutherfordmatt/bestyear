@@ -31,6 +31,13 @@
 
   html { scrollbar-gutter: auto; }
 
+  /* Nothing animates onto paper. The deck's transform transition was still
+     mid-flight when the page was captured. */
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
   body {
     background: #FFFFFF !important;
     color: #000000 !important;
@@ -48,6 +55,34 @@
      ancestor of it. */
   body *:not(.vision-doc):not(.vision-doc *):not(:has(.vision-doc)) {
     display: none !important;
+  }
+
+  /* --- Undo the carousel ---
+     The deck is a fixed-height viewport that clips, holding a track that is
+     moved sideways by a transform. Neither survives contact with paper: the
+     document was cut off at the height of whatever card was on screen, and
+     if the document was not that card it was moved clean off the sheet —
+     which is what "Save as PDF gave me blank pages" was.
+
+     Scoped with :has so it only touches the boxes the document is actually
+     inside. Unscoped, display:block here would un-hide every other card. */
+  .deck:has(.vision-doc),
+  .deck-viewport:has(.vision-doc),
+  .deck-track:has(.vision-doc),
+  .deck-card:has(.vision-doc),
+  .deck-card-inner:has(.vision-doc) {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
   }
 
   main, .step-main, .step-layout {
