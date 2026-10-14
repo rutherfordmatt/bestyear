@@ -104,6 +104,8 @@ The deck moves **sideways**, deliberately:
 - It matches how the thing is described — cards, a deck, slides.
 
 Cards having different heights is a separate problem from direction, and the
-fix is a floor rather than a direction change: a card is at least 26rem tall,
-so short ones do not collapse and the frame stays still as you move. Tall ones
-still grow, and the viewport follows.
+fix is a floor rather than a direction change: a card with a control is at
+least 20rem tall, so short ones do not collapse and the frame stays still as
+you move. Tall ones still grow, and the viewport follows. Scene and summary
+cards are exempt — they have no fields, so a floor would only leave a
+screenful of white under the words.
