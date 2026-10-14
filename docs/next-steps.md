@@ -1,6 +1,6 @@
 # What's left
 
-As of 5 October 2026. Scope and decisions live in `docs/plan.md`; this is the
+As of 14 October 2026. Scope and decisions live in `docs/plan.md`; this is the
 working list of what remains.
 
 The MVP journey is built and working end to end locally: landing, setup, steps
@@ -34,19 +34,22 @@ deploy, which blocks testing with real people.
 
 ## 2. Build work remaining
 
-Small, and none of it blocks the staging deploy.
+Short. The two rebuild passes in `docs/build-2.md` and `docs/build-3.md` are
+done: the journey is rebalanced, the interface calmed, and every page shares
+one left edge.
 
-- [ ] **Close and privacy page alignment.** Both use a centred 760px column
-      while every other page is left-aligned inside the 1120px container, so
-      content jumps 180px right when you reach the close screen. Measured, not
-      guessed.
-- [ ] **Consistency pass on the close screen and Step 7's document.** Every
-      other page has had one; these two haven't.
+- [ ] **Navigation.** View transitions between steps, so the journey reads as
+      one continuous thing rather than seven page loads. The rail now has
+      2–2–2–1 to express. The last item from `build-2.md`.
+- [ ] **Instrument the funnel.** We track nine events but not *reached the
+      close screen* or *subscribed*, so the drop-off between Step 7 and the
+      close is invisible — which is the thing we most want to see. The Step 7
+      booking CTA itself is now in.
 - [ ] **Review the email.** `npm run preview:email` renders it from the real
-      template with sample answers, into `preview/email.html`.
-- [ ] **Finalise the copy.** Every file in `content/` still says
-      `Status: DRAFT`. The copy itself is written and in use; this is a read
-      through and a change of status.
+      template into `preview/email.html`.
+- [ ] **Read the copy.** Every intro was rewritten in build 3 and every file
+      is marked LIVE, but the words are mine, not Matt's. `content/*.md` is
+      plain markdown.
 
 ## 3. Testing, once staging is up
 

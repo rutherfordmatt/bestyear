@@ -1,7 +1,11 @@
 # Build 3: calm the interface
 
-Agreed 14 October 2026, after Matt walked the whole journey. Twelve notes,
-but most come from three underlying problems. Not started — this is the plan.
+Agreed and **completed** 14 October 2026, after Matt walked the whole journey.
+Twelve notes, but most came from three underlying problems.
+
+Two of the twelve were dropped: the Step 1 and Step 3 notes arrived without
+detail, and on a second look the other fixes had covered whatever prompted
+them. They come back only if Matt calls something out again.
 
 ## The three problems
 
