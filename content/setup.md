@@ -4,11 +4,11 @@ Status: LIVE
 
 ## Title
 
-Two *quick choices*
+Before we start
 
 ## Intro
 
-Neither is permanent. You can change both as you go.
+Nothing here is permanent — you can change it as you go.
 
 ## Pace choice
 

@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import StepDeck from "../components/StepDeck.astro";
 import SetupCards from "../islands/SetupCards.jsx";
-import { doc, text, paras, inline, plain } from "../lib/content.js";
+import { doc, text, paras, plain } from "../lib/content.js";
 
 const d = doc("setup");
 const title = text(d, "Title");
@@ -35,14 +35,13 @@ const prompt = {
   hint: grab("Stuck? hint"),
 };
 ---
-<Base title={plain(title)} description="Two quick choices before you start." storage>
+<Base title={plain(title)} description="One quick choice, then the word for the year that's ending." storage>
   <StepDeck step={0}>
     <SetupCards
       client:load
       paceOptions={paceOptions}
       paceQuestion={paceQuestion}
       prompt={prompt}
-      titleHtml={inline(title)}
       intro={intro}
       transition={transition}
     />

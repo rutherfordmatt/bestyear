@@ -1,5 +1,5 @@
 /*
-  Setup as a deck: the welcome, the pace, the word for the year ending.
+  Setup as a deck: the pace, the word for the year ending, the hand-over.
 */
 import { useStore } from "../lib/use-store.js";
 import CardDeck from "./CardDeck.jsx";
@@ -8,7 +8,7 @@ import { FEATURES } from "../lib/config.js";
 
 export default function SetupCards({
   paceOptions = [], paceQuestion = "", prompt = {},
-  titleHtml = "", intro = [], transition = "",
+  intro = [], transition = "",
 }) {
   const [state, set] = useStore();
 
@@ -17,21 +17,21 @@ export default function SetupCards({
     track(EVENTS.setupStarted);
   };
 
+  /*
+    One card, not two. The welcome used to be a scene card of its own that
+    said "two quick choices" and then showed neither — and by the time the
+    pace was the only choice left on it, the card was announcing a shape the
+    deck no longer had. The framing now sits above the question it frames.
+  */
   const cards = [
     {
-      key: "scene",
+      key: "pace",
       variant: "scene",
       eyebrow: "Before we start",
-      title: "Two quick choices",
-      titleHtml,
-      nextLabel: "Begin",
-      body: <>{intro.map((p, i) => <p class="lede" key={i}>{p}</p>)}</>,
-    },
-    {
-      key: "pace",
       title: paceQuestion,
       body: (
         <>
+          {intro.map((p, i) => <p class="lede" key={i}>{p}</p>)}
           <div class="pace-options" role="group" aria-label={paceQuestion}>
             {paceOptions.map((opt) => (
               <button
