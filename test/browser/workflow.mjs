@@ -161,7 +161,9 @@ await next();
 ok("2.2 is the values panel", await c.evaluate(`__t.has("Choose the six to eight values")`));
 ok("picking and scoring are side by side",
   await c.evaluate(`!!document.querySelector(".values-pick") && !!document.querySelector(".values-chosen")`));
-await wait(1200);
+// The picker loads its 155 values as a dynamic import, so wait for the
+// chips to exist rather than for a guessed number of milliseconds.
+await waitFor(".deck-card:not([inert]) .chips .chip", 6);
 for (let i = 0; i < 6; i++) await c.evaluate(`__t.click(".chips .chip", ${i})`);
 await wait(400);
 ok("six values chosen", (await c.evaluate(`__t.store()`)).step2.values.length === 6);

@@ -54,7 +54,7 @@ export default function Step7Cards({
     {
       key: "document", variant: "wide",
       title: byName("review").question || "Does this sound like you?",
-      guidance: "Click any line to edit it. This is exactly what prints.",
+      guidance: "This is exactly what prints. The headline and the closing line can be edited here; everything else lives in its step.",
       body: (
         <>
           <div class="doc-holder"><VisionDocument state={state} editable onEdit={onEdit} /></div>

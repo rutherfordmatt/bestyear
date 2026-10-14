@@ -7,6 +7,29 @@
 }
 .vision-doc.compact { gap: var(--sp-5); font-size: 0.88rem; }
 
+/*
+  On a wide screen the full document reads in two columns, the same way it
+  prints. One column left half the sheet empty and made short sections —
+  values, themes, the word — look like gaps rather than entries. Multicol
+  rather than a grid, so the flow and the balance match the paper exactly.
+*/
+@media (min-width: 820px) {
+  .vision-doc:not(.compact) {
+    display: block;
+    column-count: 2;
+    column-gap: var(--sp-8);
+    column-fill: balance;
+    orphans: 3;
+    widows: 3;
+  }
+  .vision-doc:not(.compact) .vd-hero { column-span: all; margin-bottom: var(--sp-6); }
+  .vision-doc:not(.compact) .vd-footer { column-span: all; margin-top: var(--sp-6); }
+  /* A block moved into a grid gap has no gap, so sections carry their own
+     space when the document is a multicol. */
+  .vision-doc:not(.compact) .vd-section { break-inside: avoid; margin-bottom: var(--sp-6); }
+  .vision-doc:not(.compact) .wheel { max-width: 100%; }
+}
+
 /* Hero */
 .vd-hero { display: grid; gap: var(--sp-3); }
 .vd-headline {
@@ -104,10 +127,12 @@
 /* Editable fields on Step 7.
    The affordance stays almost invisible until you go near it — the page has
    to read as a finished document first, an editor second. */
+/* At rest an editable line is a line of the document, not a field. The
+   underline arrives on hover: a permanent one made the closing line read
+   as a text input someone had left on the page. */
 .vision-doc [contenteditable] {
   outline: none;
   border-radius: 1px;
-  box-shadow: inset 0 -1px 0 var(--line);
   transition: box-shadow var(--fast), background var(--fast);
 }
 .vision-doc [contenteditable]:hover {
