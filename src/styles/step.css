@@ -626,7 +626,14 @@ li.reveal-wrap.goal-card { display: grid; }
   min-height: 20rem;
 }
 .deck-card-inner .prompt-question { outline: none; }
-.deck-card-body { margin-top: var(--sp-2); }
+/* A card body with more than one block — chips and then a field, say —
+   stacked with nothing between them, because the body was a plain div and
+   every card that needed air added its own wrapper. One rhythm here
+   instead. */
+.deck-card-body {
+  margin-top: var(--sp-4);
+  display: grid; gap: var(--sp-6); align-content: start;
+}
 
 .deck-nav {
   display: grid; grid-template-columns: 1fr auto 1fr;
