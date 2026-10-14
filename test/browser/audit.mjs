@@ -40,6 +40,40 @@ for (const p of [...JOURNEY, ...OTHER]) {
   await c.goto(BASE + p);
   data[p] = JSON.parse(await c.evaluate(PROBE));
 }
+
+/*
+  Moment cards are never the card a page opens on, so the pass above can't
+  see them. Walk to the first one on each page and measure its field: these
+  are the cards that carry the exercise's biggest questions, and one of them
+  rendering as a boxed input while another rendered as a quiet underline is
+  exactly the kind of drift this file exists to catch.
+*/
+const MOMENT = {};
+for (const p of JOURNEY) {
+  await c.goto(BASE + p);
+  const found = await c.evaluate(`(() => {
+    const cards = [...document.querySelectorAll(".deck-card")];
+    const i = cards.findIndex((el) => el.querySelector(".is-moment"));
+    if (i < 0) return false;
+    document.querySelectorAll(".deck-dot")[i]?.click();
+    return true;
+  })()`);
+  if (!found) continue;
+  await new Promise((r) => setTimeout(r, 700));
+  const probe = JSON.parse(await c.evaluate(`JSON.stringify((() => {
+    const el = document.querySelector(".deck-card:not([inert]) .moment-input");
+    if (!el) return null;
+    const cs = getComputedStyle(el);
+    const r = el.getBoundingClientRect();
+    return {
+      tag: el.tagName, width: Math.round(r.width),
+      fontFamily: cs.fontFamily, fontSize: cs.fontSize, textAlign: cs.textAlign,
+      padding: cs.padding, borderWidth: cs.borderWidth, borderRadius: cs.borderRadius,
+      backgroundColor: cs.backgroundColor, resize: cs.resize,
+    };
+  })())`));
+  if (probe) MOMENT[p] = probe;
+}
 c.close();
 
 const shorten = (v) => String(v).replace(/"?Cormorant Garamond"?, Georgia.*/, "serif").replace(/Inter, system-ui.*/, "sans").replace("rgb(", "").replace(")", "");
@@ -75,6 +109,14 @@ compare("scene title", JOURNEY, "title", [...GEO, "fontSize", "fontWeight", "fon
 compare("lede", JOURNEY, "lede", [...GEO, ...TYPE]);
 compare("card reference", JOURNEY, "cardRef", ["top", ...TYPE]);
 compare("deck nav", JOURNEY, "nav", ["left", "width"]);
+
+console.log("\n=== MOMENT CARDS, the field ===");
+Object.assign(data, Object.fromEntries(Object.entries(MOMENT).map(([p, v]) => [p, { ...data[p], moment: v }])));
+compare("moment field", Object.keys(MOMENT), "moment", [
+  "width", "fontFamily", "fontSize", "textAlign", "padding",
+  "borderWidth", "borderRadius", "backgroundColor", "resize",
+]);
+for (const [p, v] of Object.entries(MOMENT)) console.log(`         ${p.padEnd(9)} ${v.tag}`);
 
 console.log("\n=== ALL PAGES, left edge of content ===");
 for (const p of [...JOURNEY, ...OTHER]) {

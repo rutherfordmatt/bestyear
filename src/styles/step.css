@@ -675,12 +675,23 @@ li.reveal-wrap.goal-card { display: grid; }
 }
 .deck-card-inner.is-moment .tip { text-align: center; }
 .deck-card-inner.is-moment .deck-card-body { width: 100%; max-width: 34rem; }
-.moment-input {
+/*
+  Element-qualified on purpose. As a bare class this lost to the
+  input[type="text"] rule in base.css, so every moment card with an <input>
+  came out as a white box with a border while the one card using a
+  <textarea> got the quiet underline the rule was written for. Same card
+  type, two looks.
+*/
+input.moment-input, textarea.moment-input {
   font-size: 1.15rem; text-align: center;
   padding: var(--sp-4); border-width: 0 0 1px 0; border-radius: 0;
   background: transparent;
 }
-.moment-input:focus { box-shadow: none; border-bottom-color: var(--accent); }
+input.moment-input:focus, textarea.moment-input:focus {
+  box-shadow: none; border-bottom-color: var(--accent);
+}
+/* No drag handle in the corner of a card that has no other furniture. */
+textarea.moment-input { resize: none; }
 
 /* A card that needs the full column: the values panel, the letting-go piles. */
 .deck-card-inner.is-wide { padding: var(--sp-7); }
