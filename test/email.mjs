@@ -73,15 +73,18 @@ console.log("\n--- text version ---");
 console.log(mail.text.split("\n").slice(0, 28).join("\n"));
 
 // Precise check: the only tags in the html must be ones our template wrote.
-const TEMPLATE_TAGS = new Set(["!doctype html","html","head","body","div","table","tr","td","p","a","h1","em","blockquote","ol","ul","li","span","br","strong"]);
+const TEMPLATE_TAGS = new Set(["!doctype html","html","head","body","div","table","tr","td","p","a","h1","em","blockquote","ol","ul","li","span","br","strong","img"]);
 const tags = [...mail.html.matchAll(/<\/?([a-z!][a-z0-9!\s]*)/gi)]
   .map((m) => m[1].trim().toLowerCase().split(/\s/)[0]);
 const unexpected = [...new Set(tags)].filter((t) => !TEMPLATE_TAGS.has(t) && t !== "!doctype");
 console.log("\nunexpected tags in html:", unexpected.length ? unexpected : "none");
-console.log("raw <img injected:", /<img/i.test(mail.html));
+// The template writes exactly one image, the logo. Any other <img is injected.
+const imgs = mail.html.match(/<img\b[^>]*>/gi) || [];
+const injectedImg = imgs.length !== 1 || !/src="[^"]*\/email\/lockup@2x\.png"/.test(imgs[0]);
+console.log("raw <img injected:", injectedImg);
 console.log("injected text present but inert:", mail.html.includes("&lt;img src=x onerror=alert(1)&gt;"));
 
-const failed = unexpected.length || /<img/i.test(mail.html)
+const failed = unexpected.length || injectedImg
   || !mail.html.includes("&lt;img src=x onerror=alert(1)&gt;");
 console.log(failed ? "\nEMAIL ESCAPING FAILED" : "\nAll email escaping checks passed.");
 process.exit(failed ? 1 : 0);

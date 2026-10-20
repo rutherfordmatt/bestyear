@@ -21,8 +21,12 @@ const SANS = "Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif";
 const INK = "#1A1A1A";
 const MUTED = "#686460";
 const LINE = "#E2DEDA";
-const TEAL = "#3A6B6B";
-const PALE = "#E6EFEF";
+// Hardcoded on purpose: email clients don't support CSS variables. These are
+// the brand's ochre (--mr-accent / --mr-accent-pale for data-site="year") and
+// the site's --warn.
+const ACCENT = "#7A5A22";
+const PALE = "#F3ECDF";
+const WARN = "#9E3B33";
 
 const AREA_NAMES = {
   career: "Career", money: "Money", health: "Health", fun: "Fun",
@@ -37,7 +41,7 @@ const CORNER_NAMES = {
 const BUCKET_NAMES = { habit: "Habits", commitment: "Commitments", should: "Shoulds" };
 
 const label = (t) =>
-  `<div style="font:500 11px ${SANS};letter-spacing:2px;text-transform:uppercase;color:${TEAL};margin-bottom:8px">${esc(t)}</div>`;
+  `<div style="font:500 11px ${SANS};letter-spacing:2px;text-transform:uppercase;color:${ACCENT};margin-bottom:8px">${esc(t)}</div>`;
 
 const section = (title, inner) =>
   inner
@@ -68,15 +72,24 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
   const site = String(siteUrl || "https://yearwellbuilt.com");
   const host = site.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
+  /* --- Logo ---
+     A PNG, not SVG: SVG is unreliable in email. Served from the site itself,
+     so it only loads once the site is up. Width and height are set so the
+     layout holds when images are blocked. */
+  const logo = `
+    <tr><td style="padding:36px 40px 0">
+      <a href="${esc(site)}" style="text-decoration:none"><img src="${esc(site.replace(/\/$/, ""))}/email/lockup@2x.png" width="219" height="46" alt="Year Well Built" style="display:block;border:0;height:46px;width:219px;font:500 20px ${SERIF};color:${INK}"></a>
+    </td></tr>`;
+
   /* --- Hero --- */
   const hero = `
-    <tr><td style="padding:40px 40px 24px">
+    <tr><td style="padding:32px 40px 24px">
       ${label("Your year, on one page")}
       ${a.headline
         ? `<h1 style="font:400 34px/1.15 ${SERIF};color:${INK};margin:0 0 14px">${esc(a.headline)}</h1>`
         : ""}
       ${a.word
-        ? `<p style="font:15px/1.7 ${SANS};color:${MUTED};margin:0">My word for the year: <em style="font:italic 22px ${SERIF};color:${TEAL}">${esc(a.word)}</em></p>`
+        ? `<p style="font:15px/1.7 ${SANS};color:${MUTED};margin:0">My word for the year: <em style="font:italic 22px ${SERIF};color:${ACCENT}">${esc(a.word)}</em></p>`
         : ""}
     </td></tr>`;
 
@@ -86,7 +99,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
       ? `<p style="font:15px/1.7 ${SANS};color:${MUTED};margin:0 0 8px">A year of <em style="font:italic 19px ${SERIF};color:${INK}">${esc(a.yearEndingWord)}</em></p>`
       : "",
     a.closingLine
-      ? `<blockquote style="margin:0;border-left:2px solid ${TEAL};padding-left:16px;font:italic 18px/1.5 ${SERIF};color:${INK}">${esc(a.closingLine)}</blockquote>`
+      ? `<blockquote style="margin:0;border-left:2px solid ${ACCENT};padding-left:16px;font:italic 18px/1.5 ${SERIF};color:${INK}">${esc(a.closingLine)}</blockquote>`
       : "",
   ].join("");
 
@@ -103,11 +116,11 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
             <td style="font:15px/1.7 ${SANS};color:${INK};padding:4px 12px 4px 0;width:120px">${esc(r.name)}</td>
             <td style="padding:4px 0">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-                <td style="background:${TEAL};height:8px;width:${pct}%;font-size:0;line-height:0">&nbsp;</td>
+                <td style="background:${ACCENT};height:8px;width:${pct}%;font-size:0;line-height:0">&nbsp;</td>
                 <td style="background:${LINE};height:8px;font-size:0;line-height:0">&nbsp;</td>
               </tr></table>
             </td>
-            <td style="font:500 13px ${SANS};color:${TEAL};padding:4px 0 4px 12px;width:28px;text-align:right">${r.score}</td>
+            <td style="font:500 13px ${SANS};color:${ACCENT};padding:4px 0 4px 12px;width:28px;text-align:right">${r.score}</td>
           </tr>`;
         })
         .join("")}</table>`
@@ -119,8 +132,8 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
         .map(
           (v) => `<tr>
             <td style="font:500 16px ${SANS};color:${INK};padding:5px 0">${esc(v.name)}</td>
-            <td style="font:13px ${SANS};color:${v.alignment !== null && v.alignment <= 2 ? "#9A5B2E" : MUTED};padding:5px 0;text-align:right">${
-              v.alignment === null ? "" : `lived it ${v.alignment}/5`
+            <td style="font:13px ${SANS};color:${v.alignment !== null && v.alignment <= 2 ? WARN : MUTED};padding:5px 0;text-align:right">${
+              v.alignment === null ? "" : `lived it ${v.alignment}/5${v.alignment <= 2 ? " &middot; gap" : ""}`
             }</td>
           </tr>`
         )
@@ -149,7 +162,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
   /* --- Themes --- */
   const themes = a.themes.length
     ? `<p style="font:16px/1.8 ${SANS};color:${INK};margin:0">${a.themes
-        .map((t) => `<span style="display:inline-block;border:1px solid ${TEAL};color:${TEAL};padding:4px 12px;margin:0 6px 6px 0;font-size:14px">${esc(t)}</span>`)
+        .map((t) => `<span style="display:inline-block;border:1px solid ${ACCENT};color:${ACCENT};padding:4px 12px;margin:0 6px 6px 0;font-size:14px">${esc(t)}</span>`)
         .join("")}</p>`
     : "";
 
@@ -168,8 +181,8 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
           const ifThen = g.ifThen.if || g.ifThen.then
             ? `<p style="font:14px/1.6 ${SANS};color:${MUTED};margin:8px 0 0">If ${esc(stripLead(g.ifThen.if))}, then I will ${esc(stripLead(g.ifThen.then))}</p>`
             : "";
-          return `<div style="padding:16px 0;border-bottom:1px solid ${LINE}${g.priority ? `;border-left:2px solid ${TEAL};padding-left:16px` : ""}">
-            <p style="font:500 17px/1.4 ${SANS};color:${INK};margin:0">${g.priority ? `<span style="color:${TEAL}">&#9733;</span> ` : ""}${esc(g.done)}</p>
+          return `<div style="padding:16px 0;border-bottom:1px solid ${LINE}${g.priority ? `;border-left:2px solid ${ACCENT};padding-left:16px` : ""}">
+            <p style="font:500 17px/1.4 ${SANS};color:${INK};margin:0">${g.priority ? `<span style="color:${ACCENT}">&#9733;</span> ` : ""}${esc(g.done)}</p>
             ${meta ? `<p style="font:12px ${SANS};color:${MUTED};margin:6px 0 0">${meta}</p>` : ""}
             ${g.why ? `<p style="font:italic 14px/1.6 ${SANS};color:${MUTED};margin:6px 0 0">${esc(g.why)}</p>` : ""}
             ${line("Habit", g.habit)}
@@ -189,7 +202,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
 
   /* --- Note and check-ins --- */
   const note = a.noteToFutureSelf
-    ? `<blockquote style="margin:0;border-left:2px solid ${TEAL};padding-left:16px;font:italic 18px/1.5 ${SERIF};color:${INK}">${esc(a.noteToFutureSelf)}</blockquote>`
+    ? `<blockquote style="margin:0;border-left:2px solid ${ACCENT};padding-left:16px;font:italic 18px/1.5 ${SERIF};color:${INK}">${esc(a.noteToFutureSelf)}</blockquote>`
     : "";
 
   const checkIns = a.checkIns.length || a.livesAt
@@ -207,6 +220,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
 <div style="display:none;max-height:0;overflow:hidden">${esc(preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAFAF8"><tr><td align="center" style="padding:32px 16px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#FFFFFF;border:1px solid ${LINE}">
+  ${logo}
   ${hero}
   ${section("The year behind", behind)}
   ${section("Your life wheel", wheel)}
@@ -222,14 +236,14 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
     <div style="background:${PALE};padding:22px 24px;margin-bottom:24px">
       <div style="font:500 20px ${SERIF};color:${INK};margin-bottom:6px">Want to talk it through?</div>
       <p style="font:14px/1.6 ${SANS};color:${INK};margin:0 0 16px">A Clarity Session is one focused hour to pressure-test your plan and make sure your first steps are the right ones.</p>
-      <a href="${esc(bookingUrl)}" style="display:inline-block;background:${TEAL};color:#FFFFFF;text-decoration:none;font:500 12px ${SANS};letter-spacing:2px;text-transform:uppercase;padding:14px 24px;border-radius:2px">Book a Clarity Session</a>
+      <a href="${esc(bookingUrl)}" style="display:inline-block;background:${ACCENT};color:#FFFFFF;text-decoration:none;font:500 12px ${SANS};letter-spacing:2px;text-transform:uppercase;padding:14px 24px;border-radius:2px">Book a Clarity Session</a>
     </div>
     ${para("Print it, pin it up, and come back to it when the year gets noisy.")}
     <p style="font:italic 20px ${SERIF};color:${INK};margin:24px 0 0">Matt</p>
     <p style="font:13px/1.6 ${SANS};color:${MUTED};margin:20px 0 0">P.S. We don't keep a copy of this. If you lose the email, it's gone, so save it somewhere safe.</p>
   </td></tr>
 </table>
-<p style="font:12px/1.6 ${SANS};color:${MUTED};max-width:600px;margin:18px auto 0">You're receiving this because you asked for your plan at <a href="${esc(site)}" style="color:${TEAL}">${esc(host)}</a>. This is a one-off email and we keep no copy of your answers.</p>
+<p style="font:12px/1.6 ${SANS};color:${MUTED};max-width:600px;margin:18px auto 0">You're receiving this because you asked for your plan at <a href="${esc(site)}" style="color:${ACCENT}">${esc(host)}</a>. This is a one-off email and we keep no copy of your answers.</p>
 </td></tr></table></body></html>`;
 
   /* --- Plain text alternative --- */
@@ -246,7 +260,7 @@ export function visionEmail(answers, { bookingUrl, siteUrl }) {
   }
   if (a.values.length) {
     t.push("WHAT MATTERS");
-    a.values.forEach((v) => t.push(`  ${v.name}${v.alignment === null ? "" : ` (lived it ${v.alignment}/5)`}`));
+    a.values.forEach((v) => t.push(`  ${v.name}${v.alignment === null ? "" : ` (lived it ${v.alignment}/5${v.alignment <= 2 ? ", a gap" : ""})`}`));
     t.push("");
   }
   if (a.lessons.length) {
