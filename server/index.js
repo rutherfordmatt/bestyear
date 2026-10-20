@@ -45,6 +45,32 @@ const TO_MAX = 3, TO_WINDOW = 86_400_000;
 
 const app = new Hono();
 
+/* ---------- noindex everywhere but production ---------- */
+
+// Staging, previews and anything else that isn't the real domain must stay out
+// of search. Decided by the request's own host, not a build setting, so a
+// staging build can't ship indexable by mistake: the header on every
+// response, and a robots meta tag added to every page.
+const INDEXABLE_HOST = "yearwellbuilt.com";
+const ROBOTS = "noindex, nofollow";
+
+app.use("*", async (c, next) => {
+  await next();
+  const host = (c.req.header("host") || "").toLowerCase().replace(/:\d+$/, "");
+  if (host === INDEXABLE_HOST) return;
+
+  c.res.headers.set("X-Robots-Tag", ROBOTS);
+  if (!(c.res.headers.get("content-type") || "").includes("text/html")) return;
+
+  const html = (await c.res.text()).replace(
+    "<head>",
+    `<head><meta name="robots" content="${ROBOTS}">`
+  );
+  const headers = new Headers(c.res.headers);
+  headers.delete("content-length");
+  c.res = new Response(html, { status: c.res.status, headers });
+});
+
 /* ---------- POST /send ---------- */
 
 app.post("/send", async (c) => {

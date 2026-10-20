@@ -1,5 +1,6 @@
 ---
 import "../styles/fonts.css";
+import "../styles/brand-tokens.css";
 import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/step.css";
@@ -7,7 +8,7 @@ import "../styles/document.css";
 import "../styles/print.css";
 import Umami from "../components/Umami.astro";
 import StorageControls from "../islands/StorageControls.jsx";
-import { SITE_NAME, TAGLINE, COACHING_URL, NEWSLETTER_URL } from "../lib/config.js";
+import { SITE_NAME, TAGLINE, COACHING_URL, NEWSLETTER_URL, SITE_URL } from "../lib/config.js";
 
 const {
   title,
@@ -21,20 +22,28 @@ const {
 } = Astro.props;
 
 const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — ${TAGLINE}`;
+const ogImage = new URL("/og.png", SITE_URL).href;
 ---
 <!DOCTYPE html>
-<html lang="en-IE">
+<html lang="en-IE" data-site="year">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#FAFAF8" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="en_IE" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Year Well Built, by Matt Rutherford." />
     <meta name="twitter:card" content="summary_large_image" />
     <Umami />
   </head>
@@ -42,8 +51,8 @@ const fullTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — ${TAGL
     <a class="skip" href="#main">Skip to content</a>
 
     <header class="site no-print">
-      <a class="wordmark" href="/">
-        Year Well Built<span>{TAGLINE}</span>
+      <a class="brand" href="/">
+        <img src="/logo/lockup.svg" alt="Year Well Built" width="228" height="48" />
       </a>
       <nav class="links" aria-label="Site">
         <a href={COACHING_URL} data-umami-event="coaching-click" data-umami-event-from="header">

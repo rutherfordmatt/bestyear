@@ -105,7 +105,7 @@ export default function VisionDocument({ state, compact = false, editable = fals
               <b>{v.name}</b>
               {typeof v.alignment === "number" && (
                 <span class={`vd-align${v.alignment <= cf.GAP_THRESHOLD ? " gap" : ""}`}>
-                  lived it {v.alignment}/5
+                  lived it {v.alignment}/5{v.alignment <= cf.GAP_THRESHOLD && " · gap"}
                 </span>
               )}
             </li>

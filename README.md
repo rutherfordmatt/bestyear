@@ -73,6 +73,10 @@ on Step 7, so the preview can never disagree with what prints or gets emailed.
    - `GHOST_ADMIN_API_URL` — **the non-redirecting admin domain.** A redirect
      strips the Authorization header and Ghost answers 403.
    - `GHOST_ADMIN_API_KEY`, `GHOST_MEMBER_LABEL=ywb`
+
+Search engines are kept off every host except `yearwellbuilt.com`: the server
+adds `X-Robots-Tag: noindex, nofollow` and a robots meta tag based on the
+request's host, so staging needs no setting for it.
 5. **DNS** on Namecheap → the Hetzner box; Coolify issues the Let's Encrypt cert.
 6. Auto-deploy on push to `main`.
 

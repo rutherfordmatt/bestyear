@@ -12,18 +12,19 @@
 @media print {
   @page { size: A4 portrait; margin: 10mm; }
 
-  :root {
-    --ground: #FFFFFF;
-    --ground-alt: #FFFFFF;
-    --paper: #FFFFFF;
-    --ink: #000000;
-    --muted: #3A3A3A;
+  /* :root[data-site] outranks the per-site accent block in brand-tokens.css. */
+  :root, :root[data-site] {
+    --mr-ground: #FFFFFF;
+    --mr-alt: #FFFFFF;
+    --mr-paper: #FFFFFF;
+    --mr-ink: #000000;
+    --mr-muted: #3A3A3A;
     --faint: #6A6A6A;
     --faint-ui: #8A8A8A;
-    --line: #CFCFCF;
-    --accent: #2F5858;
-    --accent-dark: #2F5858;
-    --accent-pale: #FFFFFF;
+    --mr-line: #CFCFCF;
+    --mr-accent: #5C441A;        /* ochre, darkened for paper */
+    --mr-accent-dark: #5C441A;
+    --mr-accent-pale: #FFFFFF;
     --placeholder: transparent;   /* never print an example as if it were an answer */
     --shadow-card: none;
     --shadow-paper: none;
@@ -126,7 +127,7 @@
      container forces Chrome to fragment and spills onto a second sheet. */
   .vd-footer { break-inside: avoid; }
 
-  .vd-hero { margin-bottom: 4mm; padding-bottom: 2.5mm; border-bottom: 1px solid var(--line); }
+  .vd-hero { margin-bottom: 4mm; padding-bottom: 2.5mm; border-bottom: 1px solid var(--mr-line); }
   .vd-headline { font-size: 20pt !important; line-height: 1.08; margin: 0 0 1.5mm; }
   .vd-word { font-size: 9pt; }
   .vd-word em { font-size: 13pt; }
@@ -160,7 +161,7 @@
 
   .vd-footer {
     margin-top: 4mm; padding-top: 2mm;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--mr-line);
     font-size: 6.5pt; letter-spacing: 0.06em;
   }
 

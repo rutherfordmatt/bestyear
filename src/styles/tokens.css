@@ -1,25 +1,29 @@
 /*
   Year Well Built — design tokens
-  Extracted from thevaluesfinder.com and mattrutherfordcoaching.com so the
-  three sites read as one family.
 
-  MVP ships LIGHT ONLY. The structure below is dark-ready: every colour is a
-  role token on :root, so a dark theme is added by redefining this block under
+  Colour and type come from the shared brand system, brand-tokens.css (the
+  --mr-* tokens), with <html data-site="year"> selecting the ochre accent.
+  Style against those directly. This file holds only what the brand kit
+  doesn't define: the quieter text tiers, the warning colour, this site's
+  type scale, spacing, shape and motion.
+
+  Two deliberate departures from the kit, both matching the coaching site:
+  corners stay at 2px (the --mr-radius-* tokens are not used), and fonts are
+  self-hosted (fonts.css) rather than loaded from Google, for privacy.
+
+  MVP ships LIGHT ONLY. The structure is dark-ready: every colour is a role
+  token on :root, so a dark theme is added by redefining the tokens under
   :root[data-theme="dark"] and a guarded prefers-color-scheme media query.
   Nothing else in the codebase references a raw hex. Do not add either block
   until the dark palette is signed off.
 */
 
 :root {
-  /* --- Surfaces and ink --- */
-  --ground: #FAFAF8;       /* page background */
-  --ground-alt: #F3F0EB;   /* banded sections */
-  --paper: #FFFFFF;        /* cards, the vision document */
-  --ink: #1A1A1A;          /* body text and headings */
-  --muted: #686460;        /* secondary text, hints */
-  /* Two quiet tiers, split so nothing fails WCAG AA.
-     --faint is for TEXT that should read quietly: 4.9:1 on --ground,
-     4.5:1 on --ground-alt. --faint-ui is for icon glyphs and decorative
+  /* --- Quiet text tiers ---
+     Split so nothing fails WCAG AA. The kit's --mr-faint is decorative only,
+     so these stay local.
+     --faint is for TEXT that should read quietly: 4.9:1 on --mr-ground,
+     4.5:1 on --mr-alt. --faint-ui is for icon glyphs and decorative
      strokes only (3.2:1, the 1.4.11 non-text threshold) — never for text. */
   --faint: #726D66;
   --faint-ui: #908B84;
@@ -28,22 +32,17 @@
      carries a real <label> — so they sit lighter than --faint on purpose, to
      read as "this is a sample", not as an answer already typed. */
   --placeholder: #A5A09A;
-  --line: #E2DEDA;         /* hairlines and borders */
 
-  /* --- Accent --- */
-  --accent: #3A6B6B;
-  --accent-dark: #2F5858;  /* hover on filled buttons */
-  --accent-pale: #E6EFEF;  /* hover wash, highlight backgrounds */
+  /* --- Semantic ---
+     Brick, not rust: rust sat too close to the ochre accent. 6.4:1 on
+     --mr-ground, 5.9:1 on --mr-alt. Never the only signal — a gap is also
+     named in words. */
+  --warn: #9E3B33;         /* value gaps, "needs attention" */
+  --warn-pale: #F7E9E7;
 
-  /* --- Semantic --- */
-  --warn: #9A5B2E;         /* value gaps, "needs attention" */
-  --warn-pale: #F6EDE4;
-  --ok: #3A6B6B;
-
-  /* --- Type --- */
-  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-
+  /* --- Type ---
+     Families are --mr-serif and --mr-sans. The scale below is this site's
+     own: the deck is tuned to it. */
   --step--1: 0.82rem;
   --step-0: 1rem;
   --step-1: 1.08rem;
@@ -74,11 +73,11 @@
   /* --- Shape --- */
   --radius: 2px;           /* both sibling sites are square. Keep it that way. */
   --radius-pill: 999px;    /* chips only */
-  --border: 1px solid var(--line);
+  --border: 1px solid var(--mr-line);
 
   --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.07);
   --shadow-paper: 0 30px 60px -40px rgba(26, 26, 26, 0.35);
-  --shadow-focus: 0 0 0 3px rgba(58, 107, 107, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(122, 90, 34, 0.14); /* the ochre accent, washed */
 
   /* --- Layout --- */
   --wide: 1120px;

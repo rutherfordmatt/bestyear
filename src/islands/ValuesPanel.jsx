@@ -232,7 +232,11 @@ export default function ValuesPanel({ card = {}, returnLine = "", prompts = {}, 
                     const id = `align-${v.slug}`;
                     return (
                       <li key={v.slug} class={`scored-value${isGap ? " is-gap" : ""}`}>
-                        <label class="scored-name" for={id}>{v.name}</label>
+                        <label class="scored-name" for={id}>
+                          {v.name}
+                          {/* Named, not just coloured: colour is never the only signal. */}
+                          {isGap && <span class="gap-tag">Gap</span>}
+                        </label>
                         {/* The same slider as the life wheel, so scoring feels
                             like one gesture across the journey rather than two
                             inventions. */}

@@ -1,9 +1,9 @@
 /* The vision document. Used full size on Step 7 and compact in the plan panel. */
 
 .vision-doc {
-  background: var(--paper);
+  background: var(--mr-paper);
   display: grid; gap: var(--sp-6);
-  color: var(--ink);
+  color: var(--mr-ink);
 }
 .vision-doc.compact { gap: var(--sp-5); font-size: 0.88rem; }
 
@@ -33,89 +33,89 @@
 /* Hero */
 .vd-hero { display: grid; gap: var(--sp-3); }
 .vd-headline {
-  font: 400 clamp(1.8rem, 3.4vw, 2.9rem) / 1.14 var(--serif);
-  text-wrap: balance; color: var(--ink);
+  font: 400 clamp(1.8rem, 3.4vw, 2.9rem) / 1.14 var(--mr-serif);
+  text-wrap: balance; color: var(--mr-ink);
 }
 .compact .vd-headline { font-size: 1.3rem; }
 .vd-headline-empty { font-size: 1rem; }
-.vd-word { color: var(--muted); font-size: 0.92rem; }
+.vd-word { color: var(--mr-muted); font-size: 0.92rem; }
 .vd-word em {
-  font: 400 1.4rem var(--serif); font-style: italic; color: var(--accent);
+  font: 400 1.4rem var(--mr-serif); font-style: italic; color: var(--mr-accent);
 }
 .compact .vd-word em { font-size: 1.1rem; }
 
 /* Sections */
 .vd-section { display: grid; gap: var(--sp-3); padding-top: var(--sp-5); border-top: var(--border); }
 .vd-h {
-  font: 500 0.7rem var(--sans); letter-spacing: var(--tracking-label);
-  text-transform: uppercase; color: var(--accent);
+  font: 500 0.7rem var(--mr-sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--mr-accent);
 }
 .vd-empty { opacity: 0.75; }
 .vd-placeholder { color: var(--faint); font-size: var(--step--1); font-style: italic; }
-.vd-placeholder a { color: var(--muted); }
+.vd-placeholder a { color: var(--mr-muted); }
 
 .vd-quote {
-  margin: 0; border-left: 2px solid var(--accent); padding-left: var(--sp-4);
-  font: 400 1.15rem / 1.5 var(--serif); font-style: italic; color: var(--ink);
+  margin: 0; border-left: 2px solid var(--mr-accent); padding-left: var(--sp-4);
+  font: 400 1.15rem / 1.5 var(--mr-serif); font-style: italic; color: var(--mr-ink);
 }
 .compact .vd-quote { font-size: 1rem; }
-.vd-behind-word { color: var(--muted); font-size: 0.92rem; }
-.vd-behind-word em { font-family: var(--serif); font-size: 1.15rem; color: var(--ink); font-style: italic; }
+.vd-behind-word { color: var(--mr-muted); font-size: 0.92rem; }
+.vd-behind-word em { font-family: var(--mr-serif); font-size: 1.15rem; color: var(--mr-ink); font-style: italic; }
 
 /* Values */
 .vd-values { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
 .vd-values li { display: flex; justify-content: space-between; gap: var(--sp-3); align-items: baseline; }
 .vd-values b { font-weight: 500; }
-.vd-align { font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
+.vd-align { font-size: 0.74rem; color: var(--mr-muted); white-space: nowrap; }
 .vd-align.gap { color: var(--warn); font-weight: 500; }
 
 /* Simple lists */
 .vd-list { margin: 0; padding-left: 1.1rem; display: grid; gap: var(--sp-2); }
 .vd-themes { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .vd-themes li {
-  border: 1px solid var(--accent); color: var(--accent);
+  border: 1px solid var(--mr-accent); color: var(--mr-accent);
   border-radius: var(--radius); padding: var(--sp-1) var(--sp-3); font-size: 0.84rem;
 }
 .vd-letting { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
 .vd-letting li { display: grid; gap: 2px; }
 .vd-bucket {
-  font: 500 0.66rem var(--sans); letter-spacing: var(--tracking-label);
-  text-transform: uppercase; color: var(--muted);
+  font: 500 0.66rem var(--mr-sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--mr-muted);
 }
-.vd-letting span:not(.vd-bucket) { color: var(--muted); text-decoration: line-through; }
+.vd-letting span:not(.vd-bucket) { color: var(--mr-muted); text-decoration: line-through; }
 
 /* Goals */
 .vd-goals { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-5); counter-reset: goal; }
 .vd-goals .goal { display: grid; gap: var(--sp-2); }
 .vd-goals .goal.priority {
-  border-left: 2px solid var(--accent); padding-left: var(--sp-4); margin-left: calc(-1 * var(--sp-4));
+  border-left: 2px solid var(--mr-accent); padding-left: var(--sp-4); margin-left: calc(-1 * var(--sp-4));
 }
 .vd-goal-head { display: flex; gap: var(--sp-2); align-items: baseline; }
-.vd-goal-head .star { color: var(--accent); }
+.vd-goal-head .star { color: var(--mr-accent); }
 .vd-goal-head b { font-weight: 500; font-size: 1.02rem; }
-.vd-goal-meta { display: flex; flex-wrap: wrap; gap: var(--sp-3); font-size: 0.74rem; color: var(--muted); }
+.vd-goal-meta { display: flex; flex-wrap: wrap; gap: var(--sp-3); font-size: 0.74rem; color: var(--mr-muted); }
 .vd-goal-meta span { position: relative; }
 .vd-goal-meta span + span::before {
-  content: "·"; position: absolute; left: calc(-1 * var(--sp-2)); color: var(--line);
+  content: "·"; position: absolute; left: calc(-1 * var(--sp-2)); color: var(--mr-line);
 }
-.vd-goal-why { color: var(--muted); font-size: 0.88rem; font-style: italic; }
+.vd-goal-why { color: var(--mr-muted); font-size: 0.88rem; font-style: italic; }
 .vd-goal-line { font-size: 0.88rem; display: grid; grid-template-columns: 5.2rem 1fr; gap: var(--sp-2); }
 .vd-goal-line span {
-  font: 500 0.66rem / 1.6 var(--sans); letter-spacing: var(--tracking-label);
-  text-transform: uppercase; color: var(--muted);
+  font: 500 0.66rem / 1.6 var(--mr-sans); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--mr-muted);
 }
 
 /* If-then */
 .vd-ifthen { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
 .vd-ifthen .if-then { display: grid; gap: 2px; font-size: 0.9rem; }
-.vd-if { color: var(--muted); }
-.vd-then { color: var(--ink); }
+.vd-if { color: var(--mr-muted); }
+.vd-then { color: var(--mr-ink); }
 .vd-then::before { content: ""; }
 
 /* Corner, note, check-ins */
 .vd-corner-who { font-weight: 500; }
-.vd-corner-ask { color: var(--muted); font-size: 0.9rem; }
-.vd-lives { font-size: 0.9rem; color: var(--muted); }
+.vd-corner-ask { color: var(--mr-muted); font-size: 0.9rem; }
+.vd-lives { font-size: 0.9rem; color: var(--mr-muted); }
 .vd-dates { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); font-size: 0.9rem; }
 .vd-dates li { font-variant-numeric: tabular-nums; }
 
@@ -136,10 +136,10 @@
   transition: box-shadow var(--fast), background var(--fast);
 }
 .vision-doc [contenteditable]:hover {
-  box-shadow: inset 0 -1px 0 var(--accent);
-  background: var(--accent-pale);
+  box-shadow: inset 0 -1px 0 var(--mr-accent);
+  background: var(--mr-accent-pale);
 }
 .vision-doc [contenteditable]:focus {
-  box-shadow: inset 0 -2px 0 var(--accent);
-  background: var(--accent-pale);
+  box-shadow: inset 0 -2px 0 var(--mr-accent);
+  background: var(--mr-accent-pale);
 }

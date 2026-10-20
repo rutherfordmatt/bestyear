@@ -57,10 +57,19 @@ Visual language is shared with two sibling sites so the three feel like one fami
 - thevaluesfinder.com — `/Users/mattrutherford/Dev/Values`
 - mattrutherfordcoaching.com — `/Users/mattrutherford/Dev/MattRutherfordCoaching`
 
-Tokens live in `src/styles/tokens.css`. **No raw hex anywhere else.** Key traits:
-Cormorant Garamond display + Inter body, teal `#3A6B6B`, warm off-white `#FAFAF8`,
-**2px radius everywhere** (both sibling sites are square), uppercase letterspaced
-buttons and eyebrow labels, long soft shadows.
+The source of truth is the brand system,
+`/Users/mattrutherford/Documents/Claude/Ecosystem Strategy/brand/BRAND.md`, and its kit
+for this site (`kit/year`). `src/styles/brand-tokens.css` is the kit's file, copied
+verbatim; `<html data-site="year">` selects the **ochre** accent (`#7A5A22`). Style on the
+`--mr-*` tokens directly. `src/styles/tokens.css` holds only what the kit doesn't define
+(quiet text tiers, `--warn` brick `#9E3B33`, type scale, spacing, shape, motion).
+**No raw hex anywhere else**, except `server/email.js` (email can't use variables) and
+the print overrides. Key traits: Cormorant Garamond display at **weight 400** (matching
+the coaching site) + Inter body, warm off-white `#FAFAF8`, **2px radius everywhere** (the
+kit's `--mr-radius-*` are not used), uppercase letterspaced buttons and eyebrow labels,
+long soft shadows. Header logo is the kit lockup (`public/logo/lockup.svg`), never live
+text; the email uses `public/email/lockup@2x.png`. Colour is never the only signal: a
+value gap is also named in words.
 
 ## Values Finder integration (two-way)
 

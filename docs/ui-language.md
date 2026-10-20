@@ -92,7 +92,7 @@ A **step** is one of the seven numbered stages.
 | --- | --- |
 | **token** | A named value in `tokens.css`. No raw hex or pixel values anywhere else. |
 | **measure** | How wide a block of text is allowed to run. |
-| **the eyebrow** | The small uppercase teal label above a title. Class is `.label`. |
+| **the eyebrow** | The small uppercase accent-coloured (ochre) label above a title. Class is `.label`. |
 | **serif / sans** | Cormorant Garamond for titles, questions and the document. Inter for everything else, including every input. |
 
 Italic has one job: the exercise's own voice — the hand-over lines between
